@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=HavenmeesterWorld
+comment1.params=
+comment1.target=HavenmeesterWorld()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ HavenmeesterWorld.\r\n\ \r\n
+comment2.params=boat
+comment2.target=void\ RemoveBoat(Boat)
+numComments=3
