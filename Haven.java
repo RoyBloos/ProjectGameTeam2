@@ -12,10 +12,17 @@ public class Haven extends Actor
     public Boat ToegewezenBoat;
     private int counter = 1;
     private int dockedXLocation;
-        
+    private HavenStoplicht stoplicht;
     public Haven(int dockedXLocation)
     {
         this.dockedXLocation = dockedXLocation;
+        stoplicht = new HavenStoplicht(this, "Groen");
+        
+    }
+    
+     protected void addedToWorld(World world)
+    {
+        getWorld().addObject(stoplicht, dockedXLocation - 32, 350);
     }
     
     /**
@@ -39,8 +46,7 @@ public class Haven extends Actor
             }
             if(ToegewezenBoat.AantalContainers <= 0)
             {
-                IsBezet = false;
-                ToegewezenBoat = null;
+                stoplicht.ZetStoplicht("Oranje");
             }
         }
     }
@@ -55,4 +61,17 @@ public class Haven extends Actor
         return false;
     }
     
+    public void ZetBoat(Boat boat)
+    {
+        IsBezet = true;
+        ToegewezenBoat = boat;
+        stoplicht.ZetStoplicht("Rood");
+    }
+    
+    public void LaatBootGaan()
+    {
+        ToegewezenBoat.MagHavenVerlaten = true;
+        ToegewezenBoat = null;
+        IsBezet = false;
+    }
 }

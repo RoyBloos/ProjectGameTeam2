@@ -22,7 +22,7 @@ public class Boat extends Actor
     private boolean reachedEntrypoint;
     private int entryPointYOFfset = 150;
     private Random rand;
-    
+    public boolean MagHavenVerlaten;
     public Boat(Boatlane boatlane)
     {
         assignedBoatlane = boatlane;
@@ -50,15 +50,10 @@ public class Boat extends Actor
     public void UnloadContainers(int containers)
     {
         AantalContainers = AantalContainers - containers;
-        if(AantalContainers < 0)
+        if(AantalContainers <= 0)
         {
             AantalContainers = 0;
-        }
-        
-        if(AantalContainers == 0)
-        {
             reachedEntrypoint = false;
-            IsDocked = false;
         }
         
         setImage("Vrachtschip" + AantalContainers + ".png");
@@ -66,8 +61,9 @@ public class Boat extends Actor
     
     private void moveBoat()
     {
-        if(ToegewezenHaven != null && !IsDocked)
+        if(ToegewezenHaven != null && (!IsDocked || MagHavenVerlaten))
         {
+            //Gaat richting het entrypoint van de haven
             if(!reachedEntrypoint)
             {
                 setRotation(getAngle(ToegewezenHaven.getX(), ToegewezenHaven.getY() + entryPointYOFfset)+180 );
@@ -86,7 +82,7 @@ public class Boat extends Actor
                 turnTowards(0, getY());
             }
         } 
-        if(counter % 2 == 0 && !IsDocked)
+        if(counter % 2 == 0 && (!IsDocked || MagHavenVerlaten))
         {
             move(1);
         }
@@ -99,13 +95,14 @@ public class Boat extends Actor
         }
     }
     
+    
+    
     private void wijsHavenToe()
     {
         for(Haven haven : getWorld().getObjects(Haven.class)){
             if(!haven.IsBezet){
                 ToegewezenHaven = haven;
-                haven.IsBezet = true;
-                haven.ToegewezenBoat = this;
+                haven.ZetBoat(this);
                 return;
             }
         }
