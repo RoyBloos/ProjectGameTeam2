@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=ButtonSelectMinigame
+comment1.params=minigameSelection
+comment1.target=ButtonSelectMinigame(int)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=void\ openMinigameWorld()
+numComments=4
