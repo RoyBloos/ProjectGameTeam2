@@ -8,14 +8,16 @@ public class HavenmeesterWorld extends World
     public List<Boatlane> Boatlanes;
     public int Score = 0;
     public Text Scorebord;
+    public World ParentWorld;
     /**
      * Constructor for objects of class HavenmeesterWorld.
      * 
      */
-    public HavenmeesterWorld()
+    public HavenmeesterWorld(World parentWorld, int gameHeight, int gameWidth)
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(1280, 768, 1); 
+        super(gameHeight, gameWidth, 1); 
+        this.ParentWorld = parentWorld;
         
         addObject(new Boatspawner(), -1, -1);
         addObject(new Loods(), 100, 380);

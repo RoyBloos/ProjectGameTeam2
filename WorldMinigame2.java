@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.List;
 
 /**
  * Write a description of class WorldMinigame2 here.
@@ -8,14 +9,39 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class WorldMinigame2 extends World
 {
-
-    /**
-     * Constructor for objects of class WorldMinigame2.
-     * 
-     */
-    public WorldMinigame2()
+    public WorldMinigame2(World parentWorld, int gameHeight, int gameWidth)
     {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
+        super(gameHeight, gameWidth, 1); 
+    }
+    
+    public void act()
+    {
+        spawnBoats();
+    }
+    
+    private void spawnBoats()
+    {
+        boolean hasCpuBoat = false;
+        boolean hasPlayerBoat = false;
+        for(BoatMg2 boat : getObjects(BoatMg2.class))
+        {
+            if(boat.IsCpuBoat)
+            {
+                hasCpuBoat = true;
+            } else
+            {
+                hasPlayerBoat = true;
+            }
+        }
+        
+        if (!hasCpuBoat)
+        {
+            addObject(new BoatMg2(true), 560, getWidth());
+        }
+        
+        if (!hasPlayerBoat)
+        {
+            addObject(new BoatMg2(false), 760, getWidth());
+        }
     }
 }

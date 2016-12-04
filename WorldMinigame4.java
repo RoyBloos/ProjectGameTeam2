@@ -8,14 +8,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class WorldMinigame4 extends World
 {
-
-    /**
-     * Constructor for objects of class WorldMinigame4.
-     * 
-     */
-    public WorldMinigame4()
+    public WorldMinigame4(World parentWorld, int gameHeight, int gameWidth)
     {    
-        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
+        super(gameHeight, gameWidth, 1); 
     }
 }
