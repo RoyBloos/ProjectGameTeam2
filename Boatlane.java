@@ -10,30 +10,11 @@ public class Boatlane extends Actor
 {
     public int Yas;
     public int Direction;
-    public boolean IsOccupied;
-    private int counter;
     
     public Boatlane(int y, int dir)
     {
         Yas = y;
         Direction = dir;
-    }
-    
-    public void act() 
-    {
-        if(counter > 0)
-        {
-            counter -= 1;
-            IsOccupied = true;
-        } else
-        {
-            IsOccupied = false;
-        }
-    }
-    
-    public void OccupyLane()
-    {
-        counter = 1000;
     }
 }
 

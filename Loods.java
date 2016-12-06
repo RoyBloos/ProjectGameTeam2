@@ -41,7 +41,7 @@ public class Loods extends Actor
             move(1);
         } else
         {
-            setRotation(90);
+            setRotation(0);
         }
        
     }    
@@ -65,7 +65,7 @@ public class Loods extends Actor
     
     private boolean selectedBoatIsCloseEnough()
     {  
-        for(Boat boat : getObjectsInRange(20, Boat.class)){
+        for(Boat boat : getObjectsInRange(30, Boat.class)){
             if(boat == SelectedBoat){
                 return true;
             }
