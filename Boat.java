@@ -24,6 +24,7 @@ public class Boat extends Actor
     private Random rand;
     public boolean MagHavenVerlaten;
     public int OccupiedCounter;
+    public boolean IsPaused;
     
     public Boat()
     {
@@ -32,25 +33,28 @@ public class Boat extends Actor
     
     public void act() 
     {
-        HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
-        if(Greenfoot.mouseClicked(this) && world.SelectedLoods != null)
+        if(!IsPaused)
         {
-            world.SelectedLoods.SelectedBoat = this;
-            SelectedLoods = world.SelectedLoods;
-            world.SelectedLoods = null;
+            HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
+            if(Greenfoot.mouseClicked(this) && world.SelectedLoods != null)
+            {
+                world.SelectedLoods.SelectedBoat = this;
+                SelectedLoods = world.SelectedLoods;
+                world.SelectedLoods = null;
+            }
+            
+            if(ToegewezenHaven == null && HeeftLoods)
+            {
+                wijsHavenToe();
+            }
+            
+            if(OccupiedCounter > 0)
+            {
+                OccupiedCounter -=1;
+            }
+            
+            moveBoat();
         }
-        
-        if(ToegewezenHaven == null && HeeftLoods)
-        {
-            wijsHavenToe();
-        }
-        
-        if(OccupiedCounter > 0)
-        {
-            OccupiedCounter -=1;
-        }
-        
-        moveBoat();
     }
     
     public void UnloadContainers(int containers)

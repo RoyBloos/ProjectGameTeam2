@@ -16,15 +16,20 @@ public class HavenmeesterWorld extends World
     private Random rand;
     private ArrayList<BoatSpawn> boatSpawns;
     private int nextLevelIndex;
-    private final long createdMillis = System.currentTimeMillis();
-
+    private long createdMillis = System.currentTimeMillis();
+    private long pausedMillis;
+    public boolean IsPaused;
+    private boolean areActorsPaused;
+    
     public HavenmeesterWorld(World parentWorld, int gameHeight, int gameWidth)
     {    
         super(gameHeight, gameWidth, 1); 
         this.ParentWorld = parentWorld;
         rand = new Random();
-        addObject(new Loods(), 100, 380);
-        addObject(new Loods(), 1180, 380);
+        Loods loods1 = new Loods();
+        Loods loods2 = new Loods();
+        addObject(loods1, 100, 380);
+        addObject(loods2, 1180, 380);
         addObject(new Haven(422), 446, 318);
         addObject(new Haven(582), 606, 318);
         addObject(new Haven(742), 766, 318);
@@ -36,13 +41,53 @@ public class HavenmeesterWorld extends World
         addObject(new Boatlane(575, 180), -1,-1);
         addObject(new Boatlane(600, 0), -1,-1);
         
-        addObject(new LoodsGebouw(),100,340);
-        addObject(new LoodsGebouw(),1180,340);
+        addObject(new LoodsGebouw(loods1),100,340);
+        addObject(new LoodsGebouw(loods2),1180,340);
         
         Scorebord = new Text();
         addObject(Scorebord, 1200,50);
         
+        addObject(new GameNavigationButton(this, "Pause"), 50,50);
+        
         CreateBoatSpawns();
+    }
+    
+    public void PauseWorld()
+    {
+        pausedMillis =  System.currentTimeMillis();
+        this.IsPaused = true;
+        addObject(new PauseScreen(), 640, 384);
+        addObject(new GameNavigationButton(this, "Resume"), 400, 640);
+        addObject(new GameNavigationButton(this, "Restart"), 500, 640);
+        addObject(new GameNavigationButton(this, "Stop"), 600, 640);
+    }
+    
+    public void ResumeWorld()
+    {
+
+        for(GameNavigationButton button : getObjects(GameNavigationButton.class)){
+            if(button.knopType != "Pause")
+            {
+                removeObject(button);
+            }
+        }
+        
+        for(PauseScreen pauseScreen : getObjects(PauseScreen.class)){
+                removeObject(pauseScreen);
+        }
+        this.IsPaused = false;
+        SetPauseOnAllActors();
+        createdMillis += System.currentTimeMillis() - pausedMillis;
+    }
+    
+    public void RestartWorld()
+    {
+        Greenfoot.setWorld(new HavenmeesterWorld(ParentWorld, getWidth(), getHeight()));
+    }
+    
+    public void StopWorld()
+    {
+        Greenfoot.setWorld(ParentWorld);
     }
     
     private void CreateBoatSpawns()
@@ -66,14 +111,49 @@ public class HavenmeesterWorld extends World
     
     public void act()
     {
-       long elapsedTime = System.currentTimeMillis() - createdMillis;
-       if(boatSpawns.size() > 0 && boatSpawns.get(0).Time < elapsedTime)
+       if(!IsPaused)
        {
-            addBoatToWorld(boatSpawns.get(0).Boat);
-            boatSpawns.remove(0);
-       }    
+           if(areActorsPaused)
+           {
+               SetPauseOnAllActors();
+           }
+           long elapsedTime = System.currentTimeMillis() - createdMillis;
+           if(boatSpawns.size() > 0 && boatSpawns.get(0).Time < elapsedTime)
+           {
+                addBoatToWorld(boatSpawns.get(0).Boat);
+                boatSpawns.remove(0);
+           }
+       } else
+       {
+           if(!areActorsPaused)
+           {
+               SetPauseOnAllActors();
+           }
+       }
     }
     
+    private void SetPauseOnAllActors()
+    {
+        for(Boat boat : getObjects(Boat.class)){
+            boat.IsPaused = IsPaused;
+        }
+        
+        for(Haven haven : getObjects(Haven.class)){
+            haven.IsPaused = IsPaused;
+        }
+        
+        for(HavenStoplicht havenStoplicht : getObjects(HavenStoplicht.class)){
+            havenStoplicht.IsPaused = IsPaused;
+        }
+        
+        for(Loods loods : getObjects(Loods.class)){
+            loods.IsPaused = IsPaused;
+        }
+        
+        for(LoodsGebouw loodsGebouw : getObjects(LoodsGebouw.class)){
+            loodsGebouw.IsPaused = IsPaused;
+        }
+    }
     
     private void addBoatToWorld(Boat boat)
     {
