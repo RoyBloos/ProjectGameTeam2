@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=BoatSpawn
+comment1.params=boat\ time
+comment1.target=BoatSpawn(Boat,\ int)
+numComments=2

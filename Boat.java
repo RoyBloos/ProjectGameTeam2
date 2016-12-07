@@ -18,38 +18,50 @@ public class Boat extends Actor
     public boolean IsDocked;
     public int AantalContainers;
     public int StartAantalContainers;
-    private Boatlane assignedBoatlane;
+    public Boatlane AssignedBoatlane;
     private boolean reachedEntrypoint;
     private int entryPointYOFfset = 150;
     private Random rand;
     public boolean MagHavenVerlaten;
-    public Boat(Boatlane boatlane)
+    public int OccupiedCounter;
+    public boolean IsPaused;
+    
+    public Boat()
     {
-        assignedBoatlane = boatlane;
-        assignedBoatlane.OccupyLane();
         rand = new Random();
     }
     
     public void act() 
     {
-        HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
-        if(Greenfoot.mouseClicked(this) && world.SelectedLoods != null)
+        if(!IsPaused)
         {
-            world.SelectedLoods.SelectedBoat = this;
-            SelectedLoods = world.SelectedLoods;
-            world.SelectedLoods = null;
+            HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
+            if(Greenfoot.mouseClicked(this) && world.SelectedLoods != null)
+            {
+                world.SelectedLoods.SelectedBoat = this;
+                SelectedLoods = world.SelectedLoods;
+                world.SelectedLoods = null;
+            }
+            
+            if(ToegewezenHaven == null && HeeftLoods)
+            {
+                wijsHavenToe();
+            }
+            
+            if(OccupiedCounter > 0)
+            {
+                OccupiedCounter -=1;
+            }
+            
+            moveBoat();
         }
-        
-        if(ToegewezenHaven == null && HeeftLoods)
-        {
-            wijsHavenToe();
-        }
-        moveBoat();
     }
     
     public void UnloadContainers(int containers)
     {
         AantalContainers = AantalContainers - containers;
+        HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
+        world.AddPoints(containers);
         if(AantalContainers <= 0)
         {
             AantalContainers = 0;
@@ -122,7 +134,7 @@ public class Boat extends Actor
     {
         StartAantalContainers = randInt(1,21);
         AantalContainers = StartAantalContainers;
-        setRotation(assignedBoatlane.Direction);
+        setRotation(AssignedBoatlane.Direction);
         setImage("Vrachtschip" + AantalContainers + ".png");
     }
     

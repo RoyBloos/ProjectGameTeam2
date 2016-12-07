@@ -10,6 +10,7 @@ public class HavenStoplicht extends Actor
 {
     private Haven haven;
     private String kleur;
+    public boolean IsPaused;
     public HavenStoplicht(Haven haven, String kleur)
     {
         this.haven = haven;
@@ -22,10 +23,13 @@ public class HavenStoplicht extends Actor
      */
     public void act() 
     {
-        if(Greenfoot.mouseClicked(this) && kleur == "Oranje")
+        if(!IsPaused)
         {
-           haven.LaatBootGaan();
-           ZetStoplicht("Groen");
+            if(Greenfoot.mouseClicked(this) && kleur == "Oranje")
+            {
+               haven.LaatBootGaan();
+               ZetStoplicht("Groen");
+            }
         }
     }    
     

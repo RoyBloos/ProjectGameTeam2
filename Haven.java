@@ -13,6 +13,8 @@ public class Haven extends Actor
     private int counter = 1;
     private int dockedXLocation;
     private HavenStoplicht stoplicht;
+    public boolean IsPaused;
+    
     public Haven(int dockedXLocation)
     {
         this.dockedXLocation = dockedXLocation;
@@ -31,22 +33,25 @@ public class Haven extends Actor
      */
     public void act() 
     {
-        if(ToegewezenBoat != null){
-            if(selectedBoatIsCloseEnough()){
-                ToegewezenBoat.IsDocked = true;
-                ToegewezenBoat.setLocation(dockedXLocation, 320);
-                ToegewezenBoat.turnTowards(dockedXLocation, 325);
-            }
-            
-            if(ToegewezenBoat.IsDocked){
-                if(counter % 25 == 0){
-                    ToegewezenBoat.UnloadContainers(1);
+        if(!IsPaused)
+        {
+            if(ToegewezenBoat != null){
+                if(selectedBoatIsCloseEnough()){
+                    ToegewezenBoat.IsDocked = true;
+                    ToegewezenBoat.setLocation(dockedXLocation, 320);
+                    ToegewezenBoat.turnTowards(dockedXLocation, 325);
                 }
-                counter++;
-            }
-            if(ToegewezenBoat.AantalContainers <= 0)
-            {
-                stoplicht.ZetStoplicht("Oranje");
+                
+                if(ToegewezenBoat.IsDocked){
+                    if(counter % 25 == 0){
+                        ToegewezenBoat.UnloadContainers(1);
+                    }
+                    counter++;
+                }
+                if(ToegewezenBoat.AantalContainers <= 0)
+                {
+                    stoplicht.ZetStoplicht("Oranje");
+                }
             }
         }
     }
