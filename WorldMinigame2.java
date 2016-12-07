@@ -1,12 +1,17 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
 
+/**
+ * Write a description of class WorldMinigame2 here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
 public class WorldMinigame2 extends World
 {
     public WorldMinigame2(World parentWorld, int gameHeight, int gameWidth)
     {    
-        super(gameHeight, gameWidth, 1);
-        addObject(new ButtonPause(), 100, 100);
+        super(gameHeight, gameWidth, 1); 
     }
     
     public void act()
