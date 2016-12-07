@@ -3,16 +3,11 @@ import java.util.List;
 
 public class HavenmeesterWorld extends World
 {
-
     public Loods SelectedLoods;
     public List<Boatlane> Boatlanes;
     public int Score = 0;
     public Text Scorebord;
     public World ParentWorld;
-    /**
-     * Constructor for objects of class HavenmeesterWorld.
-     * 
-     */
     public HavenmeesterWorld(World parentWorld, int gameHeight, int gameWidth)
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
@@ -35,6 +30,7 @@ public class HavenmeesterWorld extends World
         
         Scorebord = new Text();
         addObject(Scorebord, 1200,50);
+        addObject(new ButtonPause(), 100, 100);
     }
     
     public void RemoveBoat(Boat boat)

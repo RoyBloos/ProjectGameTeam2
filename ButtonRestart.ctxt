@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=ButtonRestart
+comment1.params=toWorld
+comment1.target=ButtonRestart(greenfoot.World)
+comment2.params=
+comment2.target=void\ act()
+numComments=3
