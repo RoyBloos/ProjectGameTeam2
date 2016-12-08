@@ -93,10 +93,23 @@ public class HavenmeesterWorld extends World
     private void CreateBoatSpawns()
     {
         boatSpawns = new ArrayList<BoatSpawn>();
-        CreateBoatSpawn(boatSpawns, 5, 10 * 1000, 3000, 5000);
-        CreateBoatSpawn(boatSpawns, 6, 30 * 1000, 5000, 10000);
-        CreateBoatSpawn(boatSpawns, 3, 90 * 1000, 3000, 4000);
-        CreateBoatSpawn(boatSpawns, 5, 120 * 1000, 3000, 4800);
+        int levelDifficulty = 1;
+        int totalBoatSpawns = 1;
+        while (levelDifficulty <= 15)
+        {
+            int numberOfBoats = getRandomNumber(levelDifficulty, (levelDifficulty + 3));
+            totalBoatSpawns += numberOfBoats;
+            int spawnTime = totalBoatSpawns * 5000; //(int) (Math.pow(2, (levelDifficulty - 1))) * 3500;
+            int spawnIntervalMin = getRandomNumber(3000, 5000);
+            int spawnIntervanMax = getRandomNumber(5000, 7000);
+            CreateBoatSpawn(boatSpawns, numberOfBoats, spawnTime, spawnIntervalMin, spawnIntervanMax);
+            levelDifficulty += 1;
+        }
+        //CreateBoatSpawn(boatSpawns, 5, 10 * 1000, 3000, 5000);
+        //CreateBoatSpawn(boatSpawns, 6, 30 * 1000, 5000, 10000);
+        //CreateBoatSpawn(boatSpawns, 3, 90 * 1000, 3000, 4000);
+        //CreateBoatSpawn(boatSpawns, 5, 120 * 1000, 3000, 4800);
+        //CreateBoatSpawn(boatSpawns, 8, 120 * 1000, 3000, 4800);
     }
     
     private void CreateBoatSpawn(ArrayList<BoatSpawn> boatSpawns, int numberOfBoats, int spawntime, int spawnIntervalMin, int spawnIntervalMax)
@@ -207,6 +220,12 @@ public class HavenmeesterWorld extends World
     
     public int randInt(int min, int max) {
         return rand.nextInt((max - min) + 1) + min;
+    }
+    
+    public int getRandomNumber(int start, int end)
+    {
+        int normal = Greenfoot.getRandomNumber(end - start + 1);
+        return normal + start;
     }
 }
 
