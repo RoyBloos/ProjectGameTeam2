@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import java.util.ArrayList;
 /**
  * Write a description of class BoatMg2 here.
  * 
@@ -11,6 +11,7 @@ public class BoatMg2 extends Actor
     public boolean IsCpuBoat = false;
     public boolean IsDocked = false;
     public boolean HasCargo = true;
+    private ArrayList<ContainerMG2> containers;
     
     public BoatMg2(boolean isCpuBoat)
     {
@@ -55,5 +56,11 @@ public class BoatMg2 extends Actor
         }
     
         return angle;
+    }
+    
+    protected void addedToWorld(World world)
+    {
+        containers = new ArrayList<ContainerMG2>();
+        containers.add(new ContainerMG2(getX(), getY(), this));
     }
 }

@@ -9,4 +9,6 @@ comment3.params=
 comment3.target=void\ moveBoat()
 comment4.params=targetX\ targetY
 comment4.target=int\ getAngle(int,\ int)
-numComments=5
+comment5.params=world
+comment5.target=void\ addedToWorld(greenfoot.World)
+numComments=6
