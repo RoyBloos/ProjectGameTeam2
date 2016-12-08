@@ -9,14 +9,24 @@ import java.util.List;
  */
 public class WorldMinigame2 extends World
 {
+    public Kraan KraanSpeler;
+    public KraanGrijper KraanGrijperSpeler;
+    
     public WorldMinigame2(World parentWorld, int gameHeight, int gameWidth)
     {    
         super(gameHeight, gameWidth, 1); 
+        spawnBoats();
+        KraanSpeler = new Kraan();
+        KraanGrijperSpeler = new KraanGrijper(KraanSpeler);
+        KraanSpeler.Grijper = KraanGrijperSpeler;
+        
+        addObject(KraanGrijperSpeler, 1100, 300);
+        addObject(KraanSpeler,900,300);
     }
     
     public void act()
     {
-        spawnBoats();
+        
     }
     
     private void spawnBoats()

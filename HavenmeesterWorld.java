@@ -105,11 +105,6 @@ public class HavenmeesterWorld extends World
             CreateBoatSpawn(boatSpawns, numberOfBoats, spawnTime, spawnIntervalMin, spawnIntervanMax);
             levelDifficulty += 1;
         }
-        //CreateBoatSpawn(boatSpawns, 5, 10 * 1000, 3000, 5000);
-        //CreateBoatSpawn(boatSpawns, 6, 30 * 1000, 5000, 10000);
-        //CreateBoatSpawn(boatSpawns, 3, 90 * 1000, 3000, 4000);
-        //CreateBoatSpawn(boatSpawns, 5, 120 * 1000, 3000, 4800);
-        //CreateBoatSpawn(boatSpawns, 8, 120 * 1000, 3000, 4800);
     }
     
     private void CreateBoatSpawn(ArrayList<BoatSpawn> boatSpawns, int numberOfBoats, int spawntime, int spawnIntervalMin, int spawnIntervalMax)
