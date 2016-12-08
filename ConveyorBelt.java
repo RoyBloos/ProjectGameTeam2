@@ -8,12 +8,11 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class ConveyorBelt extends ActorsMinigame3
 {
-    /**
-     * Act - do whatever the ConveyorBelt wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+    String[] imageNames = { "ConveyorBelt1.png", "ConveyorBelt2.png", "ConveyorBelt3.png" };
+    int imageNum;
     public void act() 
     {
-        // Add your action code here.
+        imageNum = (imageNum + 1) % imageNames.length;
+        setImage(imageNames[imageNum]);
     }    
 }
