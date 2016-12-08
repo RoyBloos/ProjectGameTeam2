@@ -162,6 +162,19 @@ editor.fx.0.y=0
 dependency36.type=UsesDependency
 editor.fx.0.x=0
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+dependency11.to=Boatlane
+target6.height=50
+editor.fx.0.width=700
+class.LoodsGebouw.superclass=greenfoot.Actor
+dependency32.to=HavenStoplicht
+dependency5.type=UsesDependency
+dependency2.from=HavenmeesterWorld
+target17.width=100
+dependency9.from=Haven
+=======
+>>>>>>> refs/remotes/RoyBloos/master
 editor.fx.0.y=0
 editor.swing.0.height=1056
 editor.swing.0.width=1936
@@ -187,6 +200,7 @@ target1.typeParameters=
 target1.width=90
 target1.x=130
 target1.y=250
+<<<<<<< HEAD
 =======
 dependency11.to=Boatlane
 target6.height=50
@@ -197,6 +211,9 @@ dependency5.type=UsesDependency
 dependency2.from=HavenmeesterWorld
 target17.width=100
 dependency9.from=Haven
+>>>>>>> refs/remotes/RoyBloos/master
+=======
+>>>>>>> refs/remotes/origin/pr/6
 >>>>>>> refs/remotes/RoyBloos/master
 target10.height=50
 dependency28.to=BoatSpawn
