@@ -1,5 +1,5 @@
 #Greenfoot properties
-#Fri Dec 09 00:18:01 CET 2016
+#Fri Dec 09 00:22:58 CET 2016
 target16.name=HavenStoplicht
 dependency35.to=HavenmeesterWorld
 editor.swing.0.y=0
@@ -7,6 +7,7 @@ editor.swing.0.x=0
 target2.name=ButtonSelectMinigame
 class.Text.superclass=greenfoot.Actor
 target9.name=GameNavigationButton
+class.TrashPit.image=TrashPit.png
 class.ContainerMG2.image=MG2ContainerGrijs.png
 dependency11.type=UsesDependency
 class.HavenStoplicht.image=StoplichtKleinRood.png
@@ -16,6 +17,7 @@ target21.showInterface=false
 target19.width=120
 dependency8.to=Haven
 target14.type=ClassTarget
+simulation.speed=51
 dependency25.type=UsesDependency
 dependency22.from=WorldMainMenu
 target15.width=80
@@ -328,6 +330,7 @@ target13.showInterface=false
 target4.showInterface=false
 class.HavenmeesterWorld.image=HavenmeesterBackground.jpg
 class.KraanGrijper.image=beeper.png
+class.TrashPit.superclass=ActorsMinigame3
 target15.type=ClassTarget
 dependency26.type=UsesDependency
 dependency23.from=WorldMainMenu
