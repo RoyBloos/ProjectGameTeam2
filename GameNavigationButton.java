@@ -58,7 +58,7 @@ public class GameNavigationButton extends Actor
         {
             if(!((HavenmeesterWorld)parentWorld).IsPaused)
             {
-                ((HavenmeesterWorld)parentWorld).PauseWorld();
+                ((HavenmeesterWorld)parentWorld).PauseWorld(false);
             }
         }
     }

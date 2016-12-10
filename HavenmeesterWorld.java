@@ -15,6 +15,7 @@ public class HavenmeesterWorld extends World
     private int counter = 1;
     private Random rand;
     private ArrayList<BoatSpawn> boatSpawns;
+    private ArrayList<Leven> levens;
     private int nextLevelIndex;
     private long createdMillis = System.currentTimeMillis();
     private long pausedMillis;
@@ -50,15 +51,29 @@ public class HavenmeesterWorld extends World
         
         addObject(new GameNavigationButton(this, "Pause"), 50,50);
         
+        levens = new ArrayList<Leven>();
+        levens.add(new Leven());
+        levens.add(new Leven());
+        levens.add(new Leven());
+        int xPositieLeven = 1247;
+        for(Leven l : levens)
+        {
+            addObject(l, xPositieLeven, 80);
+            xPositieLeven -= 60;
+        }
+        
         CreateBoatSpawns();
     }
     
-    public void PauseWorld()
+    public void PauseWorld(boolean isGameOver)
     {
         pausedMillis =  System.currentTimeMillis();
         this.IsPaused = true;
         addObject(new PauseScreen(), 640, 384);
-        addObject(new GameNavigationButton(this, "Resume"), 500, 560);
+        if(!isGameOver)
+        {
+            addObject(new GameNavigationButton(this, "Resume"), 500, 560);
+        }
         addObject(new GameNavigationButton(this, "Restart"), 600, 560);
         addObject(new GameNavigationButton(this, "Stop"), 700, 560);
         addObject(new OpenLinkButton("https://www.youtube.com/watch?v=PBQSC-e9tWY&feature=youtu.be", "PlayLoodsIntroductie.png"), 850, 560);
@@ -200,6 +215,15 @@ public class HavenmeesterWorld extends World
     public void RemoveBoat(Boat boat)
     {
         removeObject(boat);
+        if(boat.AantalContainers > 0)
+        {
+            removeObject(levens.remove(0));
+                       
+            if(levens.size() == 0)
+            {
+                PauseWorld(true);
+            }
+        }
     }
     
     private Boatlane GetBoatlane()
