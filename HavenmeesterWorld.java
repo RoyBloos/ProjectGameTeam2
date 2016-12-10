@@ -61,6 +61,7 @@ public class HavenmeesterWorld extends World
         addObject(new GameNavigationButton(this, "Resume"), 500, 560);
         addObject(new GameNavigationButton(this, "Restart"), 600, 560);
         addObject(new GameNavigationButton(this, "Stop"), 700, 560);
+        addObject(new OpenLinkButton("https://www.youtube.com/watch?v=PBQSC-e9tWY&feature=youtu.be", "PlayLoodsIntroductie.png"), 850, 560);
     }
     
     public void ResumeWorld()
@@ -72,7 +73,10 @@ public class HavenmeesterWorld extends World
                 removeObject(button);
             }
         }
-        
+        for(OpenLinkButton button : getObjects(OpenLinkButton.class)){
+            removeObject(button);
+        }
+
         for(PauseScreen pauseScreen : getObjects(PauseScreen.class)){
                 removeObject(pauseScreen);
         }
