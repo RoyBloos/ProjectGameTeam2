@@ -58,9 +58,9 @@ public class HavenmeesterWorld extends World
         pausedMillis =  System.currentTimeMillis();
         this.IsPaused = true;
         addObject(new PauseScreen(), 640, 384);
-        addObject(new GameNavigationButton(this, "Resume"), 400, 640);
-        addObject(new GameNavigationButton(this, "Restart"), 500, 640);
-        addObject(new GameNavigationButton(this, "Stop"), 600, 640);
+        addObject(new GameNavigationButton(this, "Resume"), 500, 560);
+        addObject(new GameNavigationButton(this, "Restart"), 600, 560);
+        addObject(new GameNavigationButton(this, "Stop"), 700, 560);
     }
     
     public void ResumeWorld()
