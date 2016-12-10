@@ -59,6 +59,7 @@ public class HavenmeesterWorld extends World
         for(Leven l : levens)
         {
             addObject(l, xPositieLeven, 80);
+            l.setRotation(345);
             xPositieLeven -= 60;
         }
         
