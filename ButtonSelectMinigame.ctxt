@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=ButtonSelectMinigame
-comment1.params=world\ imageName
-comment1.target=ButtonSelectMinigame(greenfoot.World,\ java.lang.String)
+comment1.params=worldMainMenu\ gameName\ imageName
+comment1.target=ButtonSelectMinigame(WorldMainMenu,\ java.lang.String,\ java.lang.String)
 comment2.params=
 comment2.target=void\ act()
 numComments=3

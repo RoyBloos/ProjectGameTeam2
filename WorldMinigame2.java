@@ -11,6 +11,7 @@ public class WorldMinigame2 extends World
 {
     public Kraan KraanSpeler;
     public KraanGrijper KraanGrijperSpeler;
+    public int ScoreToReach = 1;
     
     public WorldMinigame2(World parentWorld, int gameHeight, int gameWidth)
     {    

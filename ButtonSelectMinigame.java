@@ -1,18 +1,19 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class ButtonSelectMinigame extends Actor
 {
-    public World World;
-
-    public ButtonSelectMinigame(World world, String imageName )
+    public String GameName;
+    private WorldMainMenu worldMainMenu;
+    public ButtonSelectMinigame(WorldMainMenu worldMainMenu, String gameName, String imageName )
     {
-        this.World = world;
+        this.worldMainMenu = worldMainMenu;
+        GameName = gameName;
         setImage(imageName);
     }    
     public void act() 
     {
         if (Greenfoot.mouseClicked(this))
         {
-            Greenfoot.setWorld(World);
+            worldMainMenu.StartNewGame(GameName);
         }
     }
 }

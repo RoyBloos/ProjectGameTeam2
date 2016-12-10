@@ -9,18 +9,30 @@ import java.awt.Color;
  */
 public class Text extends Actor
 {
-    public Text()
+    public Color TextColor;
+    public Integer FontSize;
+    public Text(Color textColor, int fontSize)
     {
-        setImage(new GreenfootImage("0", 25, Color.BLACK, Color.WHITE));
+        this.TextColor = textColor;
+        this.FontSize = fontSize;
+        SetText("0", TextColor, FontSize);
     }
     
-    public void SetText(String text)
+    public void SetText(String text, Color textColor, Integer fontSize)
     {
-        setImage(new GreenfootImage(text, 25, Color.BLACK, Color.WHITE));
+        if (textColor != null)
+        {
+            TextColor = textColor;
+        }
+        
+        if(fontSize != null)
+        {
+            FontSize = fontSize;
+        }
+        
+        GreenfootImage txtImg = new GreenfootImage(text, FontSize, TextColor, null);
+        GreenfootImage image = new GreenfootImage(200, txtImg.getHeight());
+        image.drawImage(txtImg, 0, 0);
+        setImage(image);
     }
-    
-    public void act() 
-    {
-        // Add your action code here.
-    }    
 }
