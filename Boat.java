@@ -59,9 +59,19 @@ public class Boat extends Actor
     
     public void UnloadContainers(int containers)
     {
+        if(AantalContainers > containers)
+        {
+            HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
+            if(containers <= AantalContainers)
+            {
+                world.AddPoints(containers);
+            } else
+            {
+                world.AddPoints(AantalContainers);
+            }
+        }
         AantalContainers = AantalContainers - containers;
-        HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
-        world.AddPoints(containers);
+
         if(AantalContainers <= 0)
         {
             AantalContainers = 0;

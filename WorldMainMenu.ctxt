@@ -2,4 +2,12 @@
 comment0.target=WorldMainMenu
 comment1.params=
 comment1.target=WorldMainMenu()
-numComments=2
+comment2.params=gameName\ score
+comment2.target=void\ SetScore(java.lang.String,\ int)
+comment3.params=
+comment3.target=void\ CreateMinigames()
+comment4.params=
+comment4.target=void\ CreateMenuButtons()
+comment5.params=gameName
+comment5.target=void\ StartNewGame(java.lang.String)
+numComments=6

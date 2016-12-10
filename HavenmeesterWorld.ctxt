@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=HavenmeesterWorld
 comment1.params=parentWorld\ gameHeight\ gameWidth
-comment1.target=HavenmeesterWorld(greenfoot.World,\ int,\ int)
+comment1.target=HavenmeesterWorld(WorldMainMenu,\ int,\ int)
 comment10.params=boat
 comment10.target=void\ addBoatToWorld(Boat)
 comment11.params=points

@@ -3,15 +3,15 @@ import java.util.List;
 import java.lang.Math;
 import java.util.Random;
 import java.util.ArrayList;
+import java.awt.Color;
 
 public class HavenmeesterWorld extends World
 {
-
     public Loods SelectedLoods;
     public List<Boatlane> Boatlanes;
     public int Score = 0;
     public Text Scorebord;
-    public World ParentWorld;
+    public WorldMainMenu ParentWorld;
     private int counter = 1;
     private Random rand;
     private ArrayList<BoatSpawn> boatSpawns;
@@ -20,8 +20,9 @@ public class HavenmeesterWorld extends World
     private long pausedMillis;
     public boolean IsPaused;
     private boolean areActorsPaused;
+    public int ScoreToReach = 1000;
     
-    public HavenmeesterWorld(World parentWorld, int gameHeight, int gameWidth)
+    public HavenmeesterWorld(WorldMainMenu parentWorld, int gameHeight, int gameWidth)
     {    
         super(gameHeight, gameWidth, 1); 
         this.ParentWorld = parentWorld;
@@ -44,7 +45,7 @@ public class HavenmeesterWorld extends World
         addObject(new LoodsGebouw(loods1),100,340);
         addObject(new LoodsGebouw(loods2),1180,340);
         
-        Scorebord = new Text();
+        Scorebord = new Text(Color.RED, 25);
         addObject(Scorebord, 1200,50);
         
         addObject(new GameNavigationButton(this, "Pause"), 50,50);
@@ -82,7 +83,7 @@ public class HavenmeesterWorld extends World
     
     public void RestartWorld()
     {
-        Greenfoot.setWorld(new HavenmeesterWorld(ParentWorld, getWidth(), getHeight()));
+        ParentWorld.StartNewGame("Havenmeester");
     }
     
     public void StopWorld()
@@ -183,7 +184,13 @@ public class HavenmeesterWorld extends World
     public void AddPoints(int points)
     {
         Score += points;
-        Scorebord.SetText(Integer.toString(Score) + " / 2000");
+        Color textColor = Color.RED;
+        if(Score >= ScoreToReach)
+        {
+            textColor = Color.GREEN;
+        }
+        Scorebord.SetText(Integer.toString(Score) + " / " + Integer.toString(ScoreToReach), textColor, null);
+        ParentWorld.SetScore("Havenmeester", Score);
     }
     
     public void RemoveBoat(Boat boat)
