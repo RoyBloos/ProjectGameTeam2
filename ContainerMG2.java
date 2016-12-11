@@ -9,10 +9,12 @@ public class ContainerMG2 extends Actor
     private int yOffset;
     public Boolean IsAddedToWorld;
     public BoatMg2 Boat;
+    public KraanGrijper Grijper;
     private Random rand;
     private String color;
+    public int Laag;
     
-    public ContainerMG2(int xOffset, int yOffset, BoatMg2 boat)
+    public ContainerMG2(int xOffset, int yOffset, BoatMg2 boat, int laag)
     {
         IsAddedToWorld = false;
         this.xOffset = xOffset;
@@ -22,6 +24,7 @@ public class ContainerMG2 extends Actor
         YPositie = Boat.getY() + yOffset;
         rand = new Random();
         int number = randInt(1,3);
+        Laag = laag;
         if(number == 1)
         {
             color = "Blauw";
@@ -35,11 +38,30 @@ public class ContainerMG2 extends Actor
         setImage("MG2Container" + color + ".png");
     }
     
+    public void SetOffsets(BoatMg2 boat)
+    {
+        int boatX = boat.getX();
+        int containerX = getX();
+        xOffset = -(boatX - containerX);
+        int boatY = boat.getY();
+        int containerY = getY();
+        yOffset = -(boatY - containerY);
+    }
+    
     public void SetLocation()
     {
-        XPositie = Boat.getX() + xOffset;
-        YPositie = Boat.getY() + yOffset;
+        if(Boat != null)
+        {
+            XPositie = Boat.getX() + xOffset;
+            YPositie = Boat.getY() + yOffset;
+        }
         
+        if(Grijper != null)
+        {
+            XPositie = Grijper.getX();
+            YPositie = Grijper.getY();
+        }
+        setLocation(XPositie,YPositie);
         if (!IsAddedToWorld && YPositie <= 768)
         {
             Boat.ParentWorld.addObject(this, XPositie, YPositie);
@@ -47,9 +69,15 @@ public class ContainerMG2 extends Actor
         }
     }
     
+    public void SetScale(int pixels)
+    {
+        GreenfootImage image = getImage();
+        image.scale(image.getWidth() + pixels, image.getHeight() + pixels);
+    }
+    
     public void act() 
     {
-        setLocation(XPositie,YPositie);
+        SetLocation();
     }
     
     public int randInt(int min, int max) {

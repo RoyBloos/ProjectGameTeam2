@@ -1,11 +1,15 @@
 #BlueJ class context
 comment0.target=ContainerMG2
-comment1.params=xOffset\ yOffset\ boat
-comment1.target=ContainerMG2(int,\ int,\ BoatMg2)
-comment2.params=
-comment2.target=void\ SetLocation()
+comment1.params=xOffset\ yOffset\ boat\ laag
+comment1.target=ContainerMG2(int,\ int,\ BoatMg2,\ int)
+comment2.params=boat
+comment2.target=void\ SetOffsets(BoatMg2)
 comment3.params=
-comment3.target=void\ act()
-comment4.params=min\ max
-comment4.target=int\ randInt(int,\ int)
-numComments=5
+comment3.target=void\ SetLocation()
+comment4.params=pixels
+comment4.target=void\ SetScale(int)
+comment5.params=
+comment5.target=void\ act()
+comment6.params=min\ max
+comment6.target=int\ randInt(int,\ int)
+numComments=7

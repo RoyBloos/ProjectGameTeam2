@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
+import java.awt.Color;
 /**
  * Write a description of class BoatMg2 here.
  * 
@@ -35,6 +36,13 @@ public class BoatMg2 extends Actor
         }
     }
     
+    public boolean IsCloseEnough(int x, int y)
+    {
+        int xInRange = (getX() - x );
+        int yInRange = (getY() - y );
+        return xInRange >= -6 && xInRange <= 52 && yInRange >= -81 && yInRange <= 122;
+    }    
+    
     private void moveBoat()
     {
         if (HasCargo)
@@ -69,28 +77,38 @@ public class BoatMg2 extends Actor
     
     protected void addedToWorld(World world)
     {
-        containers.add(new ContainerMG2(0, 80, this));
-        containers.add(new ContainerMG2(-25, 80, this));
-        containers.add(new ContainerMG2(-50, 80, this));
+        containers.add(new ContainerMG2(0, 80, this, 1));
+        containers.add(new ContainerMG2(-25, 80, this, 1));
+        containers.add(new ContainerMG2(-50, 80, this, 1));
         
-        containers.add(new ContainerMG2(0, 40, this));
-        containers.add(new ContainerMG2(-25, 40, this));
-        containers.add(new ContainerMG2(-50, 40, this));
+        containers.add(new ContainerMG2(0, 40, this, 1));
+        containers.add(new ContainerMG2(-25, 40, this, 1));
+        containers.add(new ContainerMG2(-50, 40, this, 1));
         
-        containers.add(new ContainerMG2(0, 0, this));
-        containers.add(new ContainerMG2(-25, 0, this));
-        containers.add(new ContainerMG2(-50, 0, this));
+        containers.add(new ContainerMG2(0, 0, this, 1));
+        containers.add(new ContainerMG2(-25, 0, this, 1));
+        containers.add(new ContainerMG2(-50, 0, this, 1));
         
-        containers.add(new ContainerMG2(0, -40, this));
-        containers.add(new ContainerMG2(-25, -40, this));
-        containers.add(new ContainerMG2(-50, -40, this));
+        containers.add(new ContainerMG2(0, -40, this, 1));
+        containers.add(new ContainerMG2(-25, -40, this, 1));
+        containers.add(new ContainerMG2(-50, -40, this, 1));
         
-        containers.add(new ContainerMG2(0, -80, this));
-        containers.add(new ContainerMG2(-25, -80, this));
-        containers.add(new ContainerMG2(-50, -80, this));
+        containers.add(new ContainerMG2(0, -80, this, 1));
+        containers.add(new ContainerMG2(-25, -80, this, 1));
+        containers.add(new ContainerMG2(-50, -80, this, 1));
         
-        containers.add(new ContainerMG2(0, -120, this));
-        containers.add(new ContainerMG2(-25, -120, this));
-        containers.add(new ContainerMG2(-50, -120, this));
+        containers.add(new ContainerMG2(0, -120, this, 1));
+        containers.add(new ContainerMG2(-25, -120, this, 1));
+        containers.add(new ContainerMG2(-50, -120, this, 1));
+    }
+    
+    public void RemoveContainer(ContainerMG2 container)
+    {
+        containers.remove(containers.indexOf(container));
+    }
+    
+    public void AddContainer(ContainerMG2 container)
+    {
+        containers.add(container);
     }
 }

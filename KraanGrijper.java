@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.List;
 
 /**
  * Write a description of class KraanGrijper here.
@@ -9,9 +10,12 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class KraanGrijper extends Actor
 {
     public Kraan Kraan;
-    public KraanGrijper(Kraan kraan)
+    public ContainerMG2 HuidigeContainer = null;
+    public BoatMg2 Boat;
+    public KraanGrijper(Kraan kraan, BoatMg2 boat)
     {
         this.Kraan = kraan;
+        this.Boat = boat;
     }
     /**
      * Act - do whatever the KraanGrijper wants to do. This method is called whenever
@@ -26,11 +30,72 @@ public class KraanGrijper extends Actor
         } else if(Greenfoot.isKeyDown("d"))           
         {
             setLocation(getX() + 1, getY());
+        }else if(Greenfoot.isKeyDown("q") && HuidigeContainer == null)           
+        {
+            GrijpContainer();
+        } else if(Greenfoot.isKeyDown("e") && HuidigeContainer != null)
+        {
+            for(BoatMg2 boat : getIntersectingObjects(BoatMg2.class))
+            {
+                if(!boat.IsCpuBoat && boat.IsCloseEnough(getX(),getY()))
+                {
+                    DropContainerOnBoat(boat);
+                }
+            }
         }
     } 
     
     public void MatchYWithCrane()
     {
         setLocation(getX(), Kraan.getY());
+    }
+    
+    private void DropContainerOnBoat(BoatMg2 boat)
+    {
+        List<ContainerMG2> containers = getObjectsInRange(20, ContainerMG2.class);
+        int index = containers.indexOf(HuidigeContainer);
+        if(containers.size() > index)
+        {
+            containers.remove(index);
+        }
+        
+        if(containers.size() == 0)
+        {
+            HuidigeContainer.Boat = boat;
+            HuidigeContainer.SetScale(-15);
+            HuidigeContainer.Grijper = null;
+            HuidigeContainer.SetOffsets(boat);
+            Boat.AddContainer(HuidigeContainer);
+            HuidigeContainer = null;
+        }
+    }
+    
+    private void GrijpContainer()
+    {
+        int bovensteContainer = 0;
+        List<ContainerMG2> containers = getObjectsInRange(10, ContainerMG2.class);
+        
+        for(ContainerMG2 container : containers)
+        {
+            if(container.Laag > bovensteContainer)
+            {
+                bovensteContainer = container.Laag;
+            }
+        }
+        
+        if(bovensteContainer > 0)
+        {
+            for(ContainerMG2 container : containers)
+            {
+                if(container.Laag == bovensteContainer)
+                {
+                    HuidigeContainer = container;
+                    Boat.RemoveContainer(container);
+                    HuidigeContainer.Boat = null;
+                    HuidigeContainer.Grijper = this;
+                    HuidigeContainer.SetScale(15);
+                }
+            }
+        }
     }
 }

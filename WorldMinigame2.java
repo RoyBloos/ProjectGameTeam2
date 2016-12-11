@@ -12,13 +12,15 @@ public class WorldMinigame2 extends World
     public Kraan KraanSpeler;
     public KraanGrijper KraanGrijperSpeler;
     public int ScoreToReach = 1;
+    public BoatMg2 PlayerBoat = null;
+    public BoatMg2 CPUBoat = null;
     
     public WorldMinigame2(World parentWorld, int gameHeight, int gameWidth)
     {    
         super(gameHeight, gameWidth, 1); 
         spawnBoats();
         KraanSpeler = new Kraan();
-        KraanGrijperSpeler = new KraanGrijper(KraanSpeler);
+        KraanGrijperSpeler = new KraanGrijper(KraanSpeler, PlayerBoat);
         KraanSpeler.Grijper = KraanGrijperSpeler;
         
         addObject(KraanGrijperSpeler, 1100, 300);
@@ -49,12 +51,14 @@ public class WorldMinigame2 extends World
         
         if (!hasCpuBoat)
         {
-            addObject(new BoatMg2(this, true), 560, getWidth());
+            CPUBoat = new BoatMg2(this, true);
+            addObject(CPUBoat, 560, getWidth());
         }
         
         if (!hasPlayerBoat)
         {
-            addObject(new BoatMg2(this, false), 760, getWidth());
+            PlayerBoat = new BoatMg2(this, false);
+            addObject(PlayerBoat, 760, getWidth());
         }
     }
 }
