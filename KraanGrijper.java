@@ -42,6 +42,14 @@ public class KraanGrijper extends Actor
                     DropContainerOnBoat(boat);
                 }
             }
+            
+            for(TruckMg2 truck : getObjectsInRange(20, TruckMg2.class))
+            {
+                if(truck.IsCloseEnough(getX(),getY()) && truck.Color == HuidigeContainer.Color)
+                {
+                    DropContainerOnTruck(truck);
+                }
+            }
         }
     } 
     
@@ -70,6 +78,26 @@ public class KraanGrijper extends Actor
             HuidigeContainer.SetScale(-15);
             HuidigeContainer.Grijper = null;
             HuidigeContainer.SetOffsets(boat);
+            Boat.AddContainer(HuidigeContainer);
+            HuidigeContainer = null;
+        }
+    }
+    
+     private void DropContainerOnTruck(TruckMg2 truck)
+    {
+        List<ContainerMG2> containers = getObjectsInRange(0, ContainerMG2.class);
+        int index = containers.indexOf(HuidigeContainer);
+        if(containers.size() > index)
+        {
+            containers.remove(index);
+        }
+        
+        if(containers.size() == 0)
+        {
+            HuidigeContainer.Truck = truck;
+            HuidigeContainer.SetScale(-20);
+            HuidigeContainer.Grijper = null;
+            HuidigeContainer.SetOffsets(truck);
             Boat.AddContainer(HuidigeContainer);
             HuidigeContainer = null;
         }

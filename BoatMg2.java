@@ -40,7 +40,7 @@ public class BoatMg2 extends Actor
     {
         int xInRange = (getX() - x );
         int yInRange = (getY() - y );
-        return xInRange >= -6 && xInRange <= 52 && yInRange >= -81 && yInRange <= 122;
+        return xInRange >= -6 && xInRange <= 52 && yInRange >= -81 && yInRange <= 130;
     }    
     
     private void moveBoat()

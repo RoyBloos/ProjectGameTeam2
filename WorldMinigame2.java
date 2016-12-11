@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Write a description of class WorldMinigame2 here.
@@ -14,15 +15,18 @@ public class WorldMinigame2 extends World
     public int ScoreToReach = 1;
     public BoatMg2 PlayerBoat = null;
     public BoatMg2 CPUBoat = null;
+    public ArrayList<TruckMg2> PlayerTrucks;
+    public int truckCounter;
     
     public WorldMinigame2(World parentWorld, int gameHeight, int gameWidth)
     {    
         super(gameHeight, gameWidth, 1); 
+        PlayerTrucks = new ArrayList<TruckMg2>();
         spawnBoats();
         KraanSpeler = new Kraan();
         KraanGrijperSpeler = new KraanGrijper(KraanSpeler, PlayerBoat);
         KraanSpeler.Grijper = KraanGrijperSpeler;
-        
+        truckCounter = 0;
         addObject(KraanGrijperSpeler, 1100, 300);
         addObject(KraanSpeler,900,300);
         
@@ -31,7 +35,15 @@ public class WorldMinigame2 extends World
     
     public void act()
     {
-        
+        truckCounter += 1;
+        if(PlayerTrucks.size() < 7 && truckCounter % 150 == 0)
+        {
+            TruckMg2 newTruck = new TruckMg2();
+            addObject(newTruck, 967, 768);
+            PlayerTrucks.add(newTruck);
+            truckCounter = 0;
+        }
+            
     }
     
     private void spawnBoats()

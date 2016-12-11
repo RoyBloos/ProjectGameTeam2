@@ -9,9 +9,10 @@ public class ContainerMG2 extends Actor
     private int yOffset;
     public Boolean IsAddedToWorld;
     public BoatMg2 Boat;
+    public TruckMg2 Truck;
     public KraanGrijper Grijper;
     private Random rand;
-    private String color;
+    public String Color;
     public int Laag;
     
     public ContainerMG2(int xOffset, int yOffset, BoatMg2 boat, int laag)
@@ -27,25 +28,25 @@ public class ContainerMG2 extends Actor
         Laag = laag;
         if(number == 1)
         {
-            color = "Blauw";
+            Color = "Blauw";
         } else if (number == 2)
         {
-            color = "Groen";
+            Color = "Groen";
         } else
         {
-            color = "Grijs";
+            Color = "Grijs";
         }
-        setImage("MG2Container" + color + ".png");
+        setImage("MG2Container" + Color + ".png");
     }
     
-    public void SetOffsets(BoatMg2 boat)
+    public void SetOffsets(Actor actor)
     {
-        int boatX = boat.getX();
+        int actorX = actor.getX();
         int containerX = getX();
-        xOffset = -(boatX - containerX);
-        int boatY = boat.getY();
+        xOffset = -(actorX - containerX);
+        int actorY = actor.getY();
         int containerY = getY();
-        yOffset = -(boatY - containerY);
+        yOffset = -(actorY - containerY);
     }
     
     public void SetLocation()
@@ -54,6 +55,12 @@ public class ContainerMG2 extends Actor
         {
             XPositie = Boat.getX() + xOffset;
             YPositie = Boat.getY() + yOffset;
+        }
+        
+        if(Truck != null)
+        {
+            XPositie = Truck.getX() + xOffset;
+            YPositie = Truck.getY() + yOffset;
         }
         
         if(Grijper != null)

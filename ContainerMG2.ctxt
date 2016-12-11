@@ -2,8 +2,8 @@
 comment0.target=ContainerMG2
 comment1.params=xOffset\ yOffset\ boat\ laag
 comment1.target=ContainerMG2(int,\ int,\ BoatMg2,\ int)
-comment2.params=boat
-comment2.target=void\ SetOffsets(BoatMg2)
+comment2.params=actor
+comment2.target=void\ SetOffsets(greenfoot.Actor)
 comment3.params=
 comment3.target=void\ SetLocation()
 comment4.params=pixels

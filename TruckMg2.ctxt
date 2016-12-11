@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=TruckMg2
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ TruckMg2\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=TruckMg2()
+comment2.params=
+comment2.target=void\ act()
+comment3.params=min\ max
+comment3.target=int\ randInt(int,\ int)
+comment4.params=x\ y
+comment4.target=boolean\ IsCloseEnough(int,\ int)
+numComments=5
