@@ -23,6 +23,8 @@ public class WorldMinigame2 extends World
         
         addObject(KraanGrijperSpeler, 1100, 300);
         addObject(KraanSpeler,900,300);
+        
+        setPaintOrder(Kraan.class, KraanGrijper.class, ContainerMG2.class, BoatMg2.class);
     }
     
     public void act()
@@ -47,12 +49,12 @@ public class WorldMinigame2 extends World
         
         if (!hasCpuBoat)
         {
-            addObject(new BoatMg2(true), 560, getWidth());
+            addObject(new BoatMg2(this, true), 560, getWidth());
         }
         
         if (!hasPlayerBoat)
         {
-            addObject(new BoatMg2(false), 760, getWidth());
+            addObject(new BoatMg2(this, false), 760, getWidth());
         }
     }
 }

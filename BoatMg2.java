@@ -12,10 +12,13 @@ public class BoatMg2 extends Actor
     public boolean IsDocked = false;
     public boolean HasCargo = true;
     private ArrayList<ContainerMG2> containers;
+    public WorldMinigame2 ParentWorld;
     
-    public BoatMg2(boolean isCpuBoat)
+    public BoatMg2(WorldMinigame2 parentWorld, boolean isCpuBoat)
     {
         IsCpuBoat = isCpuBoat;
+        containers = new ArrayList<ContainerMG2>();
+        ParentWorld = parentWorld;
     }
     
     public void act() 
@@ -24,6 +27,11 @@ public class BoatMg2 extends Actor
         {
             // IsDocked = false? dan moet de boot varen
             moveBoat();
+        }
+        
+        for(ContainerMG2 container : containers)
+        {
+            container.SetLocation();
         }
     }
     
@@ -48,7 +56,8 @@ public class BoatMg2 extends Actor
     }
     
     
-     public int getAngle(int targetX, int targetY) {
+     public int getAngle(int targetX, int targetY) 
+     {
         int angle = (int) Math.toDegrees(Math.atan2(targetY - getY(), targetX - getX()));
     
         if(angle < 0){
@@ -60,7 +69,28 @@ public class BoatMg2 extends Actor
     
     protected void addedToWorld(World world)
     {
-        containers = new ArrayList<ContainerMG2>();
-        containers.add(new ContainerMG2(getX(), getY(), this));
+        containers.add(new ContainerMG2(0, 80, this));
+        containers.add(new ContainerMG2(-25, 80, this));
+        containers.add(new ContainerMG2(-50, 80, this));
+        
+        containers.add(new ContainerMG2(0, 40, this));
+        containers.add(new ContainerMG2(-25, 40, this));
+        containers.add(new ContainerMG2(-50, 40, this));
+        
+        containers.add(new ContainerMG2(0, 0, this));
+        containers.add(new ContainerMG2(-25, 0, this));
+        containers.add(new ContainerMG2(-50, 0, this));
+        
+        containers.add(new ContainerMG2(0, -40, this));
+        containers.add(new ContainerMG2(-25, -40, this));
+        containers.add(new ContainerMG2(-50, -40, this));
+        
+        containers.add(new ContainerMG2(0, -80, this));
+        containers.add(new ContainerMG2(-25, -80, this));
+        containers.add(new ContainerMG2(-50, -80, this));
+        
+        containers.add(new ContainerMG2(0, -120, this));
+        containers.add(new ContainerMG2(-25, -120, this));
+        containers.add(new ContainerMG2(-50, -120, this));
     }
 }

@@ -1,8 +1,11 @@
 #BlueJ class context
 comment0.target=ContainerMG2
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ ContainerMG2\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=xPos\ yPos\ boat
+comment1.params=xOffset\ yOffset\ boat
 comment1.target=ContainerMG2(int,\ int,\ BoatMg2)
 comment2.params=
-comment2.target=void\ act()
-numComments=3
+comment2.target=void\ SetLocation()
+comment3.params=
+comment3.target=void\ act()
+comment4.params=min\ max
+comment4.target=int\ randInt(int,\ int)
+numComments=5
