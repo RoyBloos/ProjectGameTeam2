@@ -47,7 +47,12 @@ public class KraanGrijper extends Actor
     
     public void MatchYWithCrane()
     {
-        setLocation(getX(), Kraan.getY());
+        int x = getX();
+        if (x < 665)
+        {
+            x = 665;
+        }
+        setLocation(x, Kraan.getY());
     }
     
     private void DropContainerOnBoat(BoatMg2 boat)
