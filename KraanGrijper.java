@@ -95,7 +95,7 @@ public class KraanGrijper extends Actor
         if(containers.size() == 0)
         {
             HuidigeContainer.Truck = truck;
-            HuidigeContainer.SetScale(-20);
+            HuidigeContainer.SetScale(-15);
             HuidigeContainer.Grijper = null;
             HuidigeContainer.SetOffsets(truck);
             Boat.AddContainer(HuidigeContainer);
