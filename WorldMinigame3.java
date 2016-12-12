@@ -15,5 +15,6 @@ public class WorldMinigame3 extends World
         super(gameHeight, gameWidth, 1); 
         addObject(new ConveyorBelt(), 600, 280);
         addObject(new TrashPit(), 1000, 300);
+        //Sandfer is een lul;
     }
 }
