@@ -1,22 +1,21 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class TrashPit here.
+ * Write a description of class Truck here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class TrashPit extends ActorsMinigame3
+public class TruckMg3 extends Actor
 {
     /**
-     * Act - do whatever the TrashPit wants to do. This method is called whenever
+     * Act - do whatever the Truck wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-     public void act() 
+    public void act() 
     {
         burn();
-            
-    }
+    }    
     
     public void burn()
     {
@@ -26,5 +25,5 @@ public class TrashPit extends ActorsMinigame3
         {
             getWorld().removeObject(removePresent);
         }
-    }      
+    }
 }
