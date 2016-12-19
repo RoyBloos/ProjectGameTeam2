@@ -13,57 +13,34 @@ public class Present extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
           
-    private int speed = 10;
-    public int pickPresent = 0;
+    private int speed = 5;
     private Random rand;
+    public TruckMg3 truck;
+    public TrashPit trashpit;
     
     public Present()
     {
         rand = new Random();
+        setRotation(90);
     }
     
     public void act() 
     {
-        pickPresent();
-        fall();
-        
-       
-              
+        movePresent();
     }
    
-    public void pickPresent()
+    public void movePresent()
     {
-        Actor movePresent = getOneIntersectingObject(TargetMg3.class);
-         
-        pickPresent++;
-        if(movePresent != null)
+        if(truck != null)
         {
-            if (Greenfoot.isKeyDown("right"))
-            {
-                setLocation(1200, 600);
-            }
-            
-            if (Greenfoot.isKeyDown("left"))
-            {
-                setLocation(100, 600);
-            }
-            if (Greenfoot.isKeyDown("d"))
-            {
-                move(5);
-            }
-            if (Greenfoot.isKeyDown("a"))
-            {
-                move(-5);
-            
-            }
+            turnTowards(truck.getX(), truck.getY());
+
+        } else if (trashpit != null)
+        {
+            turnTowards(trashpit.getX(), trashpit.getY());
         }
-    }
-      
-    
-    
-    public void fall()
-    {
-        setLocation ( getX(), getY() + speed);
+        
+        move(speed);
     }
                
 }

@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.List;
 
 /**
  * Write a description of class TargetMg3 here.
@@ -18,4 +19,9 @@ public class TargetMg3 extends Actor
         image.scale(image.getWidth() + 1, image.getHeight() + 10);
         setImage(image);
     }   
+    
+    public List<Present> GeefPresents()
+    {
+         return getIntersectingObjects(Present.class);
+    }
 }
