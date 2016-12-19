@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,13 +44,11 @@ public class KraanGrijper extends Actor
                 }
             }
             
-            for(TruckMg2 truck : getObjectsInRange(20, TruckMg2.class))
+            if(getIntersectingObjects(TruckMg2.class).size() == 1)
             {
-                if(truck.IsCloseEnough(getX(),getY()) && truck.Color == HuidigeContainer.Color)
-                {
-                    DropContainerOnTruck(truck);
-                }
+                DropContainerOnTruck(getIntersectingObjects(TruckMg2.class).get(0));
             }
+            
         }
     } 
     
@@ -74,8 +73,8 @@ public class KraanGrijper extends Actor
         
         if(containers.size() == 0)
         {
+            HuidigeContainer.getImage().scale(25,25);
             HuidigeContainer.Boat = boat;
-            HuidigeContainer.SetScale(-15);
             HuidigeContainer.Grijper = null;
             HuidigeContainer.SetOffsets(boat);
             Boat.AddContainer(HuidigeContainer);
@@ -83,52 +82,42 @@ public class KraanGrijper extends Actor
         }
     }
     
-     private void DropContainerOnTruck(TruckMg2 truck)
+    private void DropContainerOnTruck(TruckMg2 truck)
     {
-        List<ContainerMG2> containers = getObjectsInRange(0, ContainerMG2.class);
-        int index = containers.indexOf(HuidigeContainer);
-        if(containers.size() > index)
+        if(truck.CanStoreContainer(HuidigeContainer))
         {
-            containers.remove(index);
-        }
-        
-        if(containers.size() == 0)
-        {
-            HuidigeContainer.Truck = truck;
-            HuidigeContainer.SetScale(-15);
-            HuidigeContainer.Grijper = null;
-            HuidigeContainer.SetOffsets(truck);
-            Boat.AddContainer(HuidigeContainer);
+            HuidigeContainer.getImage().scale(25,25);
+            truck.AddContainer(HuidigeContainer);
             HuidigeContainer = null;
         }
     }
     
     private void GrijpContainer()
     {
-        int bovensteContainer = 0;
-        List<ContainerMG2> containers = getObjectsInRange(10, ContainerMG2.class);
-        
-        for(ContainerMG2 container : containers)
+        if(HuidigeContainer == null)
         {
-            if(container.Laag > bovensteContainer)
+            List<TruckMg2> trucks = getIntersectingObjects(TruckMg2.class);
+            if(trucks.size() == 1)
             {
-                bovensteContainer = container.Laag;
-            }
-        }
-        
-        if(bovensteContainer > 0)
-        {
-            for(ContainerMG2 container : containers)
-            {
-                if(container.Laag == bovensteContainer)
+                HuidigeContainer = trucks.get(0).GetContainer();
+                if(HuidigeContainer != null)
                 {
-                    HuidigeContainer = container;
-                    Boat.RemoveContainer(container);
-                    HuidigeContainer.Boat = null;
                     HuidigeContainer.Grijper = this;
-                    HuidigeContainer.SetScale(15);
+                    HuidigeContainer.getImage().scale(35,35);
+                }
+            }
+            
+            List<BoatMg2> boats = getIntersectingObjects(BoatMg2.class);
+            if(boats.size() == 1)
+            {
+                HuidigeContainer = boats.get(0).GetContainer(getX(), getY());
+                if(HuidigeContainer != null)
+                {
+                    HuidigeContainer.Grijper = this;
+                    HuidigeContainer.getImage().scale(35,35);
                 }
             }
         }
+        
     }
 }

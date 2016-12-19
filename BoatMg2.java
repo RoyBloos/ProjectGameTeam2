@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.Color;
 /**
  * Write a description of class BoatMg2 here.
@@ -81,25 +82,33 @@ public class BoatMg2 extends Actor
         containers.add(new ContainerMG2(-25, 80, this, 1));
         containers.add(new ContainerMG2(-50, 80, this, 1));
         
-        containers.add(new ContainerMG2(0, 40, this, 1));
-        containers.add(new ContainerMG2(-25, 40, this, 1));
-        containers.add(new ContainerMG2(-50, 40, this, 1));
+        containers.add(new ContainerMG2(0, 50, this, 1));
+        containers.add(new ContainerMG2(-25, 50, this, 1));
+        containers.add(new ContainerMG2(-50, 50, this, 1));
         
-        containers.add(new ContainerMG2(0, 0, this, 1));
-        containers.add(new ContainerMG2(-25, 0, this, 1));
-        containers.add(new ContainerMG2(-50, 0, this, 1));
+        containers.add(new ContainerMG2(0, 20, this, 1));
+        containers.add(new ContainerMG2(-25, 20, this, 1));
+        containers.add(new ContainerMG2(-50, 20, this, 1));
+        
+        containers.add(new ContainerMG2(0, -10, this, 1));
+        containers.add(new ContainerMG2(-25, -10, this, 1));
+        containers.add(new ContainerMG2(-50, -10, this, 1));
         
         containers.add(new ContainerMG2(0, -40, this, 1));
         containers.add(new ContainerMG2(-25, -40, this, 1));
         containers.add(new ContainerMG2(-50, -40, this, 1));
         
-        containers.add(new ContainerMG2(0, -80, this, 1));
-        containers.add(new ContainerMG2(-25, -80, this, 1));
-        containers.add(new ContainerMG2(-50, -80, this, 1));
+        containers.add(new ContainerMG2(0, -70, this, 1));
+        containers.add(new ContainerMG2(-25, -70, this, 1));
+        containers.add(new ContainerMG2(-50, -70, this, 1));
         
-        containers.add(new ContainerMG2(0, -120, this, 1));
-        containers.add(new ContainerMG2(-25, -120, this, 1));
-        containers.add(new ContainerMG2(-50, -120, this, 1));
+        containers.add(new ContainerMG2(0, -100, this, 1));
+        containers.add(new ContainerMG2(-25, -100, this, 1));
+        containers.add(new ContainerMG2(-50, -100, this, 1));
+        
+        containers.add(new ContainerMG2(0, -130, this, 1));
+        containers.add(new ContainerMG2(-25, -130, this, 1));
+        containers.add(new ContainerMG2(-50, -130, this, 1));
     }
     
     public void RemoveContainer(ContainerMG2 container)
@@ -110,5 +119,18 @@ public class BoatMg2 extends Actor
     public void AddContainer(ContainerMG2 container)
     {
         containers.add(container);
+    }
+    
+     public ContainerMG2 GetContainer(int x, int y)
+    {
+        List<ContainerMG2> containers = getObjectsAtOffset(x - getX(), y - getY(), ContainerMG2.class);
+        if(containers.size() > 0)
+        {
+            ContainerMG2 container = containers.get(0);
+            containers.remove(container);
+            container.Boat = null;
+            return container;
+        }
+        return null;
     }
 }

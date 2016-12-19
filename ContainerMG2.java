@@ -14,7 +14,7 @@ public class ContainerMG2 extends Actor
     private Random rand;
     public String Color;
     public int Laag;
-    
+    public int Size;
     public ContainerMG2(int xOffset, int yOffset, BoatMg2 boat, int laag)
     {
         IsAddedToWorld = false;
@@ -26,6 +26,7 @@ public class ContainerMG2 extends Actor
         rand = new Random();
         int number = randInt(1,3);
         Laag = laag;
+        Size = 1;
         if(number == 1)
         {
             Color = "Blauw";
@@ -90,4 +91,6 @@ public class ContainerMG2 extends Actor
     public int randInt(int min, int max) {
         return rand.nextInt((max - min) + 1) + min;
     }
+    
+    
 }
