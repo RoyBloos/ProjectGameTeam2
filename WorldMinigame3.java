@@ -18,7 +18,7 @@ public class WorldMinigame3 extends World
         
         addObject( new Present(), 600, 0);
         
-        addObject(new TargetMg3(), 600, 600);
+        addObject(new TargetMg3(), 688, 493);
         
         presentCounter = 0;
        NewPresents = new ArrayList<Present>();
