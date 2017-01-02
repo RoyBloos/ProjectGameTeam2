@@ -15,6 +15,7 @@ public class BoatMg2 extends Actor
     public boolean HasCargo = true;
     private ArrayList<ContainerMG2> containers;
     public WorldMinigame2 ParentWorld;
+    public boolean IsPaused;
     
     public BoatMg2(WorldMinigame2 parentWorld, boolean isCpuBoat)
     {
@@ -25,15 +26,18 @@ public class BoatMg2 extends Actor
     
     public void act() 
     {
-        if (!IsDocked)
+        if(!IsPaused)
         {
-            // IsDocked = false? dan moet de boot varen
-            moveBoat();
-        }
-        
-        for(ContainerMG2 container : containers)
-        {
-            container.SetLocation();
+            if (!IsDocked)
+            {
+                // IsDocked = false? dan moet de boot varen
+                moveBoat();
+            }
+            
+            for(ContainerMG2 container : containers)
+            {
+                container.SetLocation();
+            }
         }
     }
     

@@ -13,6 +13,8 @@ public class KraanGrijper extends Actor
     public Kraan Kraan;
     public ContainerMG2 HuidigeContainer = null;
     public BoatMg2 Boat;
+    public boolean IsPaused;
+    
     public KraanGrijper(Kraan kraan, BoatMg2 boat)
     {
         this.Kraan = kraan;
@@ -24,31 +26,33 @@ public class KraanGrijper extends Actor
      */
     public void act() 
     {
-        if(Greenfoot.isKeyDown("a"))           
+        if(!IsPaused)
         {
-            setLocation(getX() - 1, getY());
-            
-        } else if(Greenfoot.isKeyDown("d"))           
-        {
-            setLocation(getX() + 1, getY());
-        }else if(Greenfoot.isKeyDown("q") && HuidigeContainer == null)           
-        {
-            GrijpContainer();
-        } else if(Greenfoot.isKeyDown("e") && HuidigeContainer != null)
-        {
-            for(BoatMg2 boat : getIntersectingObjects(BoatMg2.class))
+            if(Greenfoot.isKeyDown("a"))           
             {
-                if(!boat.IsCpuBoat && boat.IsCloseEnough(getX(),getY()))
+                setLocation(getX() - 1, getY());
+                
+            } else if(Greenfoot.isKeyDown("d"))           
+            {
+                setLocation(getX() + 1, getY());
+            }else if(Greenfoot.isKeyDown("q") && HuidigeContainer == null)           
+            {
+                GrijpContainer();
+            } else if(Greenfoot.isKeyDown("e") && HuidigeContainer != null)
+            {
+                for(BoatMg2 boat : getIntersectingObjects(BoatMg2.class))
                 {
-                    DropContainerOnBoat(boat);
+                    if(!boat.IsCpuBoat && boat.IsCloseEnough(getX(),getY()))
+                    {
+                        DropContainerOnBoat(boat);
+                    }
+                }
+                
+                if(getIntersectingObjects(TruckMg2.class).size() == 1)
+                {
+                    DropContainerOnTruck(getIntersectingObjects(TruckMg2.class).get(0));
                 }
             }
-            
-            if(getIntersectingObjects(TruckMg2.class).size() == 1)
-            {
-                DropContainerOnTruck(getIntersectingObjects(TruckMg2.class).get(0));
-            }
-            
         }
     } 
     

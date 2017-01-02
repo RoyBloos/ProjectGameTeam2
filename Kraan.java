@@ -9,19 +9,20 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Kraan extends Actor
 {
     public KraanGrijper Grijper;
-    /**
-     * Act - do whatever the Kraan wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+    public boolean IsPaused;
+    
     public void act() 
     {
-        if(Greenfoot.isKeyDown("w"))           
+        if(!IsPaused)
         {
-            setLocation(getX(), getY() - 1);
-        } else if(Greenfoot.isKeyDown("s"))           
-        {
-            setLocation(getX(), getY() + 1);
+            if(Greenfoot.isKeyDown("w"))           
+            {
+                setLocation(getX(), getY() - 1);
+            } else if(Greenfoot.isKeyDown("s"))           
+            {
+                setLocation(getX(), getY() + 1);
+            }
+           Grijper.MatchYWithCrane();
         }
-       Grijper.MatchYWithCrane();
     }    
 }

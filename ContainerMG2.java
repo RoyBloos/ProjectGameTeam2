@@ -15,6 +15,8 @@ public class ContainerMG2 extends Actor
     public String Color;
     public int Laag;
     public int Size;
+    public boolean IsPaused;
+    
     public ContainerMG2(int xOffset, int yOffset, BoatMg2 boat, int laag)
     {
         IsAddedToWorld = false;
@@ -85,7 +87,10 @@ public class ContainerMG2 extends Actor
     
     public void act() 
     {
-        SetLocation();
+        if(!IsPaused)
+        {
+            SetLocation();
+        }
     }
     
     public int randInt(int min, int max) {
