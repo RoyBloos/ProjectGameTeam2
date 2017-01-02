@@ -14,6 +14,7 @@ public class TruckMg2 extends Actor
     private Random rand;
     public boolean IsLoaded = false;;
     public ArrayList<ContainerMG2> containers;
+    public boolean IsPaused;
     
     public TruckMg2()
     {
@@ -36,22 +37,25 @@ public class TruckMg2 extends Actor
     
     public void act() 
     {
-        if(((!IsLoaded && getY() > 180) || IsLoaded) && getObjectsAtOffset(0, -50, TruckMg2.class).size() == 0)
+        if(!IsPaused)
         {
-            move(1);
-        }
-        
-        if(isAtEdge())
-        {
-            World world = getWorld();
-            for(ContainerMG2 cont : containers)
+            if(((!IsLoaded && getY() > 180) || IsLoaded) && getObjectsAtOffset(0, -50, TruckMg2.class).size() == 0)
             {
-                cont.Boat = null;
-                cont.Truck = null;
-                cont.Grijper = null;
-                world.removeObject(cont);
+                move(1);
             }
-            world.removeObject(this);
+            
+            if(isAtEdge())
+            {
+                World world = getWorld();
+                for(ContainerMG2 cont : containers)
+                {
+                    cont.Boat = null;
+                    cont.Truck = null;
+                    cont.Grijper = null;
+                    world.removeObject(cont);
+                }
+                world.removeObject(this);
+            }
         }
     }  
     

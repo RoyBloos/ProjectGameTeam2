@@ -8,6 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class PauseScreen extends Actor
 {
-
-   
+    public PauseScreen(String imageName){
+        setImage(imageName);
+    }
 }

@@ -70,7 +70,7 @@ public class HavenmeesterWorld extends World
     {
         pausedMillis =  System.currentTimeMillis();
         this.IsPaused = true;
-        addObject(new PauseScreen(), 640, 384);
+        addObject(new PauseScreen("PauseScreenHavenmeester.png"), 640, 384);
         if(!isGameOver)
         {
             addObject(new GameNavigationButton(this, "Resume"), 500, 560);
