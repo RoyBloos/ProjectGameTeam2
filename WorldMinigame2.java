@@ -36,7 +36,7 @@ public class WorldMinigame2 extends World
 
         addObject(new GameNavigationButton(this, "Pause"), 50,50);
 
-        setPaintOrder(GameNavigationButton.class, OpenLinkButton.class, PauseScreen.class, Kraan.class, KraanGrijper.class, ContainerMG2.class, BoatMg2.class);
+        setPaintOrder(GameNavigationButton.class, OpenLinkButton.class, PauseScreen.class, Kraan.class, KraanGrijper.class, ContainerMG2.class, BalanceIndicator.class, BalanceBar.class, BoatMg2.class);
     }
 
     public void act()
@@ -58,6 +58,25 @@ public class WorldMinigame2 extends World
                 SetPauseOnAllActors();
             }
         }
+        
+        if(PlayerBoat != null && PlayerBoat.IsOutOfBalance)
+        {
+            // Player lost
+            if(!IsPaused)
+            {
+                PauseWorld(true);
+            }
+        }
+        
+        if(CPUBoat != null && CPUBoat.IsOutOfBalance)
+        {
+            // CPU lost
+            if(!IsPaused)
+            {
+                PauseWorld(true);
+            }
+        }
+        
     }
 
     private void spawnBoats()

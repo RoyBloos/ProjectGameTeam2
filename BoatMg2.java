@@ -13,14 +13,19 @@ public class BoatMg2 extends Actor
     public boolean IsCpuBoat = false;
     public boolean IsDocked = false;
     public boolean HasCargo = true;
-    private ArrayList<ContainerMG2> containers;
+    public ArrayList<ContainerMG2> Containers;
     public WorldMinigame2 ParentWorld;
     public boolean IsPaused;
+    public int XMiddle = -25;
+    public double MaxWeightOneSide = 15000;
+    public boolean IsOutOfBalance = false;
+    
+    private BalanceBar BalanceBar;
     
     public BoatMg2(WorldMinigame2 parentWorld, boolean isCpuBoat)
     {
         IsCpuBoat = isCpuBoat;
-        containers = new ArrayList<ContainerMG2>();
+        Containers = new ArrayList<ContainerMG2>();
         ParentWorld = parentWorld;
     }
     
@@ -34,12 +39,20 @@ public class BoatMg2 extends Actor
                 moveBoat();
             }
             
-            for(ContainerMG2 container : containers)
+            for(ContainerMG2 container : Containers)
             {
                 container.SetLocation();
             }
+            
+            if(BalanceBar == null && (getY() + 200) <= 768)
+            {
+                BalanceBar = new BalanceBar(this);
+                ParentWorld.addObject(BalanceBar, XMiddle, getY() + 200);
+            }
         }
     }
+    
+   
     
     public boolean IsCloseEnough(int x, int y)
     {
@@ -82,47 +95,24 @@ public class BoatMg2 extends Actor
     
     protected void addedToWorld(World world)
     {
-        containers.add(new ContainerMG2(0, 80, this, 1));
-        containers.add(new ContainerMG2(-25, 80, this, 1));
-        containers.add(new ContainerMG2(-50, 80, this, 1));
-        
-        containers.add(new ContainerMG2(0, 50, this, 1));
-        containers.add(new ContainerMG2(-25, 50, this, 1));
-        containers.add(new ContainerMG2(-50, 50, this, 1));
-        
-        containers.add(new ContainerMG2(0, 20, this, 1));
-        containers.add(new ContainerMG2(-25, 20, this, 1));
-        containers.add(new ContainerMG2(-50, 20, this, 1));
-        
-        containers.add(new ContainerMG2(0, -10, this, 1));
-        containers.add(new ContainerMG2(-25, -10, this, 1));
-        containers.add(new ContainerMG2(-50, -10, this, 1));
-        
-        containers.add(new ContainerMG2(0, -40, this, 1));
-        containers.add(new ContainerMG2(-25, -40, this, 1));
-        containers.add(new ContainerMG2(-50, -40, this, 1));
-        
-        containers.add(new ContainerMG2(0, -70, this, 1));
-        containers.add(new ContainerMG2(-25, -70, this, 1));
-        containers.add(new ContainerMG2(-50, -70, this, 1));
-        
-        containers.add(new ContainerMG2(0, -100, this, 1));
-        containers.add(new ContainerMG2(-25, -100, this, 1));
-        containers.add(new ContainerMG2(-50, -100, this, 1));
-        
-        containers.add(new ContainerMG2(0, -130, this, 1));
-        containers.add(new ContainerMG2(-25, -130, this, 1));
-        containers.add(new ContainerMG2(-50, -130, this, 1));
+        int rows = 8;
+        for(int i = 1; i <= 8; i++)
+        {
+            int y = 80 - ((i-1)*30);
+            Containers.add(new ContainerMG2(25, y , this, 1, 100));
+            Containers.add(new ContainerMG2(0, y, this, 1, 100));
+            Containers.add(new ContainerMG2(-25, y, this, 1, 100));
+        }
     }
     
     public void RemoveContainer(ContainerMG2 container)
     {
-        containers.remove(containers.indexOf(container));
+        Containers.remove(Containers.indexOf(container));
     }
     
     public void AddContainer(ContainerMG2 container)
     {
-        containers.add(container);
+        Containers.add(container);
     }
     
      public ContainerMG2 GetContainer(int x, int y)

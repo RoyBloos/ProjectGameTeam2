@@ -13,22 +13,25 @@ public class ContainerMG2 extends Actor
     public KraanGrijper Grijper;
     private Random rand;
     public String Color;
-    public int Laag;
+    public int Layer;
     public int Size;
     public boolean IsPaused;
-    
-    public ContainerMG2(int xOffset, int yOffset, BoatMg2 boat, int laag)
+    public double BalanceWeight;
+    private double weight;
+    public ContainerMG2(int xOffset, int yOffset, BoatMg2 boat, int layer, int weight)
     {
         IsAddedToWorld = false;
-        this.xOffset = xOffset;
+        this.xOffset = boat.XMiddle + xOffset;
         this.yOffset = yOffset;
         Boat = boat;
         XPositie = Boat.getX() + xOffset;
         YPositie = Boat.getY() + yOffset;
         rand = new Random();
         int number = randInt(1,3);
-        Laag = laag;
+        Layer = layer;
         Size = 1;
+        this.weight = weight;
+
         if(number == 1)
         {
             Color = "Blauw";
@@ -40,6 +43,15 @@ public class ContainerMG2 extends Actor
             Color = "Grijs";
         }
         setImage("MG2Container" + Color + ".png");
+    }
+    
+    public void act() 
+    {
+        if(Boat != null)
+        {
+            BalanceWeight = (getX() - Boat.getX() - Boat.XMiddle) * weight;
+        }
+        SetLocation();
     }
     
     public void SetOffsets(Actor actor)
@@ -85,17 +97,7 @@ public class ContainerMG2 extends Actor
         image.scale(image.getWidth() + pixels, image.getHeight() + pixels);
     }
     
-    public void act() 
-    {
-        if(!IsPaused)
-        {
-            SetLocation();
-        }
-    }
-    
     public int randInt(int min, int max) {
         return rand.nextInt((max - min) + 1) + min;
     }
-    
-    
 }

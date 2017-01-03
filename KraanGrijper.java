@@ -77,7 +77,7 @@ public class KraanGrijper extends Actor
         
         if(containers.size() == 0)
         {
-            HuidigeContainer.getImage().scale(25,25);
+            HuidigeContainer.getImage().scale(23,23);
             HuidigeContainer.Boat = boat;
             HuidigeContainer.Grijper = null;
             HuidigeContainer.SetOffsets(boat);
@@ -90,7 +90,7 @@ public class KraanGrijper extends Actor
     {
         if(truck.CanStoreContainer(HuidigeContainer))
         {
-            HuidigeContainer.getImage().scale(25,25);
+            HuidigeContainer.getImage().scale(23,23);
             truck.AddContainer(HuidigeContainer);
             HuidigeContainer = null;
         }
@@ -107,7 +107,7 @@ public class KraanGrijper extends Actor
                 if(HuidigeContainer != null)
                 {
                     HuidigeContainer.Grijper = this;
-                    HuidigeContainer.getImage().scale(35,35);
+                    HuidigeContainer.getImage().scale(26,26);
                 }
             }
             
@@ -117,8 +117,9 @@ public class KraanGrijper extends Actor
                 HuidigeContainer = boats.get(0).GetContainer(getX(), getY());
                 if(HuidigeContainer != null)
                 {
+                    boats.get(0).RemoveContainer(HuidigeContainer);
                     HuidigeContainer.Grijper = this;
-                    HuidigeContainer.getImage().scale(35,35);
+                    HuidigeContainer.getImage().scale(26,26);
                 }
             }
         }

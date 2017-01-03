@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=BalanceBar
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ BalanceBar\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=boat
+comment1.target=BalanceBar(BoatMg2)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=void\ SetBalance()
+comment4.params=world
+comment4.target=void\ addedToWorld(greenfoot.World)
+numComments=5
