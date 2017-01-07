@@ -1,5 +1,4 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.Random;
 
 public class ContainerMG2 extends Actor
 {
@@ -10,15 +9,15 @@ public class ContainerMG2 extends Actor
     public Boolean IsAddedToWorld;
     public BoatMg2 Boat;
     public TruckMg2 Truck;
-    public KraanGrijper Grijper;
-    private Random rand;
+    public CraneReacher CraneReacher;
     public String Color;
     public int Layer;
     public int Size;
     public boolean IsPaused;
     public double BalanceWeight;
     private double weight;
-    public ContainerMG2(int xOffset, int yOffset, BoatMg2 boat, int layer, int weight)
+    
+    public ContainerMG2(int xOffset, int yOffset, BoatMg2 boat, int layer, int weight, String color)
     {
         IsAddedToWorld = false;
         this.xOffset = boat.XMiddle + xOffset;
@@ -26,22 +25,11 @@ public class ContainerMG2 extends Actor
         Boat = boat;
         XPositie = Boat.getX() + xOffset;
         YPositie = Boat.getY() + yOffset;
-        rand = new Random();
-        int number = randInt(1,3);
         Layer = layer;
         Size = 1;
         this.weight = weight;
-
-        if(number == 1)
-        {
-            Color = "Blauw";
-        } else if (number == 2)
-        {
-            Color = "Groen";
-        } else
-        {
-            Color = "Grijs";
-        }
+        Color = color;
+        
         setImage("MG2Container" + Color + ".png");
     }
     
@@ -78,10 +66,10 @@ public class ContainerMG2 extends Actor
             YPositie = Truck.getY() + yOffset;
         }
         
-        if(Grijper != null)
+        if(CraneReacher != null)
         {
-            XPositie = Grijper.getX();
-            YPositie = Grijper.getY();
+            XPositie = CraneReacher.getX();
+            YPositie = CraneReacher.getY();
         }
         setLocation(XPositie,YPositie);
         if (!IsAddedToWorld && YPositie <= 768)
@@ -95,9 +83,5 @@ public class ContainerMG2 extends Actor
     {
         GreenfootImage image = getImage();
         image.scale(image.getWidth() + pixels, image.getHeight() + pixels);
-    }
-    
-    public int randInt(int min, int max) {
-        return rand.nextInt((max - min) + 1) + min;
     }
 }

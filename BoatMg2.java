@@ -2,12 +2,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Color;
-/**
- * Write a description of class BoatMg2 here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
+import java.util.Random;
+
 public class BoatMg2 extends Actor
 {
     public boolean IsCpuBoat = false;
@@ -19,7 +15,8 @@ public class BoatMg2 extends Actor
     public int XMiddle = -25;
     public double MaxWeightOneSide = 15000;
     public boolean IsOutOfBalance = false;
-    
+    public int Rows = 8;
+    private Random rand;
     private BalanceBar BalanceBar;
     
     public BoatMg2(WorldMinigame2 parentWorld, boolean isCpuBoat)
@@ -27,6 +24,7 @@ public class BoatMg2 extends Actor
         IsCpuBoat = isCpuBoat;
         Containers = new ArrayList<ContainerMG2>();
         ParentWorld = parentWorld;
+        rand = new Random();
     }
     
     public void act() 
@@ -95,19 +93,40 @@ public class BoatMg2 extends Actor
     
     protected void addedToWorld(World world)
     {
-        int rows = 8;
-        for(int i = 1; i <= 8; i++)
+        ArrayList<String> kleuren = new ArrayList<String>();
+        for(int i = 0; i < Rows; i++)
         {
+            kleuren.add("Blauw");
+            kleuren.add("Groen");
+            kleuren.add("Grijs");
+        }
+        
+        
+        for(int i = 1; i <= Rows; i++)
+        {
+            int randomIndex = randInt(0, kleuren.size() - 1);
+            String kleur1 = kleuren.get(randomIndex);
+            kleuren.remove(kleur1);
+            
+            randomIndex = randInt(0, kleuren.size() - 1);
+            String kleur2 = kleuren.get(randomIndex);
+            kleuren.remove(kleur2);
+            
+            randomIndex = randInt(0, kleuren.size() - 1);
+            String kleur3 = kleuren.get(randomIndex);
+            kleuren.remove(kleur3);
+            
             int y = 80 - ((i-1)*30);
-            Containers.add(new ContainerMG2(25, y , this, 1, 100));
-            Containers.add(new ContainerMG2(0, y, this, 1, 100));
-            Containers.add(new ContainerMG2(-25, y, this, 1, 100));
+            Containers.add(new ContainerMG2(25, y , this, 1, 100, kleur1));
+            Containers.add(new ContainerMG2(0, y, this, 1, 100, kleur2));
+            Containers.add(new ContainerMG2(-25, y, this, 1, 100, kleur3));
         }
     }
     
     public void RemoveContainer(ContainerMG2 container)
     {
-        Containers.remove(Containers.indexOf(container));
+        int index = Containers.indexOf(container);
+        Containers.remove(index);
     }
     
     public void AddContainer(ContainerMG2 container)
@@ -115,7 +134,7 @@ public class BoatMg2 extends Actor
         Containers.add(container);
     }
     
-     public ContainerMG2 GetContainer(int x, int y)
+    public ContainerMG2 GetContainer(int x, int y)
     {
         List<ContainerMG2> containers = getObjectsAtOffset(x - getX(), y - getY(), ContainerMG2.class);
         if(containers.size() > 0)
@@ -126,5 +145,27 @@ public class BoatMg2 extends Actor
             return container;
         }
         return null;
+    }
+    
+    public ContainerMG2 GetCpuContainer()
+    {
+        while (Containers != null && Containers.size() > 0 && ParentWorld.CpuTrucks != null && ParentWorld.CpuTrucks.size() > 0)
+        {
+            int randomIndex = randInt(0, Containers.size() -1);
+            ContainerMG2[] containerArray = Containers.toArray(new ContainerMG2[Containers.size()]);
+            for(TruckMg2 cpuTruck : ParentWorld.CpuTrucks)
+            {
+                if(containerArray[randomIndex].Color == cpuTruck.Color)
+                {
+                    return containerArray[randomIndex];
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+    private int randInt(int min, int max) {
+        return rand.nextInt((max - min) + 1) + min;
     }
 }

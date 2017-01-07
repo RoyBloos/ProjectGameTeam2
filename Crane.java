@@ -6,14 +6,18 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Kraan extends Actor
+public class Crane extends Actor
 {
-    public KraanGrijper Grijper;
+    public CraneReacher CraneReacher;
     public boolean IsPaused;
+    
+    public Crane()
+    {
+    }
     
     public void act() 
     {
-        if(!IsPaused)
+        if(!IsPaused && CraneReacher.IsPlayerCraneReacher)
         {
             if(Greenfoot.isKeyDown("w"))           
             {
@@ -22,7 +26,7 @@ public class Kraan extends Actor
             {
                 setLocation(getX(), getY() + 1);
             }
-           Grijper.MatchYWithCrane();
+           CraneReacher.MatchYWithCrane();
         }
     }    
 }

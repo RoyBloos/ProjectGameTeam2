@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=CraneReacher
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ KraanGrijper\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=crane\ boat\ isPlayerCraneReacher
+comment1.target=CraneReacher(Crane,\ BoatMg2,\ boolean)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=void\ playerAct()
+comment4.params=
+comment4.target=void\ cpuAct()
+comment5.params=
+comment5.target=void\ MatchYWithCrane()
+comment6.params=
+comment6.target=void\ DropContainer()
+comment7.params=boat
+comment7.target=void\ DropContainerOnBoat(BoatMg2)
+comment8.params=truck
+comment8.target=void\ DropContainerOnTruck(TruckMg2)
+comment9.params=
+comment9.target=void\ GrijpContainer()
+numComments=10

@@ -3,12 +3,6 @@ import java.lang.Math;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Write a description of class Boat here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class Boat extends Actor
 {
     int counter = 0;
@@ -148,7 +142,7 @@ public class Boat extends Actor
         setImage("Vrachtschip" + AantalContainers + ".png");
     }
     
-     public int randInt(int min, int max) {
+    public int randInt(int min, int max) {
         return rand.nextInt((max - min) + 1) + min;
     }
     

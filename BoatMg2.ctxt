@@ -1,8 +1,11 @@
 #BlueJ class context
 comment0.target=BoatMg2
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ BoatMg2\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
 comment1.params=parentWorld\ isCpuBoat
 comment1.target=BoatMg2(WorldMinigame2,\ boolean)
+comment10.params=
+comment10.target=ContainerMG2\ GetCpuContainer()
+comment11.params=min\ max
+comment11.target=int\ randInt(int,\ int)
 comment2.params=
 comment2.target=void\ act()
 comment3.params=x\ y
@@ -19,4 +22,4 @@ comment8.params=container
 comment8.target=void\ AddContainer(ContainerMG2)
 comment9.params=x\ y
 comment9.target=ContainerMG2\ GetContainer(int,\ int)
-numComments=10
+numComments=12
