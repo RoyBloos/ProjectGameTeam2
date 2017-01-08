@@ -1,42 +1,67 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
+import java.awt.Color;
 
-/**
- * Write a description of class WorldMinigame2 here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class WorldMinigame2 extends World
 {
-    public Kraan KraanSpeler;
-    public KraanGrijper KraanGrijperSpeler;
-    public int ScoreToReach = 1;
-    public BoatMg2 PlayerBoat = null;
-    public BoatMg2 CPUBoat = null;
-    public ArrayList<TruckMg2> PlayerTrucks;
+
+    public int ScoreToReach = 24;
     public int truckCounter;
     public boolean IsPaused;
-    private boolean areActorsPaused;
     public WorldMainMenu ParentWorld;
+    private boolean areActorsPaused;
+    private Random rand;
+    
+    public ArrayList<TruckMg2> PlayerTrucks;
+    private ArrayList<TruckMg2> teSpawnenPlayerTrucks;
+    public ArrayList<TruckMg2> CpuTrucks;
+    private ArrayList<TruckMg2> teSpawnenCpuTrucks;
+
+    public BoatMg2 PlayerBoat = null;
+    public Text PlayerScorebord;
+    public int PlayerScore = 0;
+    public Crane PlayerCrane;
+    public CraneReacher PlayerCraneReacher;
+    
+    public BoatMg2 CpuBoat = null;
+    public Text CpuScorebord;
+    public int CpuScore = 0;
+    public Crane CpuCrane;
+    public CraneReacher CpuCraneReacher;
 
     public WorldMinigame2(WorldMainMenu parentWorld, int gameHeight, int gameWidth)
     {    
         super(gameHeight, gameWidth, 1); 
+        rand = new Random();
         ParentWorld = parentWorld;
-        PlayerTrucks = new ArrayList<TruckMg2>();
-        spawnBoats();
-        KraanSpeler = new Kraan();
-        KraanGrijperSpeler = new KraanGrijper(KraanSpeler, PlayerBoat);
-        KraanSpeler.Grijper = KraanGrijperSpeler;
         truckCounter = 0;
-        addObject(KraanGrijperSpeler, 1100, 300);
-        addObject(KraanSpeler,900,300);
-
+        spawnBoats();
         addObject(new GameNavigationButton(this, "Pause"), 50,50);
+        setPaintOrder(GameNavigationButton.class, OpenLinkButton.class, PauseScreen.class, Crane.class, CraneReacher.class, ContainerMG2.class, BalanceIndicator.class, BalanceBar.class, BoatMg2.class);
+        
+        PlayerTrucks = new ArrayList<TruckMg2>();
+        teSpawnenPlayerTrucks = createTrucks(PlayerBoat);
+        PlayerCrane = new Crane();
+        PlayerCraneReacher = new CraneReacher(PlayerCrane, PlayerBoat, true);
+        PlayerCrane.CraneReacher = PlayerCraneReacher;
+        PlayerScorebord = new Text(Color.GREEN, 25);
+        addObject(PlayerCraneReacher, 1100, 300);
+        addObject(PlayerCrane,900,300);
+        addObject(PlayerScorebord, 1200,50);
+        
+        CpuTrucks = new ArrayList<TruckMg2>();
+        teSpawnenCpuTrucks = createTrucks(CpuBoat);
+        CpuCrane = new Crane();
+        CpuCraneReacher = new CraneReacher(CpuCrane, CpuBoat, false);
+        CpuCrane.CraneReacher = CpuCraneReacher;
+        CpuScorebord = new Text(Color.GREEN, 25);
+        
+        addObject(CpuCraneReacher, 180, 300);
+        addObject(CpuCrane,380,300);
+        addObject(CpuScorebord, 200,50);
 
-        setPaintOrder(GameNavigationButton.class, OpenLinkButton.class, PauseScreen.class, Kraan.class, KraanGrijper.class, ContainerMG2.class, BalanceIndicator.class, BalanceBar.class, BoatMg2.class);
     }
 
     public void act()
@@ -44,11 +69,18 @@ public class WorldMinigame2 extends World
         if(!IsPaused)
         {
             truckCounter += 1;
-            if(PlayerTrucks.size() < 6 && truckCounter % 150 == 0)
+            if(truckCounter >= 150)
             {
-                TruckMg2 newTruck = new TruckMg2();
-                addObject(newTruck, 967, 768);
-                PlayerTrucks.add(newTruck);
+                if(PlayerTrucks != null && PlayerTrucks.size() < 6)
+                {
+                    AddTruck(true);
+                }
+                
+                if(CpuTrucks != null && CpuTrucks.size() < 6)
+                {
+                    AddTruck(false);
+                }
+                
                 truckCounter = 0;
             }
         } else
@@ -59,18 +91,16 @@ public class WorldMinigame2 extends World
             }
         }
         
-        if(PlayerBoat != null && PlayerBoat.IsOutOfBalance)
+        if(PlayerBoat != null && (PlayerBoat.IsOutOfBalance || (PlayerTrucks.size() == 0 && teSpawnenPlayerTrucks.size() == 0)))
         {
-            // Player lost
             if(!IsPaused)
             {
                 PauseWorld(true);
             }
         }
         
-        if(CPUBoat != null && CPUBoat.IsOutOfBalance)
+        if(CpuBoat != null && (CpuBoat.IsOutOfBalance || (CpuTrucks.size() == 0 && teSpawnenCpuTrucks.size() == 0)))
         {
-            // CPU lost
             if(!IsPaused)
             {
                 PauseWorld(true);
@@ -79,6 +109,89 @@ public class WorldMinigame2 extends World
         
     }
 
+    public void AddTruck(boolean isPlayerTruck)
+    {
+        if(isPlayerTruck)
+        {
+            if(teSpawnenPlayerTrucks.size() > 0)
+            {
+                TruckMg2 newTruck = teSpawnenPlayerTrucks.get(randInt(0, teSpawnenPlayerTrucks.size() - 1));
+                teSpawnenPlayerTrucks.remove(newTruck);
+                addObject(newTruck, 967, 768);
+                PlayerTrucks.add(newTruck);
+            }
+        } 
+        else
+        {
+
+            if(teSpawnenCpuTrucks.size() > 0)
+            {
+                TruckMg2 newTruck = teSpawnenCpuTrucks.get(randInt(0, teSpawnenCpuTrucks.size() - 1));
+                teSpawnenCpuTrucks.remove(newTruck);
+                addObject(newTruck, 312, 768);
+                CpuTrucks.add(newTruck);
+            }
+        }
+    }
+    
+    public void RemoveTruck(TruckMg2 truck)
+    {
+        if(truck.IsPlayerTruck)
+        {
+            PlayerTrucks.remove(truck);
+            AddPoints(2, true);
+        }
+        else
+        {
+            CpuTrucks.remove(truck);
+            AddPoints(2, false);
+        }
+        removeObject(truck);
+    }
+    
+    public TruckMg2 GetTruck(String color)
+    {
+        for(TruckMg2 truck : CpuTrucks)
+        {
+            if(!truck.IsLoaded && truck.Color == color)
+            {
+                return truck;
+            }
+        }
+        return null;
+    }
+    
+    private void AddPoints(int points, boolean isPlayerScore)
+    {
+        if(isPlayerScore)
+        {
+            PlayerScore += points;
+            PlayerScorebord.SetText(Integer.toString(PlayerScore), Color.GREEN, null);
+            ParentWorld.SetScore("minigame2", PlayerScore);
+        } 
+        else
+        {
+            CpuScore += points;
+            CpuScorebord.SetText(Integer.toString(CpuScore), Color.GREEN, null);
+        }
+        
+       
+        
+    }
+    
+    private ArrayList<TruckMg2> createTrucks(BoatMg2 boat)
+    {
+        ArrayList<TruckMg2> truckArray = new ArrayList<TruckMg2>();
+        
+        for(int i = 1; i <= boat.Rows / 2; i++)
+        {
+            truckArray.add(new TruckMg2(!boat.IsCpuBoat, "Blauw"));
+            truckArray.add(new TruckMg2(!boat.IsCpuBoat, "Groen"));
+            truckArray.add(new TruckMg2(!boat.IsCpuBoat, "Grijs"));
+        }
+        return truckArray;
+    }
+    
     private void spawnBoats()
     {
         boolean hasCpuBoat = false;
@@ -96,8 +209,8 @@ public class WorldMinigame2 extends World
 
         if (!hasCpuBoat)
         {
-            CPUBoat = new BoatMg2(this, true);
-            addObject(CPUBoat, 560, getWidth());
+            CpuBoat = new BoatMg2(this, true);
+            addObject(CpuBoat, 560, getWidth());
         }
 
         if (!hasPlayerBoat)
@@ -152,12 +265,12 @@ public class WorldMinigame2 extends World
 
     private void SetPauseOnAllActors()
     {
-        for(Kraan kraan : getObjects(Kraan.class)){
-            kraan.IsPaused = IsPaused;
+        for(Crane crane : getObjects(Crane.class)){
+            crane.IsPaused = IsPaused;
         }
 
-        for(KraanGrijper kraanGrijper : getObjects(KraanGrijper.class)){
-            kraanGrijper.IsPaused = IsPaused;
+        for(CraneReacher craneReacher : getObjects(CraneReacher.class)){
+            craneReacher.IsPaused = IsPaused;
         }
 
         for(BoatMg2 boatMg2 : getObjects(BoatMg2.class)){
@@ -171,6 +284,9 @@ public class WorldMinigame2 extends World
         for(ContainerMG2 containerMG2 : getObjects(ContainerMG2.class)){
             containerMG2.IsPaused = IsPaused;
         }
-
+    }
+    
+    private int randInt(int min, int max) {
+        return rand.nextInt((max - min) + 1) + min;
     }
 }

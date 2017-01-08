@@ -5,7 +5,7 @@ public class BoatSpawn
     
     public BoatSpawn(Boat boat, int time)
     {
-        this.Boat = boat;
+       this.Boat = boat;
         this.Time = time;
     }
 }
