@@ -74,12 +74,23 @@ public class CraneReacher extends Actor
                 } else 
                 {
                     GrijpContainer();
-                    TargetTruck = world.GetTruck(ContainerToPickUp.Color);
-                    ContainerToPickUp = null; 
                 }
             }
+            move(1);
         }
-        else if (TargetTruck != null)
+        else if(TargetTruck == null)
+        {
+            if(ContainerToPickUp == null)
+            {
+                CurrentContainer = null;
+            } 
+            else
+            {
+                TargetTruck = world.GetTruck(ContainerToPickUp.Color);
+                ContainerToPickUp = null; 
+            }
+        }
+        else if (TargetTruck != null && TargetTruck.getWorld() != null)
         {
             int yOffset = 0;
             
@@ -98,9 +109,10 @@ public class CraneReacher extends Actor
             {
                 turnTowards(TargetTruck.getX(), TargetTruck.getY() + yOffset);                    
             }
+            move(1);
         }
         
-        move(1);
+        
     }
     
     public void MatchYWithCrane()
@@ -140,10 +152,23 @@ public class CraneReacher extends Actor
             }
         }
         
-        if(getObjectsInRange(30, TruckMg2.class).size() == 1)
+        if(IsPlayerCraneReacher)
         {
-            DropContainerOnTruck(getIntersectingObjects(TruckMg2.class).get(0));
-        } 
+            if(getIntersectingObjects(TruckMg2.class).size() == 1)
+            {
+                DropContainerOnTruck(getIntersectingObjects(TruckMg2.class).get(0));
+            }    
+        }
+        else
+        {
+            for(TruckMg2 truck : getIntersectingObjects(TruckMg2.class))
+            {
+                if(truck == TargetTruck)
+                {
+                    DropContainerOnTruck(truck);
+                }
+            }
+        }
     }
     
     private void DropContainerOnBoat(BoatMg2 boat)
@@ -163,6 +188,9 @@ public class CraneReacher extends Actor
             CurrentContainer.SetOffsets(boat);
             Boat.AddContainer(CurrentContainer);
             CurrentContainer = null;
+            TargetTruck = null;
+            ContainerToPickUp = null;
+            ContainerToPickUp = null;
         }
     }
     
@@ -172,7 +200,9 @@ public class CraneReacher extends Actor
         {
             CurrentContainer.getImage().scale(23,23);
             truck.AddContainer(CurrentContainer);
+            CurrentContainer.CraneReacher = null;
             CurrentContainer = null;
+            TargetTruck = null;
         }
     }
     

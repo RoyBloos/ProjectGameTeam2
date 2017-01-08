@@ -17,16 +17,24 @@ public class Crane extends Actor
     
     public void act() 
     {
-        if(!IsPaused && CraneReacher.IsPlayerCraneReacher)
+        if(!IsPaused)
         {
-            if(Greenfoot.isKeyDown("w"))           
+            if(CraneReacher.IsPlayerCraneReacher)
             {
-                setLocation(getX(), getY() - 1);
-            } else if(Greenfoot.isKeyDown("s"))           
-            {
-                setLocation(getX(), getY() + 1);
+                if(Greenfoot.isKeyDown("w"))           
+                {
+                    setLocation(getX(), getY() - 1);
+                } else if(Greenfoot.isKeyDown("s"))           
+                {
+                    setLocation(getX(), getY() + 1);
+                }
+                CraneReacher.MatchYWithCrane();
             }
-           CraneReacher.MatchYWithCrane();
+            else
+            {
+                setLocation(getX(), CraneReacher.getY());
+            }
+           
         }
     }    
 }

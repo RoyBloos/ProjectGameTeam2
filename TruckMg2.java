@@ -17,6 +17,7 @@ public class TruckMg2 extends Actor
     public boolean IsPaused;
     public boolean IsPlayerTruck;
     private int startingX;
+    
     public TruckMg2(boolean isPlayerTruck, String color)
     {
         IsPlayerTruck = isPlayerTruck;
@@ -46,11 +47,17 @@ public class TruckMg2 extends Actor
                     // Trucks van de speler moeten rechts uitvoegen en trucks
                     moveInDirection(315, 25, -25);
                 }
-                else if(!IsPlayerTruck && getX() > startingX -50)
+                else
+                {
+                    // Andere baan bereikt dan weer naar het noorden wijzen en rijden
+                    moveInDirection(270, 0, -50);
+                }
+                
+                if(!IsPlayerTruck && getX() > startingX -50)
                 {
                     // Trucks van de speler moeten rechts uitvoegen en trucks
                     moveInDirection(225, -25, -25);
-                }
+                }              
                 else
                 {
                     // Andere baan bereikt dan weer naar het noorden wijzen en rijden
@@ -119,12 +126,7 @@ public class TruckMg2 extends Actor
             container.CraneReacher = null;
             container.SetOffsets(this);
             
-            int lading = 0;
-            for(ContainerMG2 cont : Containers)
-            {
-                lading += cont.Size;
-            }
-            IsLoaded = lading == 2;
+            IsLoaded = Containers.size() >= 2;
                 
         }
     }

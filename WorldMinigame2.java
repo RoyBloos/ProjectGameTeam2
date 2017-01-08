@@ -2,11 +2,12 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import java.awt.Color;
 
 public class WorldMinigame2 extends World
 {
 
-    public int ScoreToReach = 1;
+    public int ScoreToReach = 24;
     public int truckCounter;
     public boolean IsPaused;
     public WorldMainMenu ParentWorld;
@@ -45,18 +46,21 @@ public class WorldMinigame2 extends World
         PlayerCrane = new Crane();
         PlayerCraneReacher = new CraneReacher(PlayerCrane, PlayerBoat, true);
         PlayerCrane.CraneReacher = PlayerCraneReacher;
-
+        PlayerScorebord = new Text(Color.GREEN, 25);
         addObject(PlayerCraneReacher, 1100, 300);
         addObject(PlayerCrane,900,300);
+        addObject(PlayerScorebord, 1200,50);
         
         CpuTrucks = new ArrayList<TruckMg2>();
         teSpawnenCpuTrucks = createTrucks(CpuBoat);
         CpuCrane = new Crane();
         CpuCraneReacher = new CraneReacher(CpuCrane, CpuBoat, false);
         CpuCrane.CraneReacher = CpuCraneReacher;
+        CpuScorebord = new Text(Color.GREEN, 25);
         
         addObject(CpuCraneReacher, 180, 300);
         addObject(CpuCrane,380,300);
+        addObject(CpuScorebord, 200,50);
 
     }
 
@@ -87,18 +91,16 @@ public class WorldMinigame2 extends World
             }
         }
         
-        if(PlayerBoat != null && PlayerBoat.IsOutOfBalance)
+        if(PlayerBoat != null && (PlayerBoat.IsOutOfBalance || (PlayerTrucks.size() == 0 && teSpawnenPlayerTrucks.size() == 0)))
         {
-            // Player lost
             if(!IsPaused)
             {
                 PauseWorld(true);
             }
         }
         
-        if(CpuBoat != null && CpuBoat.IsOutOfBalance)
+        if(CpuBoat != null && (CpuBoat.IsOutOfBalance || (CpuTrucks.size() == 0 && teSpawnenCpuTrucks.size() == 0)))
         {
-            // CPU lost
             if(!IsPaused)
             {
                 PauseWorld(true);
@@ -111,17 +113,24 @@ public class WorldMinigame2 extends World
     {
         if(isPlayerTruck)
         {
-            TruckMg2 newTruck = teSpawnenPlayerTrucks.get(randInt(0, teSpawnenPlayerTrucks.size() - 1));
-            teSpawnenPlayerTrucks.remove(newTruck);
-            addObject(newTruck, 967, 768);
-            PlayerTrucks.add(newTruck);
+            if(teSpawnenPlayerTrucks.size() > 0)
+            {
+                TruckMg2 newTruck = teSpawnenPlayerTrucks.get(randInt(0, teSpawnenPlayerTrucks.size() - 1));
+                teSpawnenPlayerTrucks.remove(newTruck);
+                addObject(newTruck, 967, 768);
+                PlayerTrucks.add(newTruck);
+            }
         } 
         else
         {
-            TruckMg2 newTruck = teSpawnenCpuTrucks.get(randInt(0, teSpawnenCpuTrucks.size() - 1));
-            teSpawnenCpuTrucks.remove(newTruck);
-            addObject(newTruck, 312, 768);
-            CpuTrucks.add(newTruck);
+
+            if(teSpawnenCpuTrucks.size() > 0)
+            {
+                TruckMg2 newTruck = teSpawnenCpuTrucks.get(randInt(0, teSpawnenCpuTrucks.size() - 1));
+                teSpawnenCpuTrucks.remove(newTruck);
+                addObject(newTruck, 312, 768);
+                CpuTrucks.add(newTruck);
+            }
         }
     }
     
@@ -130,10 +139,12 @@ public class WorldMinigame2 extends World
         if(truck.IsPlayerTruck)
         {
             PlayerTrucks.remove(truck);
+            AddPoints(2, true);
         }
         else
         {
             CpuTrucks.remove(truck);
+            AddPoints(2, false);
         }
         removeObject(truck);
     }
@@ -150,17 +161,34 @@ public class WorldMinigame2 extends World
         return null;
     }
     
+    private void AddPoints(int points, boolean isPlayerScore)
+    {
+        if(isPlayerScore)
+        {
+            PlayerScore += points;
+            PlayerScorebord.SetText(Integer.toString(PlayerScore), Color.GREEN, null);
+            ParentWorld.SetScore("minigame2", PlayerScore);
+        } 
+        else
+        {
+            CpuScore += points;
+            CpuScorebord.SetText(Integer.toString(CpuScore), Color.GREEN, null);
+        }
+        
+       
+        
+    }
+    
     private ArrayList<TruckMg2> createTrucks(BoatMg2 boat)
     {
         ArrayList<TruckMg2> truckArray = new ArrayList<TruckMg2>();
         
-        for(int i = 1; i <= boat.Rows; i++)
+        for(int i = 1; i <= boat.Rows / 2; i++)
         {
             truckArray.add(new TruckMg2(!boat.IsCpuBoat, "Blauw"));
             truckArray.add(new TruckMg2(!boat.IsCpuBoat, "Groen"));
             truckArray.add(new TruckMg2(!boat.IsCpuBoat, "Grijs"));
         }
-        
         return truckArray;
     }
     
