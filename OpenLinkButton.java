@@ -28,8 +28,9 @@ public class OpenLinkButton extends Actor
                     Desktop desk = Desktop.getDesktop();
                     desk.browse(URI.create(test));
                 }
-            } catch(IOException e)
+            } catch(IOException exception)
             {
+                System.out.println("Failed to open url");
             }
         }
     }    

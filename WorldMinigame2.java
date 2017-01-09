@@ -91,7 +91,7 @@ public class WorldMinigame2 extends World
             }
         }
         
-        if(PlayerBoat != null && (PlayerBoat.IsOutOfBalance || (PlayerTrucks.size() == 0 && teSpawnenPlayerTrucks.size() == 0)))
+        if(PlayerBoat != null && (PlayerBoat.IsOutOfBalance || (PlayerTrucks != null && PlayerTrucks.isEmpty() && teSpawnenPlayerTrucks != null && teSpawnenPlayerTrucks.isEmpty())))
         {
             if(!IsPaused)
             {
@@ -99,7 +99,7 @@ public class WorldMinigame2 extends World
             }
         }
         
-        if(CpuBoat != null && (CpuBoat.IsOutOfBalance || (CpuTrucks.size() == 0 && teSpawnenCpuTrucks.size() == 0)))
+        if(CpuBoat != null && (CpuBoat.IsOutOfBalance || (CpuTrucks != null && CpuTrucks.isEmpty() && teSpawnenCpuTrucks != null && teSpawnenCpuTrucks.isEmpty())))
         {
             if(!IsPaused)
             {
@@ -113,7 +113,7 @@ public class WorldMinigame2 extends World
     {
         if(isPlayerTruck)
         {
-            if(teSpawnenPlayerTrucks.size() > 0)
+            if(!teSpawnenPlayerTrucks.isEmpty())
             {
                 TruckMg2 newTruck = teSpawnenPlayerTrucks.get(randInt(0, teSpawnenPlayerTrucks.size() - 1));
                 teSpawnenPlayerTrucks.remove(newTruck);
@@ -124,7 +124,7 @@ public class WorldMinigame2 extends World
         else
         {
 
-            if(teSpawnenCpuTrucks.size() > 0)
+            if(!teSpawnenCpuTrucks.isEmpty())
             {
                 TruckMg2 newTruck = teSpawnenCpuTrucks.get(randInt(0, teSpawnenCpuTrucks.size() - 1));
                 teSpawnenCpuTrucks.remove(newTruck);
