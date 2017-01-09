@@ -1,11 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class BalanceIndicator here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class BalanceIndicator extends Actor
 {
     private BalanceBar balanceBar;
@@ -13,15 +7,15 @@ public class BalanceIndicator extends Actor
     public BalanceIndicator(BalanceBar balanceBar)
     {
         this.balanceBar = balanceBar;
-        SetIndicatorPosition();
+        setIndicatorPosition();
     }
 
     public void act() 
     {
-        SetIndicatorPosition();
+        setIndicatorPosition();
     }    
     
-    private void SetIndicatorPosition()
+    private void setIndicatorPosition()
     {
         if(balanceBar != null)
         {

@@ -115,12 +115,12 @@ public class HavenmeesterWorld extends World
     {
         boatSpawns = new ArrayList<BoatSpawn>();
         int levelDifficulty = 1;
-        int totalBoatSpawns = 1;
+        int totalBoatSpawns = 0;
         while (levelDifficulty <= 15)
         {
             int numberOfBoats = getRandomNumber(levelDifficulty, (levelDifficulty + 3));
+            int spawnTime = totalBoatSpawns * 5000;
             totalBoatSpawns += numberOfBoats;
-            int spawnTime = totalBoatSpawns * 5000; //(int) (Math.pow(2, (levelDifficulty - 1))) * 3500;
             int spawnIntervalMin = getRandomNumber(3000, 5000);
             int spawnIntervanMax = getRandomNumber(5000, 7000);
             CreateBoatSpawn(boatSpawns, numberOfBoats, spawnTime, spawnIntervalMin, spawnIntervanMax);
@@ -147,7 +147,7 @@ public class HavenmeesterWorld extends World
                SetPauseOnAllActors();
            }
            long elapsedTime = System.currentTimeMillis() - createdMillis;
-           if(boatSpawns.size() > 0 && boatSpawns.get(0).Time < elapsedTime)
+           if(!boatSpawns.isEmpty() && boatSpawns.get(0).Time < elapsedTime)
            {
                 addBoatToWorld(boatSpawns.get(0).Boat);
                 boatSpawns.remove(0);
@@ -164,7 +164,7 @@ public class HavenmeesterWorld extends World
     private void SetPauseOnAllActors()
     {
         for(Boat boat : getObjects(Boat.class)){
-            boat.IsPaused = IsPaused;
+            boat.isPaused = IsPaused;
         }
         
         for(Haven haven : getObjects(Haven.class)){
@@ -189,8 +189,8 @@ public class HavenmeesterWorld extends World
        Boatlane boatlane = GetBoatlane();
        if(boatlane != null)
        {
-           boat.AssignedBoatlane = boatlane;
-           boat.OccupiedCounter = 1000;
+           boat.assignedBoatlane = boatlane;
+           boat.occupiedCounter = 1000;
            if(boatlane.Direction == 0)
            {
                addObject(boat, 0, boatlane.Yas);
@@ -216,11 +216,11 @@ public class HavenmeesterWorld extends World
     public void RemoveBoat(Boat boat)
     {
         removeObject(boat);
-        if(boat.AantalContainers > 0)
+        if(boat.aantalContainers > 0)
         {
             removeObject(levens.remove(0));
                        
-            if(levens.size() == 0)
+            if(levens.isEmpty())
             {
                 PauseWorld(true);
             }
@@ -241,7 +241,7 @@ public class HavenmeesterWorld extends World
     private boolean BoatlaneIsTaken(Boatlane boatlane)
     {
         for(Boat boat : getObjects(Boat.class)){
-            if(boat.AssignedBoatlane == boatlane && boat.OccupiedCounter > 0)
+            if(boat.assignedBoatlane == boatlane && boat.occupiedCounter > 0)
             {
                 return true;
             }

@@ -1,12 +1,11 @@
 #BlueJ class context
 comment0.target=BalanceIndicator
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ BalanceIndicator\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
 comment1.params=balanceBar
 comment1.target=BalanceIndicator(BalanceBar)
 comment2.params=
 comment2.target=void\ act()
 comment3.params=
-comment3.target=void\ SetIndicatorPosition()
+comment3.target=void\ setIndicatorPosition()
 comment4.params=xOffset
 comment4.target=void\ SetXOffset(int)
 numComments=5

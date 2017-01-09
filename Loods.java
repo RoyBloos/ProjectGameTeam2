@@ -33,7 +33,7 @@ public class Loods extends Actor
                 move(1);
                 if(selectedBoatIsCloseEnough())
                 {
-                    SelectedBoat.HeeftLoods = true;
+                    SelectedBoat.heeftLoods = true;
                     SelectedBoat = null;
                 }
             } else if (xStartPositie != getX() && yStartPositie != getY())

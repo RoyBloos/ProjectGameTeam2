@@ -90,9 +90,9 @@ public class CraneReacher extends Actor
                 ContainerToPickUp = null; 
             }
         }
-        else if (TargetTruck != null && TargetTruck.getWorld() != null)
+        else if (TargetTruck.getWorld() != null)
         {
-            int yOffset = 0;
+            int yOffset;
             
             if(TargetTruck.Containers.size() == 0)
             {
@@ -117,7 +117,7 @@ public class CraneReacher extends Actor
     
     public void MatchYWithCrane()
     {
-        int limit, minX, maxX = 0;
+        int limit, minX, maxX;
         int x = getX();
         if(IsPlayerCraneReacher)
         {
@@ -180,7 +180,7 @@ public class CraneReacher extends Actor
             containers.remove(index);
         }
         
-        if(containers.size() == 0)
+        if(containers.isEmpty())
         {
             CurrentContainer.getImage().scale(23,23);
             CurrentContainer.Boat = boat;

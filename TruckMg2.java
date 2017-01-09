@@ -12,7 +12,7 @@ public class TruckMg2 extends Actor
 {
     public String Color;
     private Random rand;
-    public boolean IsLoaded = false;;
+    public boolean IsLoaded = false;
     public ArrayList<ContainerMG2> Containers;
     public boolean IsPaused;
     public boolean IsPlayerTruck;
@@ -114,7 +114,7 @@ public class TruckMg2 extends Actor
     
     public boolean CanStoreContainer(ContainerMG2 container)
     {
-        return Containers.size() == 0 || (Containers.size() == 1 && container.Size == 1);
+        return Containers.isEmpty() || (Containers.size() == 1 && container.Size == 1);
     }
     
     public void AddContainer(ContainerMG2 container)
@@ -133,7 +133,7 @@ public class TruckMg2 extends Actor
     
     public ContainerMG2 GetContainer()
     {
-        if(Containers.size() > 0 && !IsLoaded)
+        if(!Containers.isEmpty() && !IsLoaded)
         {
             ContainerMG2 container = Containers.get(0);
             Containers.remove(container);

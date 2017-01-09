@@ -1,11 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class Haven here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class Haven extends Actor
 {
     public boolean IsBezet;
@@ -37,18 +31,18 @@ public class Haven extends Actor
         {
             if(ToegewezenBoat != null){
                 if(selectedBoatIsCloseEnough()){
-                    ToegewezenBoat.IsDocked = true;
+                    ToegewezenBoat.isDocked = true;
                     ToegewezenBoat.setLocation(dockedXLocation, 320);
                     ToegewezenBoat.turnTowards(dockedXLocation, 325);
                 }
                 
-                if(ToegewezenBoat.IsDocked){
+                if(ToegewezenBoat.isDocked){
                     if(counter % 25 == 0){
                         ToegewezenBoat.UnloadContainers(1);
                     }
                     counter++;
                 }
-                if(ToegewezenBoat.AantalContainers <= 0)
+                if(ToegewezenBoat.aantalContainers <= 0)
                 {
                     stoplicht.ZetStoplicht("Oranje");
                 }
@@ -75,7 +69,7 @@ public class Haven extends Actor
     
     public void LaatBootGaan()
     {
-        ToegewezenBoat.MagHavenVerlaten = true;
+        ToegewezenBoat.magHavenVerlaten = true;
         ToegewezenBoat = null;
         IsBezet = false;
     }

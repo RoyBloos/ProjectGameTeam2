@@ -125,8 +125,7 @@ public class BoatMg2 extends Actor
     
     public void RemoveContainer(ContainerMG2 container)
     {
-        int index = Containers.indexOf(container);
-        Containers.remove(index);
+        Containers.remove(container);
     }
     
     public void AddContainer(ContainerMG2 container)
@@ -137,7 +136,7 @@ public class BoatMg2 extends Actor
     public ContainerMG2 GetContainer(int x, int y)
     {
         List<ContainerMG2> containers = getObjectsAtOffset(x - getX(), y - getY(), ContainerMG2.class);
-        if(containers.size() > 0)
+        if(!containers.isEmpty())
         {
             ContainerMG2 container = containers.get(0);
             containers.remove(container);
@@ -149,7 +148,7 @@ public class BoatMg2 extends Actor
     
     public ContainerMG2 GetCpuContainer()
     {
-        while (Containers != null && Containers.size() > 0 && ParentWorld.CpuTrucks != null && ParentWorld.CpuTrucks.size() > 0)
+        while (Containers != null && !Containers.isEmpty() && ParentWorld.CpuTrucks != null && ParentWorld.CpuTrucks.size() > 0)
         {
             int randomIndex = randInt(0, Containers.size() -1);
             ContainerMG2[] containerArray = Containers.toArray(new ContainerMG2[Containers.size()]);
