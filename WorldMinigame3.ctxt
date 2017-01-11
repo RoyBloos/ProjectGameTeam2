@@ -5,5 +5,5 @@ comment1.target=WorldMinigame3(greenfoot.World,\ int,\ int)
 comment2.params=
 comment2.target=void\ act()
 comment3.params=
-comment3.target=void\ spawnPresents()
+comment3.target=void\ spawnPackage()
 numComments=4
