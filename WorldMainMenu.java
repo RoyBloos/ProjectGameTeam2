@@ -56,11 +56,11 @@ public class WorldMainMenu extends World
             {
                 HighScoreMinigame3 = score;
             }
-            if (HighScoreMinigame3 >= worldMinigame3.ScoreToReach)
-            {
-                textColor = Color.GREEN;
-            }
-            ScorebordMinigame3.SetText(Integer.toString(HighScoreMinigame3) + " / " + Integer.toString(worldMinigame3.ScoreToReach), textColor, null);
+            // if (HighScoreMinigame3 >= worldMinigame3.ScoreToReach)
+            // {
+                // textColor = Color.GREEN;
+            // }
+            // ScorebordMinigame3.SetText(Integer.toString(HighScoreMinigame3) + " / " + Integer.toString(worldMinigame3.ScoreToReach), textColor, null);
         } else if(gameName == "minigame4")
         {
            if(score > HighScoreMinigame4)
