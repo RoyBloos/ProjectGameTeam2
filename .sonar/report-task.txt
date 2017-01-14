@@ -1,5 +1,5 @@
 projectKey=ProjectGameSemester2
 serverUrl=http://localhost:9000
 dashboardUrl=http://localhost:9000/dashboard/index/ProjectGameSemester2
-ceTaskId=AVmELgzjS0u0nvrYe3Qj
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AVmELgzjS0u0nvrYe3Qj
+ceTaskId=AVmc8UjpYNuRA38CjWpN
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVmc8UjpYNuRA38CjWpN

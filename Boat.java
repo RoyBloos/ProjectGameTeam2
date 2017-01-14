@@ -1,22 +1,64 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.Random;
 
-public class Boat extends Actor
+public class Boat extends PausableActor
 {
-    int counter = 0;
-    public Loods selectedLoods;
-    public boolean heeftLoods;
-    public Haven toegewezenHaven;
-    public boolean isDocked;
-    public int aantalContainers;
-    public Boatlane assignedBoatlane;
+    private Harbor assignedHarbor;
+    private boolean isDocked;
+    private int numberOfContainers;
+    private Boatlane assignedBoatlane;
+    private int moveCounter = 0;
+    private int occupiedCounter;
     private boolean reachedEntrypoint;
     private int entryPointYOFfset = 150;
     private Random rand;
-    public boolean magHavenVerlaten;
-    public int occupiedCounter;
-    public boolean isPaused;
+    private boolean hasLoods;
+    private boolean releasedFromHarbor;
     
+    public void setHasLoods(boolean hasLoods)
+    {
+        this.hasLoods = hasLoods;
+    }
+    
+    public void setReleasedFromHarbor(boolean released)
+    {
+        releasedFromHarbor = released;
+    }
+    
+    public int getOccupiedCountrer()
+    {
+        return occupiedCounter;
+    }
+    
+    public void setOccupiedCountrer(int counterValue)
+    {
+        occupiedCounter = counterValue;
+    }
+    
+    public void setAssignedBoatlane(Boatlane boatlane)
+    {
+        assignedBoatlane = boatlane;
+    }
+    
+    public Boatlane getAssignedBoatlane()
+    {
+        return assignedBoatlane;
+    }
+    
+    public void setIsDocked(boolean isDocked)
+    {
+        this.isDocked = isDocked;
+    }
+    
+    public boolean getIsDocked()
+    {
+        return isDocked;
+    }
+    
+    public int getNumberOfContainers()
+    {
+        return numberOfContainers;
+    }
     public Boat()
     {
         rand = new Random();
@@ -24,17 +66,16 @@ public class Boat extends Actor
     
     public void act() 
     {
-        if(!isPaused)
+        if(!getIsPaused())
         {
             HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
-            if(Greenfoot.mouseClicked(this) && world.SelectedLoods != null)
+            if(Greenfoot.mouseClicked(this) && world.getSelectedLoods() != null)
             {
-                world.SelectedLoods.SelectedBoat = this;
-                selectedLoods = world.SelectedLoods;
-                world.SelectedLoods = null;
+                world.getSelectedLoods().setSelectedBoat(this);
+                world.setSelectedLoods(null);
             }
             
-            if(toegewezenHaven == null && heeftLoods)
+            if(assignedHarbor == null && hasLoods)
             {
                 wijsHavenToe();
             }
@@ -50,51 +91,51 @@ public class Boat extends Actor
     
     public void UnloadContainers(int containers)
     {
-        if(aantalContainers > containers)
+        if(numberOfContainers > containers)
         {
             HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
-            if(containers <= aantalContainers)
+            if(containers <= numberOfContainers)
             {
                 world.AddPoints(containers);
             } else
             {
-                world.AddPoints(aantalContainers);
+                world.AddPoints(numberOfContainers);
             }
         }
-        aantalContainers = aantalContainers - containers;
+        numberOfContainers = numberOfContainers - containers;
 
-        if(aantalContainers <= 0)
+        if(numberOfContainers <= 0)
         {
-            aantalContainers = 0;
+            numberOfContainers = 0;
             reachedEntrypoint = false;
         }
         
-        setImage("Vrachtschip" + aantalContainers + ".png");
+        setImage("Vrachtschip" + numberOfContainers + ".png");
     }
     
     private void moveBoat()
     {
-        if(toegewezenHaven != null && (!isDocked || magHavenVerlaten))
+        if(assignedHarbor != null && (!isDocked || releasedFromHarbor))
         {
             //Gaat richting het entrypoint van de haven
             if(!reachedEntrypoint)
             {
                 moveTowardsHarborEntrypoint();
-            } else if(aantalContainers > 0)
+            } else if(numberOfContainers > 0)
             {
-                setRotation(getAngle(toegewezenHaven.getX(), toegewezenHaven.getY())+180 );
-                turnTowards(toegewezenHaven.getX(), toegewezenHaven.getY());
+                setRotation(getAngle(assignedHarbor.getX(), assignedHarbor.getY())+180 );
+                turnTowards(assignedHarbor.getX(), assignedHarbor.getY());
             } else
             {
                 setRotation(getAngle(0, getY())+180 );
                 turnTowards(0, getY());
             }
         } 
-        if(counter % 2 == 0 && (!isDocked || magHavenVerlaten))
+        if(moveCounter % 2 == 0 && (!isDocked || releasedFromHarbor))
         {
             move(1);
         }
-        counter++;
+        moveCounter++;
         
         if(isAtEdge())
         {
@@ -105,9 +146,9 @@ public class Boat extends Actor
     
     private void moveTowardsHarborEntrypoint()
     {
-        setRotation(getAngle(toegewezenHaven.getX(), toegewezenHaven.getY() + entryPointYOFfset)+180 );
-        turnTowards(toegewezenHaven.getX(), toegewezenHaven.getY() + entryPointYOFfset);
-        if(getX() == toegewezenHaven.getX() && getY() == toegewezenHaven.getY() + entryPointYOFfset)
+        setRotation(getAngle(assignedHarbor.getX(), assignedHarbor.getY() + entryPointYOFfset)+180 );
+        turnTowards(assignedHarbor.getX(), assignedHarbor.getY() + entryPointYOFfset);
+        if(getX() == assignedHarbor.getX() && getY() == assignedHarbor.getY() + entryPointYOFfset)
         {
             reachedEntrypoint = true;
         }
@@ -116,10 +157,10 @@ public class Boat extends Actor
     
     private void wijsHavenToe()
     {
-        for(Haven haven : getWorld().getObjects(Haven.class)){
-            if(!haven.IsBezet){
-                toegewezenHaven = haven;
-                haven.ZetBoat(this);
+        for(Harbor harbor : getWorld().getObjects(Harbor.class)){
+            if(!harbor.getIsOccupied()){
+                assignedHarbor = harbor;
+                harbor.SetBoat(this);
                 return;
             }
         }
@@ -137,9 +178,9 @@ public class Boat extends Actor
     
     protected void addedToWorld(World world)
     {
-        aantalContainers = randInt(1,21);
+        numberOfContainers = randInt(1,21);
         setRotation(assignedBoatlane.Direction);
-        setImage("Vrachtschip" + aantalContainers + ".png");
+        setImage("Vrachtschip" + numberOfContainers + ".png");
     }
     
     public int randInt(int min, int max) {

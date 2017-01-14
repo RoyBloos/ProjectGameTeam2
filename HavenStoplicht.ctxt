@@ -1,11 +1,9 @@
 #BlueJ class context
 comment0.target=HavenStoplicht
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ HavenStoplicht\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=haven\ kleur
-comment1.target=HavenStoplicht(Haven,\ java.lang.String)
+comment1.params=harbor\ kleur
+comment1.target=HavenStoplicht(Harbor,\ java.lang.String)
 comment2.params=
 comment2.target=void\ act()
-comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ HavenStoplicht\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
 comment3.params=kleur
 comment3.target=void\ ZetStoplicht(java.lang.String)
 numComments=4

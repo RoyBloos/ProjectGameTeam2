@@ -1,56 +1,61 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
 import java.lang.Math;
-import java.util.Random;
 import java.util.ArrayList;
 import java.awt.Color;
 
-public class HavenmeesterWorld extends World
+public class HavenmeesterWorld extends PausableWorld
 {
-    public Loods SelectedLoods;
-    public List<Boatlane> Boatlanes;
-    public int Score = 0;
-    public Text Scorebord;
-    public WorldMainMenu ParentWorld;
+    private Text scorebord;
+    private Loods selectedLoods;
+    private int score = 0;
+    private WorldMainMenu parentWorld;
     private int counter = 1;
-    private Random rand;
     private ArrayList<BoatSpawn> boatSpawns;
     private ArrayList<Leven> levens;
     private int nextLevelIndex;
     private long createdMillis = System.currentTimeMillis();
     private long pausedMillis;
-    public boolean IsPaused;
     private boolean areActorsPaused;
-    public int ScoreToReach = 1000;
-    
+    private int scoreToReach = 1000;
+
+    public int getScoreToReach()
+    {
+        return scoreToReach;
+    }
+
+    public void setSelectedLoods(Loods loods)
+    {
+        selectedLoods = loods;
+    }
+
+    public Loods getSelectedLoods()
+    {
+        return selectedLoods;
+    }
+
     public HavenmeesterWorld(WorldMainMenu parentWorld, int gameHeight, int gameWidth)
     {    
-        super(gameHeight, gameWidth, 1); 
-        this.ParentWorld = parentWorld;
-        rand = new Random();
+        super(gameHeight, gameWidth); 
+        this.parentWorld = parentWorld;
         Loods loods1 = new Loods();
         Loods loods2 = new Loods();
         addObject(loods1, 100, 380);
         addObject(loods2, 1180, 380);
-        addObject(new Haven(422), 446, 318);
-        addObject(new Haven(582), 606, 318);
-        addObject(new Haven(742), 766, 318);
-        addObject(new Haven(890), 914, 318);
-        
+        addObject(new Harbor(422), 446, 318);
+        addObject(new Harbor(582), 606, 318);
+        addObject(new Harbor(742), 766, 318);
+        addObject(new Harbor(890), 914, 318);
         addObject(new Boatlane(500, 0), -1,-1);
         addObject(new Boatlane(525, 180), -1,-1);
         addObject(new Boatlane(550, 0), -1,-1);
         addObject(new Boatlane(575, 180), -1,-1);
         addObject(new Boatlane(600, 0), -1,-1);
-        
         addObject(new LoodsGebouw(loods1),100,340);
         addObject(new LoodsGebouw(loods2),1180,340);
-        
-        Scorebord = new Text(Color.RED, 25);
-        addObject(Scorebord, 1200,50);
-        
+        scorebord = new Text(Color.RED, 25);
+        addObject(scorebord, 1200,50);
         addObject(new GameNavigationButton(this, "Pause"), 50,50);
-        
         levens = new ArrayList<Leven>();
         levens.add(new Leven());
         levens.add(new Leven());
@@ -62,14 +67,14 @@ public class HavenmeesterWorld extends World
             l.setRotation(345);
             xPositieLeven -= 60;
         }
-        
+
         CreateBoatSpawns();
     }
-    
+
     public void PauseWorld(boolean isGameOver)
     {
         pausedMillis =  System.currentTimeMillis();
-        this.IsPaused = true;
+        setIsPaused(true);
         addObject(new PauseScreen("PauseScreenHavenmeester.png"), 640, 384);
         if(!isGameOver)
         {
@@ -79,7 +84,7 @@ public class HavenmeesterWorld extends World
         addObject(new GameNavigationButton(this, "Stop"), 700, 560);
         addObject(new OpenLinkButton("https://www.youtube.com/watch?v=PBQSC-e9tWY&feature=youtu.be", "PlayLoodsIntroductie.png"), 850, 560);
     }
-    
+
     public void ResumeWorld()
     {
 
@@ -94,23 +99,72 @@ public class HavenmeesterWorld extends World
         }
 
         for(PauseScreen pauseScreen : getObjects(PauseScreen.class)){
-                removeObject(pauseScreen);
+            removeObject(pauseScreen);
         }
-        this.IsPaused = false;
+        setIsPaused(false);
         SetPauseOnAllActors();
         createdMillis += System.currentTimeMillis() - pausedMillis;
     }
-    
+
     public void RestartWorld()
     {
-        ParentWorld.StartNewGame("Havenmeester");
+        parentWorld.StartNewGame("Havenmeester");
     }
-    
+
     public void StopWorld()
     {
-        Greenfoot.setWorld(ParentWorld);
+        Greenfoot.setWorld(parentWorld);
     }
-    
+
+    public void act()
+    {
+        if(!getIsPaused())
+        {
+            if(areActorsPaused)
+            {
+                SetPauseOnAllActors();
+            }
+            long elapsedTime = System.currentTimeMillis() - createdMillis;
+            if(!boatSpawns.isEmpty() && boatSpawns.get(0).Time < elapsedTime)
+            {
+                addBoatToWorld(boatSpawns.get(0).Boat);
+                boatSpawns.remove(0);
+            }
+        } else
+        {
+            if(!areActorsPaused)
+            {
+                SetPauseOnAllActors();
+            }
+        }
+    }
+
+    public void AddPoints(int points)
+    {
+        score += points;
+        Color textColor = Color.RED;
+        if(score >= scoreToReach)
+        {
+            textColor = Color.GREEN;
+        }
+        scorebord.SetText(Integer.toString(score) + " / " + Integer.toString(scoreToReach), textColor, null);
+        parentWorld.SetScore("Havenmeester", score);
+    }
+
+    public void RemoveBoat(Boat boat)
+    {
+        removeObject(boat);
+        if(boat.getNumberOfContainers() > 0)
+        {
+            removeObject(levens.remove(0));
+
+            if(levens.isEmpty())
+            {
+                PauseWorld(true);
+            }
+        }
+    }
+
     private void CreateBoatSpawns()
     {
         boatSpawns = new ArrayList<BoatSpawn>();
@@ -127,106 +181,57 @@ public class HavenmeesterWorld extends World
             levelDifficulty += 1;
         }
     }
-    
+
     private void CreateBoatSpawn(ArrayList<BoatSpawn> boatSpawns, int numberOfBoats, int spawntime, int spawnIntervalMin, int spawnIntervalMax)
     {
         int addedBoats = 0;
         while (addedBoats <= numberOfBoats)
         {
-            boatSpawns.add(new BoatSpawn(new Boat(), spawntime + (randInt(spawnIntervalMin, spawnIntervalMax) * (addedBoats + 1))));
+            boatSpawns.add(new BoatSpawn(new Boat(), spawntime + (getRandomNumber(spawnIntervalMin, spawnIntervalMax) * (addedBoats + 1))));
             addedBoats += 1;
         }
     }
-    
-    public void act()
-    {
-       if(!IsPaused)
-       {
-           if(areActorsPaused)
-           {
-               SetPauseOnAllActors();
-           }
-           long elapsedTime = System.currentTimeMillis() - createdMillis;
-           if(!boatSpawns.isEmpty() && boatSpawns.get(0).Time < elapsedTime)
-           {
-                addBoatToWorld(boatSpawns.get(0).Boat);
-                boatSpawns.remove(0);
-           }
-       } else
-       {
-           if(!areActorsPaused)
-           {
-               SetPauseOnAllActors();
-           }
-       }
-    }
-    
+
     private void SetPauseOnAllActors()
     {
         for(Boat boat : getObjects(Boat.class)){
-            boat.isPaused = IsPaused;
+            boat.setIsPaused(getIsPaused());
         }
-        
-        for(Haven haven : getObjects(Haven.class)){
-            haven.IsPaused = IsPaused;
+
+        for(Harbor harbor : getObjects(Harbor.class)){
+            harbor.setIsPaused(getIsPaused());
         }
-        
+
         for(HavenStoplicht havenStoplicht : getObjects(HavenStoplicht.class)){
-            havenStoplicht.IsPaused = IsPaused;
+            havenStoplicht.setIsPaused(getIsPaused());
         }
-        
+
         for(Loods loods : getObjects(Loods.class)){
-            loods.IsPaused = IsPaused;
+            loods.setIsPaused(getIsPaused());
         }
-        
+
         for(LoodsGebouw loodsGebouw : getObjects(LoodsGebouw.class)){
-            loodsGebouw.IsPaused = IsPaused;
+            loodsGebouw.setIsPaused(getIsPaused());
         }
     }
-    
+
     private void addBoatToWorld(Boat boat)
     {
-       Boatlane boatlane = GetBoatlane();
-       if(boatlane != null)
-       {
-           boat.assignedBoatlane = boatlane;
-           boat.occupiedCounter = 1000;
-           if(boatlane.Direction == 0)
-           {
-               addObject(boat, 0, boatlane.Yas);
-           } else
-           {
-               addObject(boat,1280, boatlane.Yas);
-           }
-       }
-    }
-    
-    public void AddPoints(int points)
-    {
-        Score += points;
-        Color textColor = Color.RED;
-        if(Score >= ScoreToReach)
+        Boatlane boatlane = GetBoatlane();
+        if(boatlane != null)
         {
-            textColor = Color.GREEN;
-        }
-        Scorebord.SetText(Integer.toString(Score) + " / " + Integer.toString(ScoreToReach), textColor, null);
-        ParentWorld.SetScore("Havenmeester", Score);
-    }
-    
-    public void RemoveBoat(Boat boat)
-    {
-        removeObject(boat);
-        if(boat.aantalContainers > 0)
-        {
-            removeObject(levens.remove(0));
-                       
-            if(levens.isEmpty())
+            boat.setAssignedBoatlane(boatlane);
+            boat.setOccupiedCountrer(1000);
+            if(boatlane.Direction == 0)
             {
-                PauseWorld(true);
+                addObject(boat, 0, boatlane.Yas);
+            } else
+            {
+                addObject(boat,1280, boatlane.Yas);
             }
         }
     }
-    
+
     private Boatlane GetBoatlane()
     {
         for(Boatlane boatlane : getObjects(Boatlane.class)){
@@ -237,27 +242,22 @@ public class HavenmeesterWorld extends World
         }
         return null;
     }
-    
+
     private boolean BoatlaneIsTaken(Boatlane boatlane)
     {
         for(Boat boat : getObjects(Boat.class)){
-            if(boat.assignedBoatlane == boatlane && boat.occupiedCounter > 0)
+            if(boat.getAssignedBoatlane() == boatlane && boat.getOccupiedCountrer() > 0)
             {
                 return true;
             }
         }
         return false;
     }
-    
-    public int randInt(int min, int max) {
-        return rand.nextInt((max - min) + 1) + min;
-    }
-    
-    public int getRandomNumber(int start, int end)
+
+    private int getRandomNumber(int start, int end)
     {
         int normal = Greenfoot.getRandomNumber(end - start + 1);
         return normal + start;
     }
 }
-
 
