@@ -1,35 +1,30 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Write a description of class KraanGrijper here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class CraneReacher extends Actor
+public class CraneReacher extends PausableActor
 {
-    public Crane Crane;
-    public ContainerMG2 CurrentContainer = null;
-    public ContainerMG2 ContainerToPickUp = null;
-    public TruckMg2 TargetTruck = null;
-    public BoatMg2 Boat;
-    public boolean IsPaused;
-    public boolean IsPlayerCraneReacher;
-    
+    private Crane crane;
+    private ContainerMG2 currentContainer = null;
+    private ContainerMG2 containerToPickUp = null;
+    private TruckMg2 targetTruck = null;
+    private boolean isPlayerCraneReacher;
+
     public CraneReacher(Crane crane, BoatMg2 boat, boolean isPlayerCraneReacher)
     {
-        this.Crane = crane;
-        this.Boat = boat;
-        IsPlayerCraneReacher = isPlayerCraneReacher;
+        this.crane = crane;
+        this.isPlayerCraneReacher = isPlayerCraneReacher;
     }
-   
+
+    public boolean getIsPlayerCraneReacher()
+    {
+        return isPlayerCraneReacher;
+    }
+
     public void act() 
     {
-        if(!IsPaused)
+        if(!getIsPaused())
         {
-            if(IsPlayerCraneReacher)
+            if(isPlayerCraneReacher)
             {
                 playerAct();
             } else{
@@ -37,89 +32,31 @@ public class CraneReacher extends Actor
             }
         }
     } 
-    
+
     private void playerAct()
     {
         if(Greenfoot.isKeyDown("a"))           
         {
             setLocation(getX() - 1, getY());
-            
         } else if(Greenfoot.isKeyDown("d"))           
         {
             setLocation(getX() + 1, getY());
-        }else if(Greenfoot.isKeyDown("q") && CurrentContainer == null)           
+        }else if(Greenfoot.isKeyDown("q") && currentContainer == null)           
         {
-            GrijpContainer();
-        } else if(Greenfoot.isKeyDown("e") && CurrentContainer != null)
+            grijpContainer();
+        } else if(Greenfoot.isKeyDown("e") && currentContainer != null)
         {
-            DropContainer();
+            dropContainer();
         }
     }
-    
-    private void cpuAct()
-    {
-        WorldMinigame2 world = (WorldMinigame2)getWorld();
 
-        if(CurrentContainer == null)
-        {
-            if(ContainerToPickUp == null)
-            {
-                ContainerToPickUp = world.CpuBoat.GetCpuContainer();
-            } 
-            else 
-            {
-                if(getX() != ContainerToPickUp.getX() || getY() != ContainerToPickUp.getY())
-                {
-                    turnTowards(ContainerToPickUp.getX(), ContainerToPickUp.getY());    
-                } else 
-                {
-                    GrijpContainer();
-                }
-            }
-            move(1);
-        }
-        else if(TargetTruck == null)
-        {
-            if(ContainerToPickUp == null)
-            {
-                CurrentContainer = null;
-            } 
-            else
-            {
-                TargetTruck = world.GetTruck(ContainerToPickUp.Color);
-                ContainerToPickUp = null; 
-            }
-        }
-        else if (TargetTruck.getWorld() != null)
-        {
-            int yOffset;
-            
-            if(TargetTruck.Containers.size() == 0)
-            {
-                yOffset = -8;
-            } else
-            {
-                yOffset = 25;
-            }
-            
-            if(CurrentContainer.getX() == TargetTruck.getX() && CurrentContainer.getY() == TargetTruck.getY() + yOffset)
-            {
-                DropContainer();
-            } else
-            {
-                turnTowards(TargetTruck.getX(), TargetTruck.getY() + yOffset);                    
-            }
-            move(1);
-        }
-        
-        
-    }
-    
-    public void MatchYWithCrane()
+     public void MatchYWithCrane()
     {
-        int limit, minX, maxX;
+        int minX;
+        int maxX;
+
         int x = getX();
-        if(IsPlayerCraneReacher)
+        if(isPlayerCraneReacher)
         {
             minX = 665;
             maxX = 1100;
@@ -129,7 +66,7 @@ public class CraneReacher extends Actor
             minX = 180;
             maxX = 615;
         }
-        
+
         if (getX() < minX)
         {
             x = minX;
@@ -138,101 +75,173 @@ public class CraneReacher extends Actor
         {
             x = maxX;
         }
-        
-        setLocation(x, Crane.getY());
+
+        setLocation(x, crane.getY());
     }
     
-    private void DropContainer()
+    private void cpuAct()
     {
-        for(BoatMg2 boat : getIntersectingObjects(BoatMg2.class))
+        WorldMinigame2 world = (WorldMinigame2)getWorld();
+        if(currentContainer == null)
         {
-            if(boat.IsCloseEnough(getX(),getY()))
+            if(containerToPickUp == null)
             {
-                DropContainerOnBoat(boat);
+                containerToPickUp = world.getCpuBoat().GetCpuContainer();
+            } 
+            else 
+            {
+                moveTowardsContainerAndPickUpWhenReached();
+            }
+            move(1);
+        }
+        else if(targetTruck == null)
+        {
+            getRandomTruck();
+        }
+        else if (targetTruck.getWorld() != null)
+        {
+            moveToTruckAndDropContainerWhenReached();
+
+        }
+
+    }
+
+    private void moveToTruckAndDropContainerWhenReached()
+    {
+        int yOffset;
+
+        if(targetTruck.getContainers().size() == 0)
+        {
+            yOffset = -8;
+        } else
+        {
+            yOffset = 25;
+        }
+
+        if(currentContainer.getX() == targetTruck.getX() && currentContainer.getY() == targetTruck.getY() + yOffset)
+        {
+            dropContainer();
+        } else
+        {
+            turnTowards(targetTruck.getX(), targetTruck.getY() + yOffset);                    
+        }
+        move(1);
+    }
+
+    private void getRandomTruck()
+    {
+        if(containerToPickUp == null)
+        {
+            currentContainer = null;
+        } 
+        else
+        {
+            WorldMinigame2 world = (WorldMinigame2)getWorld();
+            targetTruck = world.GetTruck(containerToPickUp.getColor());
+            containerToPickUp = null; 
+        }
+    }
+
+    private void moveTowardsContainerAndPickUpWhenReached()
+    {
+        if(getX() != containerToPickUp.getX() || getY() != containerToPickUp.getY())
+        {
+            turnTowards(containerToPickUp.getX(), containerToPickUp.getY());    
+        } else 
+        {
+            grijpContainer();
+        }
+    }
+
+    private void dropContainer()
+    {
+        for(BoatMg2 curboat : getIntersectingObjects(BoatMg2.class))
+        {
+            if(curboat.IsCloseEnough(getX(),getY()))
+            {
+                dropContainerOnBoat(curboat);
             }
         }
-        
-        if(IsPlayerCraneReacher)
+
+        if(isPlayerCraneReacher)
         {
             if(getIntersectingObjects(TruckMg2.class).size() == 1)
             {
-                DropContainerOnTruck(getIntersectingObjects(TruckMg2.class).get(0));
+                dropContainerOnTruck(getIntersectingObjects(TruckMg2.class).get(0));
             }    
         }
         else
         {
             for(TruckMg2 truck : getIntersectingObjects(TruckMg2.class))
             {
-                if(truck == TargetTruck)
+                if(truck == targetTruck)
                 {
-                    DropContainerOnTruck(truck);
+                    dropContainerOnTruck(truck);
                 }
             }
         }
     }
-    
-    private void DropContainerOnBoat(BoatMg2 boat)
+
+    private void dropContainerOnBoat(BoatMg2 boat)
     {
         List<ContainerMG2> containers = getObjectsInRange(20, ContainerMG2.class);
-        int index = containers.indexOf(CurrentContainer);
+        int index = containers.indexOf(currentContainer);
         if(containers.size() > index)
         {
             containers.remove(index);
         }
-        
+
         if(containers.isEmpty())
         {
-            CurrentContainer.getImage().scale(23,23);
-            CurrentContainer.Boat = boat;
-            CurrentContainer.CraneReacher = null;
-            CurrentContainer.SetOffsets(boat);
-            Boat.AddContainer(CurrentContainer);
-            CurrentContainer = null;
-            TargetTruck = null;
-            ContainerToPickUp = null;
-            ContainerToPickUp = null;
+            currentContainer.getImage().scale(23,23);
+            currentContainer.setBoat(boat);
+            currentContainer.setCraneReacher(null);
+            currentContainer.SetOffsets(boat);
+            boat.AddContainer(currentContainer);
+            currentContainer = null;
+            targetTruck = null;
+            containerToPickUp = null;
         }
     }
-    
-    private void DropContainerOnTruck(TruckMg2 truck)
+
+    private void dropContainerOnTruck(TruckMg2 truck)
     {
-        if(truck.CanStoreContainer(CurrentContainer))
+        if(truck.CanStoreContainer(currentContainer))
         {
-            CurrentContainer.getImage().scale(23,23);
-            truck.AddContainer(CurrentContainer);
-            CurrentContainer.CraneReacher = null;
-            CurrentContainer = null;
-            TargetTruck = null;
+            currentContainer.getImage().scale(23,23);
+            truck.AddContainer(currentContainer);
+            currentContainer.setCraneReacher(null);
+            currentContainer = null;
+            targetTruck = null;
         }
     }
-    
-    private void GrijpContainer()
+
+    private void grijpContainer()
     {
-        if(CurrentContainer == null)
+        if(currentContainer == null)
         {
             List<TruckMg2> trucks = getIntersectingObjects(TruckMg2.class);
             if(trucks.size() == 1)
             {
-                CurrentContainer = trucks.get(0).GetContainer();
-                if(CurrentContainer != null)
+                currentContainer = trucks.get(0).GetContainer();
+                if(currentContainer != null)
                 {
-                    CurrentContainer.CraneReacher = this;
-                    CurrentContainer.getImage().scale(26,26);
+                    currentContainer.setCraneReacher(this);
+                    currentContainer.getImage().scale(26,26);
                 }
             }
-            
+
             List<BoatMg2> boats = getIntersectingObjects(BoatMg2.class);
             if(boats.size() == 1)
             {
-                CurrentContainer = boats.get(0).GetContainer(getX(), getY());
-                if(CurrentContainer != null)
+                currentContainer = boats.get(0).GetContainer(getX(), getY());
+                if(currentContainer != null)
                 {
-                    boats.get(0).RemoveContainer(CurrentContainer);
-                    CurrentContainer.CraneReacher = this;
-                    CurrentContainer.getImage().scale(26,26);
+                    boats.get(0).RemoveContainer(currentContainer);
+                    currentContainer.setCraneReacher(this);
+                    currentContainer.getImage().scale(26,26);
                 }
             }
         }
-        
     }
 }

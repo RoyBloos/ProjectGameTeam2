@@ -4,6 +4,7 @@ public class BalanceBar extends Actor
 {
     private BoatMg2 boat;
     private BalanceIndicator balanceIndicator;
+    
     public BalanceBar(BoatMg2 boat)
     {
         this.boat = boat;
@@ -23,18 +24,18 @@ public class BalanceBar extends Actor
         double balans = 0;
         if(boat != null)
         {
-            for(ContainerMG2 container : boat.Containers)
+            for(ContainerMG2 container : boat.getContainers())
             {
-                balans += container.BalanceWeight;
+                balans += container.getBalanceWeight();
             }
         }
         int halfImageWidth = getImage().getWidth() / 2;
-        double weightPerPixel = boat.MaxWeightOneSide / halfImageWidth;
+        double weightPerPixel = boat.getMaxWeightOneSide() / halfImageWidth;
         int xOffset = (int)(balans / weightPerPixel);
         balanceIndicator.SetXOffset(xOffset);
         if((xOffset > 0 && xOffset >= halfImageWidth) || (xOffset < 0 && xOffset <= -halfImageWidth) )
         {
-            boat.IsOutOfBalance = true;
+            boat.setIsOutOfBalance(true);
         }
     }
     

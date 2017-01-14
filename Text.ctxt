@@ -2,6 +2,6 @@
 comment0.target=Text
 comment1.params=textColor\ fontSize
 comment1.target=Text(java.awt.Color,\ int)
-comment2.params=text\ textColor\ fontSize
+comment2.params=text\ tc\ fs
 comment2.target=void\ SetText(java.lang.String,\ java.awt.Color,\ java.lang.Integer)
 numComments=3

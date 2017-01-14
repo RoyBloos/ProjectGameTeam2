@@ -21,9 +21,9 @@ public abstract class PausableWorld extends World
         return isPaused;
     }
 
-    public void setIsPaused(boolean isGameOver)
+    public void setIsPaused(boolean isPaused)
     {
-        isPaused = true;
+        this.isPaused = isPaused;
     }
 
     public abstract void PauseWorld(boolean isGameOver);
