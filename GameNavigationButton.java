@@ -58,10 +58,7 @@ public class GameNavigationButton extends Actor
             {
                 pausableWorld.PauseWorld(false);
             }
-        } else if(WorldMinigame2.class.isInstance(parentWorld) && !((WorldMinigame2)parentWorld).IsPaused)
-        {
-            ((WorldMinigame2)parentWorld).PauseWorld(false);
-        }
+        } 
     }
 
     private void resumeWorld()
@@ -73,9 +70,6 @@ public class GameNavigationButton extends Actor
             {
                 pausableWorld.ResumeWorld();
             }
-        } else if(WorldMinigame2.class.isInstance(parentWorld) && ((WorldMinigame2)parentWorld).IsPaused)
-        {
-            ((WorldMinigame2)parentWorld).ResumeWorld();
         }
     }
 

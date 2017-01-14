@@ -1,25 +1,24 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class Kraan here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class Crane extends Actor
+public class Crane extends PausableActor
 {
-    public CraneReacher CraneReacher;
-    public boolean IsPaused;
+    private CraneReacher craneReacher;
     
-    public Crane()
+    public CraneReacher getCraneReacher()
     {
+        return craneReacher;
+    }
+    
+    public void setCraneReacher(CraneReacher craneReacher)
+    {
+        this.craneReacher = craneReacher;
     }
     
     public void act() 
     {
-        if(!IsPaused)
+        if(!getIsPaused())
         {
-            if(CraneReacher.IsPlayerCraneReacher)
+            if(craneReacher.getIsPlayerCraneReacher())
             {
                 if(Greenfoot.isKeyDown("w"))           
                 {
@@ -28,11 +27,11 @@ public class Crane extends Actor
                 {
                     setLocation(getX(), getY() + 1);
                 }
-                CraneReacher.MatchYWithCrane();
+                craneReacher.MatchYWithCrane();
             }
             else
             {
-                setLocation(getX(), CraneReacher.getY());
+                setLocation(getX(), craneReacher.getY());
             }
            
         }
