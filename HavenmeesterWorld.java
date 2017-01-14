@@ -14,7 +14,8 @@ public class HavenmeesterWorld extends PausableWorld
     private long pausedMillis;
     private boolean areActorsPaused;
     private int scoreToReach = 1000;
-
+    GreenfootSound backgroundMusic = new GreenfootSound("HavenmeesterMusic.mp3");
+    
     public HavenmeesterWorld(WorldMainMenu parentWorld, int gameHeight, int gameWidth)
     {    
         super(gameHeight, gameWidth); 
@@ -101,7 +102,11 @@ public class HavenmeesterWorld extends PausableWorld
         setPauseOnAllActors();
         createdMillis += System.currentTimeMillis() - pausedMillis;
     }
-
+    public void StartMusic()
+    {
+        backgroundMusic.playLoop();
+    }
+    
     public void RestartWorld()
     {
         parentWorld.StartNewGame("Havenmeester");
@@ -110,6 +115,7 @@ public class HavenmeesterWorld extends PausableWorld
     public void StopWorld()
     {
         Greenfoot.setWorld(parentWorld);
+        backgroundMusic.stop();
     }
 
     public void act()

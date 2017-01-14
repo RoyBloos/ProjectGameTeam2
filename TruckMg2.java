@@ -11,6 +11,7 @@ public class TruckMg2 extends PausableActor
     private ArrayList<ContainerMG2> containers;
     private boolean isPlayerTruck;
     private int startingX;
+    private boolean isUitgevoegd;
 
     public TruckMg2(boolean isPlayerTruck, String color)
     {
@@ -53,7 +54,12 @@ public class TruckMg2 extends PausableActor
 
             if(isLoaded)
             {
-                truckUitvoegen();
+                if(!isUitgevoegd)
+                {
+                    truckUitvoegen();
+                } else {
+                    moveInDirectionWithObstacleChecking( 0, -50);
+                }
             }
 
             removeTruckWhenAtEdge();
@@ -80,13 +86,15 @@ public class TruckMg2 extends PausableActor
 
     private void truckUitvoegen()
     {
-        if(isPlayerTruck && getX() < startingX + 50)
+        if(isPlayerTruck)
         {
-            moveInDirection(25, -25);
+            isUitgevoegd = getX() >= startingX + 50;
+            moveInDirection(50, -50);
         }
         else
         {
-            moveInDirection(0, -50);
+            isUitgevoegd = getX() <= startingX - 50;
+            moveInDirection(-50, -50);
         }
     }
 
