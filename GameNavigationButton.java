@@ -1,11 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class GameNavigationButton here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class GameNavigationButton extends Actor
 {
     public World parentWorld;
@@ -29,10 +23,6 @@ public class GameNavigationButton extends Actor
         }
     }
 
-    /**
-     * Act - do whatever the GameNavigationButton wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
     public void act() 
     {
         if (Greenfoot.mouseClicked(this))
@@ -55,11 +45,12 @@ public class GameNavigationButton extends Actor
 
     private void PauseWorld()
     {
-        if(HavenmeesterWorld.class.isInstance(parentWorld))
+        if(PausableWorld.class.isInstance(parentWorld))
         {
-            if(!((HavenmeesterWorld)parentWorld).IsPaused)
+            PausableWorld pausableWorld = (PausableWorld)parentWorld;
+            if(!pausableWorld.getIsPaused())
             {
-                ((HavenmeesterWorld)parentWorld).PauseWorld(false);
+                pausableWorld.PauseWorld(false);
             }
         } else if(WorldMinigame2.class.isInstance(parentWorld))
         {
@@ -72,11 +63,12 @@ public class GameNavigationButton extends Actor
 
     private void ResumeWorld()
     {
-        if(HavenmeesterWorld.class.isInstance(parentWorld))
+        if(PausableWorld.class.isInstance(parentWorld))
         {
-            if(((HavenmeesterWorld)parentWorld).IsPaused)
+            PausableWorld pausableWorld = (PausableWorld)parentWorld;
+            if(pausableWorld.getIsPaused())
             {
-                ((HavenmeesterWorld)parentWorld).ResumeWorld();
+                pausableWorld.ResumeWorld();
             }
         } else if(WorldMinigame2.class.isInstance(parentWorld))
         {
@@ -89,9 +81,9 @@ public class GameNavigationButton extends Actor
 
     private void RestartWorld()
     {
-        if(HavenmeesterWorld.class.isInstance(parentWorld))
+        if(PausableWorld.class.isInstance(parentWorld))
         {
-            ((HavenmeesterWorld)parentWorld).RestartWorld();
+            ((PausableWorld)parentWorld).RestartWorld();
         } else if(WorldMinigame2.class.isInstance(parentWorld))
         {
             ((WorldMinigame2)parentWorld).RestartWorld();
@@ -100,9 +92,9 @@ public class GameNavigationButton extends Actor
 
     private void StopWorld()
     {
-        if(HavenmeesterWorld.class.isInstance(parentWorld))
+        if(PausableWorld.class.isInstance(parentWorld))
         {
-            ((HavenmeesterWorld)parentWorld).StopWorld();
+            ((PausableWorld)parentWorld).StopWorld();
         } else if(WorldMinigame2.class.isInstance(parentWorld))
         {
             ((WorldMinigame2)parentWorld).StopWorld();

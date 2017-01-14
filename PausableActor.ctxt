@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=PausableActor
+comment1.params=
+comment1.target=boolean\ getIsPaused()
+comment2.params=pause
+comment2.target=void\ setIsPaused(boolean)
+numComments=3

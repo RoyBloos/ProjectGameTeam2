@@ -1,13 +1,13 @@
 #BlueJ class context
 comment0.target=Loods
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Loods\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=
-comment1.target=void\ act()
-comment1.text=\r\n\ Act\ -\ do\ whatever\ the\ Loods\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
-comment2.params=world
-comment2.target=void\ addedToWorld(greenfoot.World)
-comment3.params=targetX\ targetY
-comment3.target=int\ getAngle(int,\ int)
-comment4.params=
-comment4.target=boolean\ selectedBoatIsCloseEnough()
-numComments=5
+comment1.params=boat
+comment1.target=void\ setSelectedBoat(Boat)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=world
+comment3.target=void\ addedToWorld(greenfoot.World)
+comment4.params=targetX\ targetY
+comment4.target=int\ getAngle(int,\ int)
+comment5.params=
+comment5.target=boolean\ selectedBoatIsCloseEnough()
+numComments=6

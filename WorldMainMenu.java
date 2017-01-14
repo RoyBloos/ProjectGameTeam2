@@ -34,11 +34,11 @@ public class WorldMainMenu extends World
             {
                 HighScoreHavenmeester = score;
             }
-            if (HighScoreHavenmeester >= havenmeesterWorld.ScoreToReach)
+            if (HighScoreHavenmeester >= havenmeesterWorld.getScoreToReach())
             {
                 textColor = Color.GREEN;
             }
-            ScorebordHavenmeester.SetText(Integer.toString(HighScoreHavenmeester) + " / " + Integer.toString(havenmeesterWorld.ScoreToReach), textColor, null);
+            ScorebordHavenmeester.SetText(Integer.toString(HighScoreHavenmeester) + " / " + Integer.toString(havenmeesterWorld.getScoreToReach()), textColor, null);
         } else if(gameName == "minigame2")
         {
             if(score > HighScoreMinigame2)

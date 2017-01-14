@@ -3,12 +3,6 @@ import java.net.*;
 import java.awt.*;
 import java.io.IOException;
 
-/**
- * Write a description of class OpenLinkButton here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class OpenLinkButton extends Actor
 {
     private String test;
@@ -17,7 +11,7 @@ public class OpenLinkButton extends Actor
         test = url;
         setImage(imageName);
     }
-    
+
     public void act() 
     {
         if(Greenfoot.mouseClicked(this))
@@ -28,9 +22,9 @@ public class OpenLinkButton extends Actor
                     Desktop desk = Desktop.getDesktop();
                     desk.browse(URI.create(test));
                 }
-            } catch(IOException exception)
+            } catch(IOException e)
             {
-                System.out.println("Failed to open url");
+                throw new OpenLinkRuntimeException(e);
             }
         }
     }    
