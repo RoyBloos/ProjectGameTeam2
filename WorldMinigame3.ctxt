@@ -1,9 +1,11 @@
 #BlueJ class context
 comment0.target=WorldMinigame3
-comment1.params=parentWorld\ gameHeight\ gameWidth
-comment1.target=WorldMinigame3(greenfoot.World,\ int,\ int)
+comment1.params=parentWorld\ gameWidth\ gameHeight
+comment1.target=WorldMinigame3(WorldMainMenu,\ int,\ int)
 comment2.params=
 comment2.target=void\ act()
-comment3.params=
-comment3.target=void\ spawnPackage()
-numComments=4
+comment3.params=gameWidth\ gameHeight
+comment3.target=void\ createStaticObjects(int,\ int)
+comment4.params=
+comment4.target=void\ createDynamicObjects()
+numComments=5

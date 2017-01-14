@@ -1,8 +1,10 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-public class ActorMinigame3 extends Actor
+public abstract class ActorMinigame3 extends Actor
 {
-    public void act() 
+    public ActorMinigame3()
     {
-    }    
+    }
 }
+
+
