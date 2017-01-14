@@ -21,7 +21,7 @@ public class Pilot extends PausableActor
                 world.setSelectedPilot(this);
             }
 
-            if(selectedBoat != null)
+            if(selectedBoat != null && selectedBoat.getWorld() != null)
             {
                 setRotation(getAngle(selectedBoat.getX(), selectedBoat.getY())+180 );
                 turnTowards(selectedBoat.getX(), selectedBoat.getY());

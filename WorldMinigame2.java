@@ -26,6 +26,7 @@ public class WorldMinigame2 extends PausableWorld
     private int cpuScore = 0;
     private Crane cpuCrane;
     private CraneReacher cpuCraneReacher;
+    GreenfootSound backgroundMusic = new GreenfootSound("Minigame2Music.mp3");
 
     public WorldMinigame2(WorldMainMenu parentWorld, int gameHeight, int gameWidth)
     {    
@@ -58,6 +59,11 @@ public class WorldMinigame2 extends PausableWorld
         addObject(cpuCrane,380,300);
         addObject(cpuScorebord, 200,50);
 
+    }
+
+    public void StartMusic()
+    {
+        backgroundMusic.playLoop();
     }
 
     public int getScoreToReach()
@@ -198,6 +204,7 @@ public class WorldMinigame2 extends PausableWorld
     public void StopWorld()
     {
         Greenfoot.setWorld(parentWorld);
+        backgroundMusic.stop();
     }
 
     public void RestartWorld()

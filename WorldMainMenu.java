@@ -65,10 +65,12 @@ public class WorldMainMenu extends World
         {
             havenmeesterWorld = new HavenmeesterWorld(this, getWidth(), getHeight());
             Greenfoot.setWorld(havenmeesterWorld);
+            havenmeesterWorld.StartMusic();
         } else if(gameName == NAAMMINIGAME2)
         {
             worldMinigame2 = new WorldMinigame2(this, getWidth(), getHeight());
             Greenfoot.setWorld(worldMinigame2);
+            worldMinigame2.StartMusic();
         } else if(gameName == NAAMMINIGAME3)
         {
             worldMinigame3 = new WorldMinigame3(this, getWidth(), getHeight());
