@@ -1,48 +1,41 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class BalanceBar here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class BalanceBar extends Actor
 {
-    private BoatMg2 Boat;
-    private boolean IsAddedToWorld;
-    private double balans;
+    private BoatMg2 boat;
     private BalanceIndicator balanceIndicator;
+    
     public BalanceBar(BoatMg2 boat)
     {
-        Boat = boat;
+        this.boat = boat;
     }
     
     public void act() 
     {
-       if(Boat != null)
+       if(boat != null)
        {
-           setLocation(Boat.getX() - 25, Boat.getY() + 200);
+           setLocation(boat.getX() - 25, boat.getY() + 200);
        }
-       SetBalance();       
+       setBalance();       
     }
     
-    private void SetBalance()
+    private void setBalance()
     {
-        balans = 0;
-        if(Boat != null)
+        double balans = 0;
+        if(boat != null)
         {
-            for(ContainerMG2 container : Boat.Containers)
+            for(ContainerMG2 container : boat.getContainers())
             {
-                balans += container.BalanceWeight;
+                balans += container.getBalanceWeight();
             }
         }
         int halfImageWidth = getImage().getWidth() / 2;
-        double weightPerPixel = Boat.MaxWeightOneSide / halfImageWidth;
+        double weightPerPixel = boat.getMaxWeightOneSide() / halfImageWidth;
         int xOffset = (int)(balans / weightPerPixel);
         balanceIndicator.SetXOffset(xOffset);
         if((xOffset > 0 && xOffset >= halfImageWidth) || (xOffset < 0 && xOffset <= -halfImageWidth) )
         {
-            Boat.IsOutOfBalance = true;
+            boat.setIsOutOfBalance(true);
         }
     }
     

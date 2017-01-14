@@ -1,47 +1,76 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class ContainerMG2 extends Actor
+public class ContainerMG2 extends PausableActor
 {
-    public int XPositie;
-    public int YPositie;
+    private int xPositie;
+    private int yPositie;
     private int xOffset;
     private int yOffset;
-    public Boolean IsAddedToWorld;
-    public BoatMg2 Boat;
-    public TruckMg2 Truck;
-    public CraneReacher CraneReacher;
-    public String Color;
-    public int Layer;
-    public int Size;
-    public boolean IsPaused;
-    public double BalanceWeight;
+    private Boolean isAddedToWorld;
+    private BoatMg2 boat;
+    private TruckMg2 truck;
+    private CraneReacher craneReacher;
+    private String color;
+    private int size = 1;
+    private double balanceWeight;
     private double weight;
-    
+
     public ContainerMG2(int xOffset, int yOffset, BoatMg2 boat, int layer, int weight, String color)
     {
-        IsAddedToWorld = false;
-        this.xOffset = boat.XMiddle + xOffset;
+        isAddedToWorld = false;
+        this.xOffset = boat.getxMiddle() + xOffset;
         this.yOffset = yOffset;
-        Boat = boat;
-        XPositie = Boat.getX() + xOffset;
-        YPositie = Boat.getY() + yOffset;
-        Layer = layer;
-        Size = 1;
+        this.boat = boat;
+        xPositie = boat.getX() + xOffset;
+        yPositie = boat.getY() + yOffset;
         this.weight = weight;
-        Color = color;
-        
-        setImage("MG2Container" + Color + ".png");
+        this.color = color;
+
+        setImage("MG2Container" + color + ".png");
+    }
+
+    public void setBoat(BoatMg2 boat)
+    {
+        this.boat = boat;
+    }
+    
+    public void setTruck(TruckMg2 truck)
+    {
+        this.truck = truck;
+    }
+    
+    public void setCraneReacher(CraneReacher craneReacher)
+    {
+        this.craneReacher = craneReacher;
+    }
+    
+    public String getColor()
+    {
+        return color;
+    }
+    
+    public int getSize()
+    {
+        return size;
+    }
+    
+    public double getBalanceWeight()
+    {
+        return balanceWeight;
     }
     
     public void act() 
     {
-        if(Boat != null)
+        if(!getIsPaused())
         {
-            BalanceWeight = (getX() - Boat.getX() - Boat.XMiddle) * weight;
+            if(boat != null)
+            {
+                balanceWeight = (getX() - boat.getX() - boat.getxMiddle()) * weight;
+            }
+            SetLocation();
         }
-        SetLocation();
     }
-    
+
     public void SetOffsets(Actor actor)
     {
         int actorX = actor.getX();
@@ -51,34 +80,34 @@ public class ContainerMG2 extends Actor
         int containerY = getY();
         yOffset = -(actorY - containerY);
     }
-    
+
     public void SetLocation()
     {
-        if(Boat != null)
+        if(boat != null)
         {
-            XPositie = Boat.getX() + xOffset;
-            YPositie = Boat.getY() + yOffset;
+            xPositie = boat.getX() + xOffset;
+            yPositie = boat.getY() + yOffset;
         }
-        
-        if(Truck != null)
+
+        if(truck != null)
         {
-            XPositie = Truck.getX() + xOffset;
-            YPositie = Truck.getY() + yOffset;
+            xPositie = truck.getX() + xOffset;
+            yPositie = truck.getY() + yOffset;
         }
-        
-        if(CraneReacher != null)
+
+        if(craneReacher != null)
         {
-            XPositie = CraneReacher.getX();
-            YPositie = CraneReacher.getY();
+            xPositie = craneReacher.getX();
+            yPositie = craneReacher.getY();
         }
-        setLocation(XPositie,YPositie);
-        if (!IsAddedToWorld && YPositie <= 768)
+        setLocation(xPositie, yPositie);
+        if (!isAddedToWorld && yPositie <= 768)
         {
-            Boat.ParentWorld.addObject(this, XPositie, YPositie);
-            IsAddedToWorld = true;
+            boat.getParentWorld().addObject(this, xPositie, yPositie);
+            isAddedToWorld = true;
         }
     }
-    
+
     public void SetScale(int pixels)
     {
         GreenfootImage image = getImage();

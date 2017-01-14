@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=HarborStoplight
+comment1.params=harbor\ kleur
+comment1.target=HarborStoplight(Harbor,\ java.lang.String)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=kleur
+comment3.target=void\ ZetStoplicht(java.lang.String)
+numComments=4

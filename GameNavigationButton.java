@@ -1,15 +1,10 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class GameNavigationButton here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class GameNavigationButton extends Actor
 {
-    public World parentWorld;
-    public String knopType;
+    private World parentWorld;
+    private String knopType;
+    
     public GameNavigationButton(World parentWorld, String knopType)
     {
         this.parentWorld = parentWorld;
@@ -29,80 +24,71 @@ public class GameNavigationButton extends Actor
         }
     }
 
-    /**
-     * Act - do whatever the GameNavigationButton wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+    public String getKnopType()
+    {
+        return knopType;
+    }
+    
     public void act() 
     {
         if (Greenfoot.mouseClicked(this))
         {
             if(knopType == "Pause")
             {
-                PauseWorld();
+                pauseWorld();
             } else if (knopType == "Resume")
             {
-                ResumeWorld();
+                resumeWorld();
             } else if (knopType == "Restart")
             {
-                RestartWorld();
+                restartWorld();
             } else if (knopType == "Stop")
             {
-                StopWorld();
+                stopWorld();
             }
         }
     }
 
-    private void PauseWorld()
+    private void pauseWorld()
     {
-        if(HavenmeesterWorld.class.isInstance(parentWorld))
+        if(PausableWorld.class.isInstance(parentWorld))
         {
-            if(!((HavenmeesterWorld)parentWorld).IsPaused)
+            PausableWorld pausableWorld = (PausableWorld)parentWorld;
+            if(!pausableWorld.getIsPaused())
             {
-                ((HavenmeesterWorld)parentWorld).PauseWorld(false);
+                pausableWorld.PauseWorld(false);
             }
-        } else if(WorldMinigame2.class.isInstance(parentWorld))
+        } 
+    }
+
+    private void resumeWorld()
+    {
+        if(PausableWorld.class.isInstance(parentWorld))
         {
-            if(!((WorldMinigame2)parentWorld).IsPaused)
+            PausableWorld pausableWorld = (PausableWorld)parentWorld;
+            if(pausableWorld.getIsPaused())
             {
-                ((WorldMinigame2)parentWorld).PauseWorld(false);
+                pausableWorld.ResumeWorld();
             }
         }
     }
 
-    private void ResumeWorld()
+    private void restartWorld()
     {
-        if(HavenmeesterWorld.class.isInstance(parentWorld))
+        if(PausableWorld.class.isInstance(parentWorld))
         {
-            if(((HavenmeesterWorld)parentWorld).IsPaused)
-            {
-                ((HavenmeesterWorld)parentWorld).ResumeWorld();
-            }
-        } else if(WorldMinigame2.class.isInstance(parentWorld))
-        {
-            if(((WorldMinigame2)parentWorld).IsPaused)
-            {
-                ((WorldMinigame2)parentWorld).ResumeWorld();
-            }
-        }
-    }
-
-    private void RestartWorld()
-    {
-        if(HavenmeesterWorld.class.isInstance(parentWorld))
-        {
-            ((HavenmeesterWorld)parentWorld).RestartWorld();
+            ((PausableWorld)parentWorld).RestartWorld();
         } else if(WorldMinigame2.class.isInstance(parentWorld))
         {
             ((WorldMinigame2)parentWorld).RestartWorld();
         }
     }
 
-    private void StopWorld()
+    private void stopWorld()
     {
-        if(HavenmeesterWorld.class.isInstance(parentWorld))
+        if(PausableWorld.class.isInstance(parentWorld))
         {
-            ((HavenmeesterWorld)parentWorld).StopWorld();
+            ((PausableWorld)parentWorld).StopWorld();
         } else if(WorldMinigame2.class.isInstance(parentWorld))
         {
             ((WorldMinigame2)parentWorld).StopWorld();

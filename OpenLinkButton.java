@@ -3,21 +3,16 @@ import java.net.*;
 import java.awt.*;
 import java.io.IOException;
 
-/**
- * Write a description of class OpenLinkButton here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class OpenLinkButton extends Actor
 {
-    private String test;
+    private String url;
+    
     public OpenLinkButton(String url, String imageName)
     {
-        test = url;
+        this.url = url;
         setImage(imageName);
     }
-    
+
     public void act() 
     {
         if(Greenfoot.mouseClicked(this))
@@ -26,10 +21,11 @@ public class OpenLinkButton extends Actor
                 if (Desktop.isDesktopSupported()) 
                 {
                     Desktop desk = Desktop.getDesktop();
-                    desk.browse(URI.create(test));
+                    desk.browse(URI.create(url));
                 }
             } catch(IOException e)
             {
+                throw new OpenLinkRuntimeException(e);
             }
         }
     }    

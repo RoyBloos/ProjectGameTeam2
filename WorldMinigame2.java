@@ -4,225 +4,193 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.awt.Color;
 
-public class WorldMinigame2 extends World
+public class WorldMinigame2 extends PausableWorld
 {
 
-    public int ScoreToReach = 24;
-    public int truckCounter;
-    public boolean IsPaused;
-    public WorldMainMenu ParentWorld;
+    private int scoreToReach = 24;
+    private int truckCounter;
+    private WorldMainMenu parentWorld;
     private boolean areActorsPaused;
     private Random rand;
-    
-    public ArrayList<TruckMg2> PlayerTrucks;
+    private ArrayList<TruckMg2> playerTrucks;
     private ArrayList<TruckMg2> teSpawnenPlayerTrucks;
-    public ArrayList<TruckMg2> CpuTrucks;
+    private ArrayList<TruckMg2> cpuTrucks;
     private ArrayList<TruckMg2> teSpawnenCpuTrucks;
-
-    public BoatMg2 PlayerBoat = null;
-    public Text PlayerScorebord;
-    public int PlayerScore = 0;
-    public Crane PlayerCrane;
-    public CraneReacher PlayerCraneReacher;
-    
-    public BoatMg2 CpuBoat = null;
-    public Text CpuScorebord;
-    public int CpuScore = 0;
-    public Crane CpuCrane;
-    public CraneReacher CpuCraneReacher;
+    private BoatMg2 playerBoat = null;
+    private Text playerScorebord;
+    private int playerScore = 0;
+    private Crane playerCrane;
+    private CraneReacher playerCraneReacher;
+    private BoatMg2 cpuBoat = null;
+    private Text cpuScorebord;
+    private int cpuScore = 0;
+    private Crane cpuCrane;
+    private CraneReacher cpuCraneReacher;
+    GreenfootSound backgroundMusic = new GreenfootSound("Minigame2Music.mp3");
 
     public WorldMinigame2(WorldMainMenu parentWorld, int gameHeight, int gameWidth)
     {    
-        super(gameHeight, gameWidth, 1); 
+        super(gameHeight, gameWidth); 
         rand = new Random();
-        ParentWorld = parentWorld;
+        this.parentWorld = parentWorld;
         truckCounter = 0;
         spawnBoats();
         addObject(new GameNavigationButton(this, "Pause"), 50,50);
         setPaintOrder(GameNavigationButton.class, OpenLinkButton.class, PauseScreen.class, Crane.class, CraneReacher.class, ContainerMG2.class, BalanceIndicator.class, BalanceBar.class, BoatMg2.class);
-        
-        PlayerTrucks = new ArrayList<TruckMg2>();
-        teSpawnenPlayerTrucks = createTrucks(PlayerBoat);
-        PlayerCrane = new Crane();
-        PlayerCraneReacher = new CraneReacher(PlayerCrane, PlayerBoat, true);
-        PlayerCrane.CraneReacher = PlayerCraneReacher;
-        PlayerScorebord = new Text(Color.GREEN, 25);
-        addObject(PlayerCraneReacher, 1100, 300);
-        addObject(PlayerCrane,900,300);
-        addObject(PlayerScorebord, 1200,50);
-        
-        CpuTrucks = new ArrayList<TruckMg2>();
-        teSpawnenCpuTrucks = createTrucks(CpuBoat);
-        CpuCrane = new Crane();
-        CpuCraneReacher = new CraneReacher(CpuCrane, CpuBoat, false);
-        CpuCrane.CraneReacher = CpuCraneReacher;
-        CpuScorebord = new Text(Color.GREEN, 25);
-        
-        addObject(CpuCraneReacher, 180, 300);
-        addObject(CpuCrane,380,300);
-        addObject(CpuScorebord, 200,50);
 
+        playerTrucks = new ArrayList<>();
+        teSpawnenPlayerTrucks = createTrucks(playerBoat);
+        playerCrane = new Crane();
+        playerCraneReacher = new CraneReacher(playerCrane, playerBoat, true);
+        playerCrane.setCraneReacher(playerCraneReacher);
+        playerScorebord = new Text(Color.GREEN, 25);
+        addObject(playerCraneReacher, 1100, 300);
+        addObject(playerCrane,900,300);
+        addObject(playerScorebord, 1200,50);
+
+        cpuTrucks = new ArrayList<>();
+        teSpawnenCpuTrucks = createTrucks(cpuBoat);
+        cpuCrane = new Crane();
+        cpuCraneReacher = new CraneReacher(cpuCrane, cpuBoat, false);
+        cpuCrane.setCraneReacher(cpuCraneReacher);
+        cpuScorebord = new Text(Color.GREEN, 25);
+
+        addObject(cpuCraneReacher, 180, 300);
+        addObject(cpuCrane,380,300);
+        addObject(cpuScorebord, 200,50);
+
+    }
+
+    public void StartMusic()
+    {
+        backgroundMusic.playLoop();
+    }
+
+    public int getScoreToReach()
+    {
+        return scoreToReach;
+    }
+
+    public List<TruckMg2> getCpuTrucks()
+    {
+        return cpuTrucks;
+    }
+
+    public BoatMg2 getCpuBoat()
+    {
+        return cpuBoat;
     }
 
     public void act()
     {
-        if(!IsPaused)
+        if(!getIsPaused())
         {
-            truckCounter += 1;
-            if(truckCounter >= 150)
-            {
-                if(PlayerTrucks != null && PlayerTrucks.size() < 6)
-                {
-                    AddTruck(true);
-                }
-                
-                if(CpuTrucks != null && CpuTrucks.size() < 6)
-                {
-                    AddTruck(false);
-                }
-                
-                truckCounter = 0;
-            }
+            spawnTruck();
+            checkEndOfGamePlayer();
+            checkEndOfGameCpu();
         } else
         {
             if(!areActorsPaused)
             {
-                SetPauseOnAllActors();
+                setPauseOnAllActors();
             }
         }
-        
-        if(PlayerBoat != null && (PlayerBoat.IsOutOfBalance || (PlayerTrucks.size() == 0 && teSpawnenPlayerTrucks.size() == 0)))
+    }
+
+    private void spawnTruck()
+    {
+        truckCounter += 1;
+        if(truckCounter >= 150)
         {
-            if(!IsPaused)
+            if(playerTrucks != null && playerTrucks.size() < 6)
             {
-                PauseWorld(true);
+                AddTruck(true);
             }
+
+            if(cpuTrucks != null && cpuTrucks.size() < 6)
+            {
+                AddTruck(false);
+            }
+
+            truckCounter = 0;
         }
-        
-        if(CpuBoat != null && (CpuBoat.IsOutOfBalance || (CpuTrucks.size() == 0 && teSpawnenCpuTrucks.size() == 0)))
+    }
+
+    private void checkEndOfGameCpu()
+    {
+        boolean cpuBoatIsOutOfBalance = cpuBoat != null && cpuBoat.getIsOutOfBalance();
+        boolean allCpuTrucksLeftGame = cpuTrucks != null && cpuTrucks.isEmpty() && teSpawnenCpuTrucks != null && teSpawnenCpuTrucks.isEmpty();
+        if(cpuBoatIsOutOfBalance || allCpuTrucksLeftGame)
         {
-            if(!IsPaused)
-            {
-                PauseWorld(true);
-            }
+            PauseWorld(true);
         }
-        
+    }
+
+    public void checkEndOfGamePlayer()
+    {
+        boolean playerBoatIsOutOfBalance = playerBoat != null && playerBoat.getIsOutOfBalance();        
+        boolean allPlayerTrucksLeftGame = playerTrucks != null && playerTrucks.isEmpty() && teSpawnenPlayerTrucks != null && teSpawnenPlayerTrucks.isEmpty();
+        if(playerBoatIsOutOfBalance || allPlayerTrucksLeftGame)
+        {
+            PauseWorld(true);
+        }
     }
 
     public void AddTruck(boolean isPlayerTruck)
     {
         if(isPlayerTruck)
         {
-            if(teSpawnenPlayerTrucks.size() > 0)
+            if(!teSpawnenPlayerTrucks.isEmpty())
             {
                 TruckMg2 newTruck = teSpawnenPlayerTrucks.get(randInt(0, teSpawnenPlayerTrucks.size() - 1));
                 teSpawnenPlayerTrucks.remove(newTruck);
                 addObject(newTruck, 967, 768);
-                PlayerTrucks.add(newTruck);
+                playerTrucks.add(newTruck);
             }
         } 
         else
         {
 
-            if(teSpawnenCpuTrucks.size() > 0)
+            if(!teSpawnenCpuTrucks.isEmpty())
             {
                 TruckMg2 newTruck = teSpawnenCpuTrucks.get(randInt(0, teSpawnenCpuTrucks.size() - 1));
                 teSpawnenCpuTrucks.remove(newTruck);
                 addObject(newTruck, 312, 768);
-                CpuTrucks.add(newTruck);
+                cpuTrucks.add(newTruck);
             }
         }
     }
-    
+
     public void RemoveTruck(TruckMg2 truck)
     {
-        if(truck.IsPlayerTruck)
+        if(truck.getIsPlayerTruck())
         {
-            PlayerTrucks.remove(truck);
-            AddPoints(2, true);
+            playerTrucks.remove(truck);
+            addPoints(2, true);
         }
         else
         {
-            CpuTrucks.remove(truck);
-            AddPoints(2, false);
+            cpuTrucks.remove(truck);
+            addPoints(2, false);
         }
         removeObject(truck);
     }
-    
+
     public TruckMg2 GetTruck(String color)
     {
-        for(TruckMg2 truck : CpuTrucks)
+        for(TruckMg2 truck : cpuTrucks)
         {
-            if(!truck.IsLoaded && truck.Color == color)
+            if(!truck.getIsLoaded() && truck.getColor() == color)
             {
                 return truck;
             }
         }
         return null;
     }
-    
-    private void AddPoints(int points, boolean isPlayerScore)
-    {
-        if(isPlayerScore)
-        {
-            PlayerScore += points;
-            PlayerScorebord.SetText(Integer.toString(PlayerScore), Color.GREEN, null);
-            ParentWorld.SetScore("minigame2", PlayerScore);
-        } 
-        else
-        {
-            CpuScore += points;
-            CpuScorebord.SetText(Integer.toString(CpuScore), Color.GREEN, null);
-        }
-        
-       
-        
-    }
-    
-    private ArrayList<TruckMg2> createTrucks(BoatMg2 boat)
-    {
-        ArrayList<TruckMg2> truckArray = new ArrayList<TruckMg2>();
-        
-        for(int i = 1; i <= boat.Rows / 2; i++)
-        {
-            truckArray.add(new TruckMg2(!boat.IsCpuBoat, "Blauw"));
-            truckArray.add(new TruckMg2(!boat.IsCpuBoat, "Groen"));
-            truckArray.add(new TruckMg2(!boat.IsCpuBoat, "Grijs"));
-        }
-        return truckArray;
-    }
-    
-    private void spawnBoats()
-    {
-        boolean hasCpuBoat = false;
-        boolean hasPlayerBoat = false;
-        for(BoatMg2 boat : getObjects(BoatMg2.class))
-        {
-            if(boat.IsCpuBoat)
-            {
-                hasCpuBoat = true;
-            } else
-            {
-                hasPlayerBoat = true;
-            }
-        }
-
-        if (!hasCpuBoat)
-        {
-            CpuBoat = new BoatMg2(this, true);
-            addObject(CpuBoat, 560, getWidth());
-        }
-
-        if (!hasPlayerBoat)
-        {
-            PlayerBoat = new BoatMg2(this, false);
-            addObject(PlayerBoat, 760, getWidth());
-        }
-    }
 
     public void PauseWorld(boolean isGameOver)
     {
-        this.IsPaused = true;
+        this.setIsPaused(true);
         addObject(new PauseScreen("PauseScreenMinigame2.png"), 640, 384);
         if(!isGameOver)
         {
@@ -235,23 +203,25 @@ public class WorldMinigame2 extends World
 
     public void StopWorld()
     {
-        Greenfoot.setWorld(ParentWorld);
+        Greenfoot.setWorld(parentWorld);
+        backgroundMusic.stop();
     }
 
     public void RestartWorld()
     {
-        ParentWorld.StartNewGame("minigame2");
+        parentWorld.StartNewGame("minigame2");
     }
-    
+
     public void ResumeWorld()
     {
 
         for(GameNavigationButton button : getObjects(GameNavigationButton.class)){
-            if(button.knopType != "Pause")
+            if(button.getKnopType() != "Pause")
             {
                 removeObject(button);
             }
         }
+
         for(OpenLinkButton button : getObjects(OpenLinkButton.class)){
             removeObject(button);
         }
@@ -259,33 +229,90 @@ public class WorldMinigame2 extends World
         for(PauseScreen pauseScreen : getObjects(PauseScreen.class)){
             removeObject(pauseScreen);
         }
-        this.IsPaused = false;
-        SetPauseOnAllActors();
+        this.setIsPaused(false);
+        setPauseOnAllActors();
     }
 
-    private void SetPauseOnAllActors()
+    private void addPoints(int points, boolean isPlayerScore)
+    {
+        if(isPlayerScore)
+        {
+            playerScore += points;
+            playerScorebord.SetText(Integer.toString(playerScore), Color.GREEN, null);
+            parentWorld.setGameScore("minigame2", playerScore);
+        } 
+        else
+        {
+            cpuScore += points;
+            cpuScorebord.SetText(Integer.toString(cpuScore), Color.GREEN, null);
+        }
+
+    }
+
+    private ArrayList<TruckMg2> createTrucks(BoatMg2 boat)
+    {
+        ArrayList<TruckMg2> truckArray = new ArrayList<>();
+
+        for(int i = 1; i <= boat.getRows() / 2; i++)
+        {
+            truckArray.add(new TruckMg2(!boat.getIsCpuBoat(), "Blauw"));
+            truckArray.add(new TruckMg2(!boat.getIsCpuBoat(), "Groen"));
+            truckArray.add(new TruckMg2(!boat.getIsCpuBoat(), "Grijs"));
+        }
+        return truckArray;
+    }
+
+    private void spawnBoats()
+    {
+        boolean hasCpuBoat = false;
+        boolean hasPlayerBoat = false;
+        for(BoatMg2 boat : getObjects(BoatMg2.class))
+        {
+            if(boat.getIsCpuBoat())
+            {
+                hasCpuBoat = true;
+            } else
+            {
+                hasPlayerBoat = true;
+            }
+        }
+
+        if (!hasCpuBoat)
+        {
+            cpuBoat = new BoatMg2(this, true);
+            addObject(cpuBoat, 560, getWidth());
+        }
+
+        if (!hasPlayerBoat)
+        {
+            playerBoat = new BoatMg2(this, false);
+            addObject(playerBoat, 760, getWidth());
+        }
+    }
+
+    private void setPauseOnAllActors()
     {
         for(Crane crane : getObjects(Crane.class)){
-            crane.IsPaused = IsPaused;
+            crane.setIsPaused(getIsPaused());
         }
 
         for(CraneReacher craneReacher : getObjects(CraneReacher.class)){
-            craneReacher.IsPaused = IsPaused;
+            craneReacher.setIsPaused(getIsPaused());
         }
 
         for(BoatMg2 boatMg2 : getObjects(BoatMg2.class)){
-            boatMg2.IsPaused = IsPaused;
+            boatMg2.setIsPaused(getIsPaused());
         }
 
         for(TruckMg2 truckMg2 : getObjects(TruckMg2.class)){
-            truckMg2.IsPaused = IsPaused;
+            truckMg2.setIsPaused(getIsPaused());
         }
 
         for(ContainerMG2 containerMG2 : getObjects(ContainerMG2.class)){
-            containerMG2.IsPaused = IsPaused;
+            containerMG2.setIsPaused(getIsPaused());
         }
     }
-    
+
     private int randInt(int min, int max) {
         return rand.nextInt((max - min) + 1) + min;
     }

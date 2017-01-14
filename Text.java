@@ -1,36 +1,31 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.awt.Color;
 
-/**
- * Write a description of class Text here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class Text extends Actor
 {
-    public Color TextColor;
-    public Integer FontSize;
+    private Color textColor;
+    private int fontSize;
     public Text(Color textColor, int fontSize)
     {
-        this.TextColor = textColor;
-        this.FontSize = fontSize;
-        SetText("0", TextColor, FontSize);
+        this.textColor = textColor;
+        this.fontSize = fontSize;
+        SetText("0", textColor, fontSize);
     }
     
-    public void SetText(String text, Color textColor, Integer fontSize)
+    public void SetText(String text, Color tc, Integer fs)
     {
-        if (textColor != null)
+        Color overideTextColor = textColor;
+        if(tc != null)
         {
-            TextColor = textColor;
+            overideTextColor = tc;
         }
         
-        if(fontSize != null)
+        int overrideFontSize = fontSize;
+        if (fs != null)
         {
-            FontSize = fontSize;
+            overrideFontSize = fs;
         }
-        
-        GreenfootImage txtImg = new GreenfootImage(text, FontSize, TextColor, null);
+        GreenfootImage txtImg = new GreenfootImage(text, overrideFontSize, overideTextColor, null);
         GreenfootImage image = new GreenfootImage(200, txtImg.getHeight());
         image.drawImage(txtImg, 0, 0);
         setImage(image);

@@ -1,40 +1,35 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.List;
-/**
- * Write a description of class Loods here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class Loods extends Actor
+
+public class Pilot extends PausableActor
 {
-    public Boat SelectedBoat;
+    private Boat selectedBoat;
     private int xStartPositie;
     private int yStartPositie;
-    public boolean IsPaused;
-    /**
-     * Act - do whatever the Loods wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
+
+    public void setSelectedBoat(Boat boat)
+    {
+        selectedBoat = boat;
+    }
+    
     public void act() 
     {
-        if(!IsPaused)
+        if(!getIsPaused())
         {
             if(Greenfoot.mouseClicked(this))
             {
                 HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
-                world.SelectedLoods = this;
+                world.setSelectedPilot(this);
             }
-            
-            if(SelectedBoat != null)
+
+            if(selectedBoat != null && selectedBoat.getWorld() != null)
             {
-                setRotation(getAngle(SelectedBoat.getX(), SelectedBoat.getY())+180 );
-                turnTowards(SelectedBoat.getX(), SelectedBoat.getY());
+                setRotation(getAngle(selectedBoat.getX(), selectedBoat.getY())+180 );
+                turnTowards(selectedBoat.getX(), selectedBoat.getY());
                 move(1);
                 if(selectedBoatIsCloseEnough())
                 {
-                    SelectedBoat.HeeftLoods = true;
-                    SelectedBoat = null;
+                    selectedBoat.setHasLoods(true);
+                    selectedBoat = null;
                 }
             } else if (xStartPositie != getX() && yStartPositie != getY())
             {
@@ -47,28 +42,28 @@ public class Loods extends Actor
             }
         }
     }    
-    
-     protected void addedToWorld(World world)
+
+    protected void addedToWorld(World world)
     {
         setRotation(90);
         xStartPositie = getX();
         yStartPositie = getY();
     }
-    
+
     public int getAngle(int targetX, int targetY) {
         int angle = (int) Math.toDegrees(Math.atan2(targetY - getY(), targetX - getX()));
-    
+
         if(angle < 0){
             angle += 360;
         }
-    
+
         return angle;
     }
-    
+
     private boolean selectedBoatIsCloseEnough()
     {  
         for(Boat boat : getObjectsInRange(30, Boat.class)){
-            if(boat == SelectedBoat){
+            if(boat == selectedBoat){
                 return true;
             }
         }

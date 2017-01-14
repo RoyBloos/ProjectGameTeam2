@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Pilot
+comment1.params=boat
+comment1.target=void\ setSelectedBoat(Boat)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=world
+comment3.target=void\ addedToWorld(greenfoot.World)
+comment4.params=targetX\ targetY
+comment4.target=int\ getAngle(int,\ int)
+comment5.params=
+comment5.target=boolean\ selectedBoatIsCloseEnough()
+numComments=6

@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=PausableWorld
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ PausableWorld\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=width\ height
+comment1.target=PausableWorld(int,\ int)
+comment2.params=
+comment2.target=boolean\ getIsPaused()
+comment3.params=isPaused
+comment3.target=void\ setIsPaused(boolean)
+comment4.params=isGameOver
+comment4.target=void\ PauseWorld(boolean)
+comment5.params=
+comment5.target=void\ ResumeWorld()
+comment6.params=
+comment6.target=void\ RestartWorld()
+comment7.params=
+comment7.target=void\ StopWorld()
+numComments=8

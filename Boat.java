@@ -1,152 +1,189 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.lang.Math;
-import java.util.List;
 import java.util.Random;
 
-public class Boat extends Actor
+public class Boat extends PausableActor
 {
-    int counter = 0;
-    public Loods SelectedLoods;
-    public boolean HeeftLoods;
-    public Haven ToegewezenHaven;
-    public boolean IsDocked;
-    public int AantalContainers;
-    public int StartAantalContainers;
-    public Boatlane AssignedBoatlane;
+    private Harbor assignedHarbor;
+    private boolean isDocked;
+    private int numberOfContainers;
+    private Boatlane assignedBoatlane;
+    private int moveCounter = 0;
+    private int occupiedCounter;
     private boolean reachedEntrypoint;
     private int entryPointYOFfset = 150;
     private Random rand;
-    public boolean MagHavenVerlaten;
-    public int OccupiedCounter;
-    public boolean IsPaused;
-    
+    private boolean hasLoods;
+    private boolean releasedFromHarbor;
+
     public Boat()
     {
         rand = new Random();
     }
-    
+
+    public void setHasLoods(boolean hasLoods)
+    {
+        this.hasLoods = hasLoods;
+    }
+
+    public void setReleasedFromHarbor(boolean released)
+    {
+        releasedFromHarbor = released;
+    }
+
+    public int getOccupiedCountrer()
+    {
+        return occupiedCounter;
+    }
+
+    public void setOccupiedCountrer(int counterValue)
+    {
+        occupiedCounter = counterValue;
+    }
+
+    public void setAssignedBoatlane(Boatlane boatlane)
+    {
+        assignedBoatlane = boatlane;
+    }
+
+    public Boatlane getAssignedBoatlane()
+    {
+        return assignedBoatlane;
+    }
+
+    public void setIsDocked(boolean isDocked)
+    {
+        this.isDocked = isDocked;
+    }
+
+    public boolean getIsDocked()
+    {
+        return isDocked;
+    }
+
+    public int getNumberOfContainers()
+    {
+        return numberOfContainers;
+    }
+
     public void act() 
     {
-        if(!IsPaused)
+        if(!getIsPaused())
         {
             HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
-            if(Greenfoot.mouseClicked(this) && world.SelectedLoods != null)
+            if(Greenfoot.mouseClicked(this) && world.getSelectedPilot() != null)
             {
-                world.SelectedLoods.SelectedBoat = this;
-                SelectedLoods = world.SelectedLoods;
-                world.SelectedLoods = null;
+                world.getSelectedPilot().setSelectedBoat(this);
+                world.setSelectedPilot(null);
             }
-            
-            if(ToegewezenHaven == null && HeeftLoods)
+
+            if(assignedHarbor == null && hasLoods)
             {
                 wijsHavenToe();
             }
-            
-            if(OccupiedCounter > 0)
+
+            if(occupiedCounter > 0)
             {
-                OccupiedCounter -=1;
+                occupiedCounter -=1;
             }
-            
+
             moveBoat();
         }
     }
-    
+
     public void UnloadContainers(int containers)
     {
-        if(AantalContainers > containers)
+        if(numberOfContainers > containers)
         {
             HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
-            if(containers <= AantalContainers)
+            if(containers <= numberOfContainers)
             {
                 world.AddPoints(containers);
             } else
             {
-                world.AddPoints(AantalContainers);
+                world.AddPoints(numberOfContainers);
             }
         }
-        AantalContainers = AantalContainers - containers;
+        numberOfContainers = numberOfContainers - containers;
 
-        if(AantalContainers <= 0)
+        if(numberOfContainers <= 0)
         {
-            AantalContainers = 0;
+            numberOfContainers = 0;
             reachedEntrypoint = false;
         }
-        
-        setImage("Vrachtschip" + AantalContainers + ".png");
+
+        setImage("Vrachtschip" + numberOfContainers + ".png");
     }
-    
+
     private void moveBoat()
     {
-        if(ToegewezenHaven != null && (!IsDocked || MagHavenVerlaten))
+        if(assignedHarbor != null && (!isDocked || releasedFromHarbor))
         {
             //Gaat richting het entrypoint van de haven
             if(!reachedEntrypoint)
             {
-                setRotation(getAngle(ToegewezenHaven.getX(), ToegewezenHaven.getY() + entryPointYOFfset)+180 );
-                turnTowards(ToegewezenHaven.getX(), ToegewezenHaven.getY() + entryPointYOFfset);
-                if(getX() == ToegewezenHaven.getX() && getY() == ToegewezenHaven.getY() + entryPointYOFfset)
-                {
-                    reachedEntrypoint = true;
-                }
-            } else if(AantalContainers > 0)
+                moveTowardsHarborEntrypoint();
+            } else if(numberOfContainers > 0)
             {
-                setRotation(getAngle(ToegewezenHaven.getX(), ToegewezenHaven.getY())+180 );
-                turnTowards(ToegewezenHaven.getX(), ToegewezenHaven.getY());
+                setRotation(getAngle(assignedHarbor.getX(), assignedHarbor.getY())+180 );
+                turnTowards(assignedHarbor.getX(), assignedHarbor.getY());
             } else
             {
                 setRotation(getAngle(0, getY())+180 );
                 turnTowards(0, getY());
             }
         } 
-        if(counter % 2 == 0 && (!IsDocked || MagHavenVerlaten))
+        if(moveCounter % 2 == 0 && (!isDocked || releasedFromHarbor))
         {
             move(1);
         }
-        counter++;
-        
+        moveCounter++;
+
         if(isAtEdge())
         {
             HavenmeesterWorld havenmeesterWorld =  (HavenmeesterWorld)getWorld();
             havenmeesterWorld.RemoveBoat(this);
         }
     }
-    
-    
-    
+
+    private void moveTowardsHarborEntrypoint()
+    {
+        setRotation(getAngle(assignedHarbor.getX(), assignedHarbor.getY() + entryPointYOFfset)+180 );
+        turnTowards(assignedHarbor.getX(), assignedHarbor.getY() + entryPointYOFfset);
+        if(getX() == assignedHarbor.getX() && getY() == assignedHarbor.getY() + entryPointYOFfset)
+        {
+            reachedEntrypoint = true;
+        }
+    }
+
     private void wijsHavenToe()
     {
-        for(Haven haven : getWorld().getObjects(Haven.class)){
-            if(!haven.IsBezet){
-                ToegewezenHaven = haven;
-                haven.ZetBoat(this);
+        for(Harbor harbor : getWorld().getObjects(Harbor.class)){
+            if(!harbor.getIsOccupied()){
+                assignedHarbor = harbor;
+                harbor.SetBoat(this);
                 return;
             }
         }
     }
-    
+
     public int getAngle(int targetX, int targetY) {
         int angle = (int) Math.toDegrees(Math.atan2(targetY - getY(), targetX - getX()));
-    
+
         if(angle < 0){
             angle += 360;
         }
-    
+
         return angle;
     }
-    
+
     protected void addedToWorld(World world)
     {
-        StartAantalContainers = randInt(1,21);
-        AantalContainers = StartAantalContainers;
-        setRotation(AssignedBoatlane.Direction);
-        setImage("Vrachtschip" + AantalContainers + ".png");
+        numberOfContainers = randInt(1,21);
+        setRotation(assignedBoatlane.getDirection());
+        setImage("Vrachtschip" + numberOfContainers + ".png");
     }
-    
+
     public int randInt(int min, int max) {
         return rand.nextInt((max - min) + 1) + min;
     }
-    
-    
-       
-  
 }
