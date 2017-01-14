@@ -1,11 +1,11 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class HavenStoplicht extends PausableActor
+public class HarborStoplight extends PausableActor
 {
     private Harbor harbor;
     private String kleur;
 
-    public HavenStoplicht(Harbor harbor, String kleur)
+    public HarborStoplight(Harbor harbor, String kleur)
     {
         this.harbor = harbor;
         this.kleur = kleur;
@@ -14,19 +14,16 @@ public class HavenStoplicht extends PausableActor
 
     public void act() 
     {
-        if(!getIsPaused())
+        if(!getIsPaused() && Greenfoot.mouseClicked(this) && kleur == "Oranje")
         {
-            if(Greenfoot.mouseClicked(this) && kleur == "Oranje")
-            {
-               harbor.ReleaseBoat();
-               ZetStoplicht("Groen");
-            }
+            harbor.ReleaseBoat();
+            ZetStoplicht("Groen");
         }
     }    
-    
+
     public void ZetStoplicht(String kleur)
     {
         this.kleur = kleur;
-       setImage("StoplichtKlein" + kleur + ".png");
+        setImage("StoplichtKlein" + kleur + ".png");
     }
 }

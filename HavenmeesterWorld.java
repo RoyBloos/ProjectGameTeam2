@@ -1,45 +1,26 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.List;
-import java.lang.Math;
 import java.util.ArrayList;
 import java.awt.Color;
 
 public class HavenmeesterWorld extends PausableWorld
 {
     private Text scorebord;
-    private Loods selectedLoods;
+    private Pilot selectedPilot;
     private int score = 0;
     private WorldMainMenu parentWorld;
-    private int counter = 1;
     private ArrayList<BoatSpawn> boatSpawns;
     private ArrayList<Leven> levens;
-    private int nextLevelIndex;
     private long createdMillis = System.currentTimeMillis();
     private long pausedMillis;
     private boolean areActorsPaused;
     private int scoreToReach = 1000;
 
-    public int getScoreToReach()
-    {
-        return scoreToReach;
-    }
-
-    public void setSelectedLoods(Loods loods)
-    {
-        selectedLoods = loods;
-    }
-
-    public Loods getSelectedLoods()
-    {
-        return selectedLoods;
-    }
-
     public HavenmeesterWorld(WorldMainMenu parentWorld, int gameHeight, int gameWidth)
     {    
         super(gameHeight, gameWidth); 
         this.parentWorld = parentWorld;
-        Loods loods1 = new Loods();
-        Loods loods2 = new Loods();
+        Pilot loods1 = new Pilot();
+        Pilot loods2 = new Pilot();
         addObject(loods1, 100, 380);
         addObject(loods2, 1180, 380);
         addObject(new Harbor(422), 446, 318);
@@ -51,12 +32,12 @@ public class HavenmeesterWorld extends PausableWorld
         addObject(new Boatlane(550, 0), -1,-1);
         addObject(new Boatlane(575, 180), -1,-1);
         addObject(new Boatlane(600, 0), -1,-1);
-        addObject(new LoodsGebouw(loods1),100,340);
-        addObject(new LoodsGebouw(loods2),1180,340);
+        addObject(new PilotOffice(loods1),100,340);
+        addObject(new PilotOffice(loods2),1180,340);
         scorebord = new Text(Color.RED, 25);
         addObject(scorebord, 1200,50);
         addObject(new GameNavigationButton(this, "Pause"), 50,50);
-        levens = new ArrayList<Leven>();
+        levens = new ArrayList<>();
         levens.add(new Leven());
         levens.add(new Leven());
         levens.add(new Leven());
@@ -68,7 +49,22 @@ public class HavenmeesterWorld extends PausableWorld
             xPositieLeven -= 60;
         }
 
-        CreateBoatSpawns();
+        createBoatSpawns();
+    }
+
+    public int getScoreToReach()
+    {
+        return scoreToReach;
+    }
+
+    public void setSelectedPilot(Pilot pilot)
+    {
+        selectedPilot = pilot;
+    }
+
+    public Pilot getSelectedPilot()
+    {
+        return selectedPilot;
     }
 
     public void PauseWorld(boolean isGameOver)
@@ -89,7 +85,7 @@ public class HavenmeesterWorld extends PausableWorld
     {
 
         for(GameNavigationButton button : getObjects(GameNavigationButton.class)){
-            if(button.knopType != "Pause")
+            if(button.getKnopType() != "Pause")
             {
                 removeObject(button);
             }
@@ -102,7 +98,7 @@ public class HavenmeesterWorld extends PausableWorld
             removeObject(pauseScreen);
         }
         setIsPaused(false);
-        SetPauseOnAllActors();
+        setPauseOnAllActors();
         createdMillis += System.currentTimeMillis() - pausedMillis;
     }
 
@@ -122,19 +118,19 @@ public class HavenmeesterWorld extends PausableWorld
         {
             if(areActorsPaused)
             {
-                SetPauseOnAllActors();
+                setPauseOnAllActors();
             }
             long elapsedTime = System.currentTimeMillis() - createdMillis;
-            if(!boatSpawns.isEmpty() && boatSpawns.get(0).Time < elapsedTime)
+            if(!boatSpawns.isEmpty() && boatSpawns.get(0).getTime() < elapsedTime)
             {
-                addBoatToWorld(boatSpawns.get(0).Boat);
+                addBoatToWorld(boatSpawns.get(0).getBoat());
                 boatSpawns.remove(0);
             }
         } else
         {
             if(!areActorsPaused)
             {
-                SetPauseOnAllActors();
+                setPauseOnAllActors();
             }
         }
     }
@@ -148,7 +144,7 @@ public class HavenmeesterWorld extends PausableWorld
             textColor = Color.GREEN;
         }
         scorebord.SetText(Integer.toString(score) + " / " + Integer.toString(scoreToReach), textColor, null);
-        parentWorld.SetScore("Havenmeester", score);
+        parentWorld.setGameScore("Havenmeester", score);
     }
 
     public void RemoveBoat(Boat boat)
@@ -165,24 +161,24 @@ public class HavenmeesterWorld extends PausableWorld
         }
     }
 
-    private void CreateBoatSpawns()
+    private void createBoatSpawns()
     {
-        boatSpawns = new ArrayList<BoatSpawn>();
+        boatSpawns = new ArrayList<>();
         int levelDifficulty = 1;
         int totalBoatSpawns = 0;
         while (levelDifficulty <= 15)
         {
-            int numberOfBoats = getRandomNumber(levelDifficulty, (levelDifficulty + 3));
+            int numberOfBoats = getRandomNumber(levelDifficulty, levelDifficulty + 3);
             int spawnTime = totalBoatSpawns * 5000;
             totalBoatSpawns += numberOfBoats;
             int spawnIntervalMin = getRandomNumber(3000, 5000);
             int spawnIntervanMax = getRandomNumber(5000, 7000);
-            CreateBoatSpawn(boatSpawns, numberOfBoats, spawnTime, spawnIntervalMin, spawnIntervanMax);
+            createBoatSpawn(boatSpawns, numberOfBoats, spawnTime, spawnIntervalMin, spawnIntervanMax);
             levelDifficulty += 1;
         }
     }
 
-    private void CreateBoatSpawn(ArrayList<BoatSpawn> boatSpawns, int numberOfBoats, int spawntime, int spawnIntervalMin, int spawnIntervalMax)
+    private void createBoatSpawn(ArrayList<BoatSpawn> boatSpawns, int numberOfBoats, int spawntime, int spawnIntervalMin, int spawnIntervalMax)
     {
         int addedBoats = 0;
         while (addedBoats <= numberOfBoats)
@@ -192,7 +188,7 @@ public class HavenmeesterWorld extends PausableWorld
         }
     }
 
-    private void SetPauseOnAllActors()
+    private void setPauseOnAllActors()
     {
         for(Boat boat : getObjects(Boat.class)){
             boat.setIsPaused(getIsPaused());
@@ -202,40 +198,40 @@ public class HavenmeesterWorld extends PausableWorld
             harbor.setIsPaused(getIsPaused());
         }
 
-        for(HavenStoplicht havenStoplicht : getObjects(HavenStoplicht.class)){
-            havenStoplicht.setIsPaused(getIsPaused());
+        for(HarborStoplight stoplight : getObjects(HarborStoplight.class)){
+            stoplight.setIsPaused(getIsPaused());
         }
 
-        for(Loods loods : getObjects(Loods.class)){
-            loods.setIsPaused(getIsPaused());
+        for(Pilot pilot : getObjects(Pilot.class)){
+            pilot.setIsPaused(getIsPaused());
         }
 
-        for(LoodsGebouw loodsGebouw : getObjects(LoodsGebouw.class)){
-            loodsGebouw.setIsPaused(getIsPaused());
+        for(PilotOffice pilotOffice : getObjects(PilotOffice.class)){
+            pilotOffice.setIsPaused(getIsPaused());
         }
     }
 
     private void addBoatToWorld(Boat boat)
     {
-        Boatlane boatlane = GetBoatlane();
+        Boatlane boatlane = getBoatlane();
         if(boatlane != null)
         {
             boat.setAssignedBoatlane(boatlane);
             boat.setOccupiedCountrer(1000);
-            if(boatlane.Direction == 0)
+            if(boatlane.getDirection() == 0)
             {
-                addObject(boat, 0, boatlane.Yas);
+                addObject(boat, 0, boatlane.getyAs());
             } else
             {
-                addObject(boat,1280, boatlane.Yas);
+                addObject(boat,1280, boatlane.getyAs());
             }
         }
     }
 
-    private Boatlane GetBoatlane()
+    private Boatlane getBoatlane()
     {
         for(Boatlane boatlane : getObjects(Boatlane.class)){
-            if(!BoatlaneIsTaken(boatlane))
+            if(!boatlaneIsTaken(boatlane))
             {
                 return boatlane;
             }
@@ -243,7 +239,7 @@ public class HavenmeesterWorld extends PausableWorld
         return null;
     }
 
-    private boolean BoatlaneIsTaken(Boatlane boatlane)
+    private boolean boatlaneIsTaken(Boatlane boatlane)
     {
         for(Boat boat : getObjects(Boat.class)){
             if(boat.getAssignedBoatlane() == boatlane && boat.getOccupiedCountrer() > 0)

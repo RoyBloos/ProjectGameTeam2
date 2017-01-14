@@ -6,12 +6,12 @@ public class Harbor extends PausableActor
     private Boat assignedBoat;
     private int counter = 1;
     private int dockedXLocation;
-    private HavenStoplicht stoplicht;
+    private HarborStoplight stoplicht;
 
     public Harbor(int dockedXLocation)
     {
         this.dockedXLocation = dockedXLocation;
-        stoplicht = new HavenStoplicht(this, "Groen");
+        stoplicht = new HarborStoplight(this, "Groen");
 
     }
 

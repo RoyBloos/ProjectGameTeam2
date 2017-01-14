@@ -14,81 +14,82 @@ public class Boat extends PausableActor
     private Random rand;
     private boolean hasLoods;
     private boolean releasedFromHarbor;
-    
-    public void setHasLoods(boolean hasLoods)
-    {
-        this.hasLoods = hasLoods;
-    }
-    
-    public void setReleasedFromHarbor(boolean released)
-    {
-        releasedFromHarbor = released;
-    }
-    
-    public int getOccupiedCountrer()
-    {
-        return occupiedCounter;
-    }
-    
-    public void setOccupiedCountrer(int counterValue)
-    {
-        occupiedCounter = counterValue;
-    }
-    
-    public void setAssignedBoatlane(Boatlane boatlane)
-    {
-        assignedBoatlane = boatlane;
-    }
-    
-    public Boatlane getAssignedBoatlane()
-    {
-        return assignedBoatlane;
-    }
-    
-    public void setIsDocked(boolean isDocked)
-    {
-        this.isDocked = isDocked;
-    }
-    
-    public boolean getIsDocked()
-    {
-        return isDocked;
-    }
-    
-    public int getNumberOfContainers()
-    {
-        return numberOfContainers;
-    }
+
     public Boat()
     {
         rand = new Random();
     }
-    
+
+    public void setHasLoods(boolean hasLoods)
+    {
+        this.hasLoods = hasLoods;
+    }
+
+    public void setReleasedFromHarbor(boolean released)
+    {
+        releasedFromHarbor = released;
+    }
+
+    public int getOccupiedCountrer()
+    {
+        return occupiedCounter;
+    }
+
+    public void setOccupiedCountrer(int counterValue)
+    {
+        occupiedCounter = counterValue;
+    }
+
+    public void setAssignedBoatlane(Boatlane boatlane)
+    {
+        assignedBoatlane = boatlane;
+    }
+
+    public Boatlane getAssignedBoatlane()
+    {
+        return assignedBoatlane;
+    }
+
+    public void setIsDocked(boolean isDocked)
+    {
+        this.isDocked = isDocked;
+    }
+
+    public boolean getIsDocked()
+    {
+        return isDocked;
+    }
+
+    public int getNumberOfContainers()
+    {
+        return numberOfContainers;
+    }
+
     public void act() 
     {
         if(!getIsPaused())
         {
             HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
-            if(Greenfoot.mouseClicked(this) && world.getSelectedLoods() != null)
+            if(Greenfoot.mouseClicked(this) && world.getSelectedPilot() != null)
             {
-                world.getSelectedLoods().setSelectedBoat(this);
-                world.setSelectedLoods(null);
+                world.getSelectedPilot().setSelectedBoat(this);
+                world.setSelectedPilot(null);
             }
-            
+
             if(assignedHarbor == null && hasLoods)
             {
                 wijsHavenToe();
             }
-            
+
             if(occupiedCounter > 0)
             {
                 occupiedCounter -=1;
             }
-            
+
             moveBoat();
         }
     }
-    
+
     public void UnloadContainers(int containers)
     {
         if(numberOfContainers > containers)
@@ -109,10 +110,10 @@ public class Boat extends PausableActor
             numberOfContainers = 0;
             reachedEntrypoint = false;
         }
-        
+
         setImage("Vrachtschip" + numberOfContainers + ".png");
     }
-    
+
     private void moveBoat()
     {
         if(assignedHarbor != null && (!isDocked || releasedFromHarbor))
@@ -136,14 +137,14 @@ public class Boat extends PausableActor
             move(1);
         }
         moveCounter++;
-        
+
         if(isAtEdge())
         {
             HavenmeesterWorld havenmeesterWorld =  (HavenmeesterWorld)getWorld();
             havenmeesterWorld.RemoveBoat(this);
         }
     }
-    
+
     private void moveTowardsHarborEntrypoint()
     {
         setRotation(getAngle(assignedHarbor.getX(), assignedHarbor.getY() + entryPointYOFfset)+180 );
@@ -153,8 +154,7 @@ public class Boat extends PausableActor
             reachedEntrypoint = true;
         }
     }
-    
-    
+
     private void wijsHavenToe()
     {
         for(Harbor harbor : getWorld().getObjects(Harbor.class)){
@@ -165,24 +165,24 @@ public class Boat extends PausableActor
             }
         }
     }
-    
+
     public int getAngle(int targetX, int targetY) {
         int angle = (int) Math.toDegrees(Math.atan2(targetY - getY(), targetX - getX()));
-    
+
         if(angle < 0){
             angle += 360;
         }
-    
+
         return angle;
     }
-    
+
     protected void addedToWorld(World world)
     {
         numberOfContainers = randInt(1,21);
-        setRotation(assignedBoatlane.Direction);
+        setRotation(assignedBoatlane.getDirection());
         setImage("Vrachtschip" + numberOfContainers + ".png");
     }
-    
+
     public int randInt(int min, int max) {
         return rand.nextInt((max - min) + 1) + min;
     }

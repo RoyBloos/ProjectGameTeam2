@@ -1,6 +1,5 @@
 #BlueJ class context
 comment0.target=Text
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Text\ here.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
 comment1.params=textColor\ fontSize
 comment1.target=Text(java.awt.Color,\ int)
 comment2.params=text\ textColor\ fontSize

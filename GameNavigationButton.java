@@ -2,8 +2,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class GameNavigationButton extends Actor
 {
-    public World parentWorld;
-    public String knopType;
+    private World parentWorld;
+    private String knopType;
+    
     public GameNavigationButton(World parentWorld, String knopType)
     {
         this.parentWorld = parentWorld;
@@ -23,27 +24,32 @@ public class GameNavigationButton extends Actor
         }
     }
 
+    public String getKnopType()
+    {
+        return knopType;
+    }
+    
     public void act() 
     {
         if (Greenfoot.mouseClicked(this))
         {
             if(knopType == "Pause")
             {
-                PauseWorld();
+                pauseWorld();
             } else if (knopType == "Resume")
             {
-                ResumeWorld();
+                resumeWorld();
             } else if (knopType == "Restart")
             {
-                RestartWorld();
+                restartWorld();
             } else if (knopType == "Stop")
             {
-                StopWorld();
+                stopWorld();
             }
         }
     }
 
-    private void PauseWorld()
+    private void pauseWorld()
     {
         if(PausableWorld.class.isInstance(parentWorld))
         {
@@ -52,16 +58,13 @@ public class GameNavigationButton extends Actor
             {
                 pausableWorld.PauseWorld(false);
             }
-        } else if(WorldMinigame2.class.isInstance(parentWorld))
+        } else if(WorldMinigame2.class.isInstance(parentWorld) && !((WorldMinigame2)parentWorld).IsPaused)
         {
-            if(!((WorldMinigame2)parentWorld).IsPaused)
-            {
-                ((WorldMinigame2)parentWorld).PauseWorld(false);
-            }
+            ((WorldMinigame2)parentWorld).PauseWorld(false);
         }
     }
 
-    private void ResumeWorld()
+    private void resumeWorld()
     {
         if(PausableWorld.class.isInstance(parentWorld))
         {
@@ -70,16 +73,13 @@ public class GameNavigationButton extends Actor
             {
                 pausableWorld.ResumeWorld();
             }
-        } else if(WorldMinigame2.class.isInstance(parentWorld))
+        } else if(WorldMinigame2.class.isInstance(parentWorld) && ((WorldMinigame2)parentWorld).IsPaused)
         {
-            if(((WorldMinigame2)parentWorld).IsPaused)
-            {
-                ((WorldMinigame2)parentWorld).ResumeWorld();
-            }
+            ((WorldMinigame2)parentWorld).ResumeWorld();
         }
     }
 
-    private void RestartWorld()
+    private void restartWorld()
     {
         if(PausableWorld.class.isInstance(parentWorld))
         {
@@ -90,7 +90,7 @@ public class GameNavigationButton extends Actor
         }
     }
 
-    private void StopWorld()
+    private void stopWorld()
     {
         if(PausableWorld.class.isInstance(parentWorld))
         {

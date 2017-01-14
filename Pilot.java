@@ -1,7 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.List;
 
-public class Loods extends PausableActor
+public class Pilot extends PausableActor
 {
     private Boat selectedBoat;
     private int xStartPositie;
@@ -19,7 +18,7 @@ public class Loods extends PausableActor
             if(Greenfoot.mouseClicked(this))
             {
                 HavenmeesterWorld world = (HavenmeesterWorld)getWorld();
-                world.setSelectedLoods(this);
+                world.setSelectedPilot(this);
             }
 
             if(selectedBoat != null)

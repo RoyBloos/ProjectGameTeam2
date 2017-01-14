@@ -167,7 +167,7 @@ public class WorldMinigame2 extends World
         {
             PlayerScore += points;
             PlayerScorebord.SetText(Integer.toString(PlayerScore), Color.GREEN, null);
-            ParentWorld.SetScore("minigame2", PlayerScore);
+            ParentWorld.setGameScore("minigame2", PlayerScore);
         } 
         else
         {
@@ -247,7 +247,7 @@ public class WorldMinigame2 extends World
     {
 
         for(GameNavigationButton button : getObjects(GameNavigationButton.class)){
-            if(button.knopType != "Pause")
+            if(button.getKnopType() != "Pause")
             {
                 removeObject(button);
             }

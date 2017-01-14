@@ -10,8 +10,12 @@ public abstract class PausableWorld extends World
 {
 
     private boolean isPaused;
-    private boolean isGameOver;
-    
+
+    public PausableWorld(int width, int height)
+    {    
+        super(width, height, 1); 
+    }
+
     public boolean getIsPaused()
     {
         return isPaused;
@@ -22,17 +26,12 @@ public abstract class PausableWorld extends World
         isPaused = true;
     }
 
-    public PausableWorld(int width, int height)
-    {    
-        super(width, height, 1); 
-    }
-    
     public abstract void PauseWorld(boolean isGameOver);
-    
+
     public abstract void ResumeWorld();
-    
+
     public abstract void RestartWorld();
-    
+
     public abstract void StopWorld();
-   
+
 }
