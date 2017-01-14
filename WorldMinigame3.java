@@ -1,33 +1,43 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 public class WorldMinigame3 extends World
 {
-    Package currentPackage;
-    ConveyorBelt conveyorBelt;
-    ConveyorBeltTarget conveyorBeltTarget;
-    Truck truck;
-    public WorldMinigame3(World parentWorld, int gameHeight, int gameWidth)
+    WorldMainMenu parentWorld;
+    TransportBelt transportBelt;
+    ControlArea controlArea;
+    DeliveryTruck deliveryTruck;
+    TrashCan trashCan;    
+    DeliveryPackage deliveryPackage;
+    public WorldMinigame3(WorldMainMenu parentWorld, int gameWidth, int gameHeight)
     {    
-        super(gameHeight, gameWidth, 1);
-        
-        conveyorBelt = new ConveyorBelt();
-        conveyorBeltTarget = new ConveyorBeltTarget();
-        truck = new Truck();
-        
-        addObject(conveyorBelt, 830, 290);
-        addObject(conveyorBeltTarget, conveyorBelt.getX() + 87, conveyorBelt.getY() + 218);
-        addObject(truck, conveyorBeltTarget.getY() - 597, conveyorBeltTarget.getY());
+        super(gameWidth, gameHeight, 1);
+        this.parentWorld = parentWorld;
+        createStaticObjects(gameWidth, gameHeight);  
     }
     public void act()
     {
-        spawnPackage();
+        createDynamicObjects();
     }
-    private void spawnPackage()
+    private void createStaticObjects(int gameWidth, int gameHeight)
     {
-        if (currentPackage == null)
+        transportBelt = new TransportBelt(this);
+        addObject(transportBelt, gameWidth / 16 * 11, gameHeight / 8 * 3);
+        
+        controlArea = new ControlArea(this);
+        addObject(controlArea, transportBelt.getX() + 87, transportBelt.getY() + 95);
+        
+        deliveryTruck = new DeliveryTruck(this);
+        addObject(deliveryTruck, transportBelt.getX() - 511, transportBelt.getY() + 227);
+        
+        trashCan = new TrashCan(this);
+        addObject(trashCan, transportBelt.getX() + 275, transportBelt.getY() + 162);
+    }
+    private void createDynamicObjects()
+    {
+        if (getObjects(DeliveryPackage.class).isEmpty())
         {
-            currentPackage = new Package(this);
-            addObject(currentPackage, conveyorBeltTarget.getX(), 1);
+            deliveryPackage = new DeliveryPackage(this);
+            addObject(deliveryPackage, controlArea.getX(), 1);
         }
     }
 }

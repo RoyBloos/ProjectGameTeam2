@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=TransportBelt
+comment1.params=parentWorld
+comment1.target=TransportBelt(WorldMinigame3)
+comment2.params=
+comment2.target=void\ act()
+numComments=3
