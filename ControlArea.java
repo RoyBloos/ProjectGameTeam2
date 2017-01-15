@@ -13,16 +13,10 @@ public class ControlArea extends ActorMinigame3
     {
         deliveryPackage = parentWorld.deliveryPackage;
         packageDestination = deliveryPackage.destination;
-        if (intersects(deliveryPackage) && packageDestination == parentWorld.deliveryTruck)
+        if (intersects(deliveryPackage) && packageDestination == parentWorld.deliveryTruck && Greenfoot.isKeyDown("space"))
         {
-            //highlightArea();
-            if (Greenfoot.isKeyDown("space"))
-            {
-                deliveryPackage.destination = parentWorld.trashCan;
-            }            
-        }
-    }
-    private void highlightArea()
-    {
+            deliveryPackage.destination = parentWorld.trashCan;
+        }            
     }
 }
+

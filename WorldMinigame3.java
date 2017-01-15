@@ -8,6 +8,7 @@ public class WorldMinigame3 extends World
     DeliveryTruck deliveryTruck;
     TrashCan trashCan;    
     DeliveryPackage deliveryPackage;
+    int scoreToReach = 1;
     public WorldMinigame3(WorldMainMenu parentWorld, int gameWidth, int gameHeight)
     {    
         super(gameWidth, gameHeight, 1);
