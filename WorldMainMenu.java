@@ -88,6 +88,21 @@ public class WorldMainMenu extends World
         }
     }
 
+    public static void setScoreAndColor(int score, int currentHighscore, int scoreToReach, Text scoreBoard)
+    {
+        Color textColor = Color.RED;
+        int scoreToSet = currentHighscore;
+        if(score > currentHighscore)
+        {
+            scoreToSet = score;
+        }
+        if (scoreToSet >= scoreToReach)
+        {
+            textColor = Color.GREEN;
+        }
+        scoreBoard.SetText(Integer.toString(scoreToSet) + " / " + Integer.toString(scoreToReach), textColor, null);
+    }
+    
     private void createMinigames()
     {
         havenmeesterWorld = new HavenmeesterWorld(this,getWidth(), getHeight());
@@ -113,20 +128,5 @@ public class WorldMainMenu extends World
         addObject(new ButtonSelectMinigame(this, NAAMMINIGAME4, "MenuKnop4.png"), 1024, 393);
         scorebordMinigame4 = new Text(Color.RED, 25);
         addObject(scorebordMinigame4, 1124,430);
-    }
-
-    private void setScoreAndColor(int score, int currentHighscore, int scoreToReach, Text scoreBoard)
-    {
-        Color textColor = Color.RED;
-        int scoreToSet = currentHighscore;
-        if(score > currentHighscore)
-        {
-            scoreToSet = score;
-        }
-        if (scoreToSet >= scoreToReach)
-        {
-            textColor = Color.GREEN;
-        }
-        scoreBoard.SetText(Integer.toString(scoreToSet) + " / " + Integer.toString(scoreToReach), textColor, null);
     }
 }
