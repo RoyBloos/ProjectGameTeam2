@@ -11,6 +11,9 @@ public class WorldMinigame3 extends World
     public WorldMinigame3(WorldMainMenu parentWorld, int gameWidth, int gameHeight)
     {    
         super(gameWidth, gameHeight, 1);
+        String className = this.getClass().getName();
+        GreenfootImage defaultImage = new GreenfootImage("images/Minigame3/" + className + "_default.png");
+        setBackground(defaultImage);
         this.parentWorld = parentWorld;
         createStaticObjects(gameWidth, gameHeight);  
     }
