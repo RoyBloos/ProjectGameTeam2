@@ -40,10 +40,16 @@ public class WorldMainMenu extends World
             setScoreAndColor(score, highScoreMinigame2, worldMinigame2.getScoreToReach(), scorebordMinigame2);
         } else if(gameName == NAAMMINIGAME3)
         {
+            Color textColor = Color.RED;
             if(score > highScoreMinigame3)
             {
                 highScoreMinigame3 = score;
             }
+            if (highScoreMinigame3 >= worldMinigame3.scoreToReach)
+            {
+                textColor = Color.GREEN;
+            }
+            scorebordMinigame3.SetText(Integer.toString(highScoreMinigame3) + " / " + Integer.toString(worldMinigame3.scoreToReach), textColor, null);             
         } else if(gameName == NAAMMINIGAME4)
         {
             Color textColor = Color.RED;
